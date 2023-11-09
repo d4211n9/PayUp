@@ -2,6 +2,6 @@
 
 # Developers
 - d4211n9: Patrick
-- JennyFromTheBlock: Kenny
+- JennyTromTheBlock: Kenni
 - micdra01: Michael
 - steffaneckeroth: Steffan
