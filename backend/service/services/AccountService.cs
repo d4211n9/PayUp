@@ -1,14 +1,29 @@
-﻿namespace service.services;
+﻿using api.models;
+using infrastructure.dataModels;
+using infrastructure.repository;
+using Service;
+
+namespace service.services;
 
 public class AccountService
 {
-    public User Register(RegisterCommandModel model)
+    private readonly UserRepository _userRepository;
+    private readonly PasswordHashRepository _passwordHashRepository;
+    public AccountService(UserRepository userRepository, PasswordHashRepository passwordHashRepository)
+    {
+        _userRepository = userRepository;
+        _passwordHashRepository = passwordHashRepository;
+    }
+    
+    public User Register(RegisterModel model)
     {
         var hashAlgorithm = PasswordHashAlgorithm.Create();
         var salt = hashAlgorithm.GenerateSalt();
         var hash = hashAlgorithm.HashPassword(model.Password, salt);
-        var user = _userRepository.Create(model.FullName, model.Email, model.AvatarUrl);
-        _passwordHashRepository.Create(user.Id, hash, salt, hashAlgorithm.GetName());
+        
+        //todo should create our user in database
+        var user = _userRepository.Create(model.Email, model.FullName, model.PhoneNumber, model.ProfileUrl);
+        _passwordHashRepository.Create(user.Email, hash, salt, hashAlgorithm.GetName());
         return user;
     }
     

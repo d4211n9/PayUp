@@ -16,8 +16,7 @@ public class AccountController: ControllerBase
         _service = service;
         _jwtService = jwtService;
     }
-
-
+    
     [HttpPost]
     [Route("/api/account/register")]
     public IActionResult Register([FromBody] RegisterModel model)
@@ -25,6 +24,9 @@ public class AccountController: ControllerBase
         var user = _service.Register(model);
         return Created();
     }
+    
+    
+    
     
     [HttpPost]//todo should create token and send token to frontend 
     [Route("/api/account/login")]
