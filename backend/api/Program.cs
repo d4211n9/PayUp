@@ -1,10 +1,15 @@
 using api.controllers;
+using infrastructure.repository;
 using service.services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
+builder.Services.AddSingleton<UserRepository>();
+builder.Services.AddSingleton<PasswordHashRepository>();
 builder.Services.AddSingleton<AccountService>();
+builder.Services.AddJwtService();
+builder.Services.AddSwaggerGenWithBearerJWT();
 
 builder.Services.AddControllers();
 // Add services to the container.
