@@ -1,7 +1,7 @@
-using System.Text;
+﻿using System.Text;
 using Konscious.Security.Cryptography;
 
-namespace Service;
+namespace service.services.Password;
 
 public class Argon2idPasswordHashAlgorithm : PasswordHashAlgorithm
 {

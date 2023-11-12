@@ -4,20 +4,23 @@ namespace infrastructure.repository;
 
 public class UserRepository
 {
-    public User Create(string email, string fullName, string phoneNumber, string profileUrl)
-    {
-        //throw new NotImplementedException("create in user respository is not implemented yet ");
-        var user = new User
-        {
-            Email = email,
-            FullName = fullName,
-            PhoneNumber = phoneNumber,
-            Created = DateTime.Now,
-            ProfileUrl = profileUrl
-        };
 
-        Console.Write("You created a user");
-        Console.Write("email:  " + user.Email);
-        return user;
+    public UserRepository()
+    {
+    }
+
+    public User Create(string fullName, string email, string phone, string profileUrl)
+    {
+        throw new NotImplementedException();
+    }
+
+    public User? GetById(string id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<User> GetAll()
+    {
+        throw new NotImplementedException();
     }
 }
