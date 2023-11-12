@@ -1,3 +1,4 @@
+using api;
 using api.controllers;
 using infrastructure.repository;
 using service.services;
