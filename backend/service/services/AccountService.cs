@@ -2,21 +2,20 @@
 using System.Security.Authentication;
 using infrastructure.dataModels;
 using infrastructure.repository;
-using Microsoft.Extensions.Logging;
 using service.services.Password;
 
 namespace service.services;
 
 public class AccountService
 {
-    private readonly ILogger<AccountService> _logger;
+
     private readonly PasswordHashRepository _passwordHashRepository;
     private readonly UserRepository _userRepository;
 
-    public AccountService(ILogger<AccountService> logger, UserRepository userRepository,
+    public AccountService(UserRepository userRepository,
         PasswordHashRepository passwordHashRepository)
     {
-        _logger = logger;
+ 
         _userRepository = userRepository;
         _passwordHashRepository = passwordHashRepository;
     }
@@ -32,7 +31,7 @@ public class AccountService
         }
         catch (Exception e)
         {
-            _logger.LogError("Authenticate error: {Message}", e);
+            //_logger.LogError("Authenticate error: {Message}", e);
         }
 
         throw new InvalidCredentialException("Invalid credential!");
@@ -43,8 +42,15 @@ public class AccountService
         var hashAlgorithm = PasswordHashAlgorithm.Create();
         var salt = hashAlgorithm.GenerateSalt();
         var hash = hashAlgorithm.HashPassword(password, salt);
-        var user = _userRepository.Create(fullName, email, phone, profileUrl);
-        _passwordHashRepository.Create(user.Email, hash, salt, hashAlgorithm.GetName());
-        return user;
+        var user = _userRepository.Create(fullName, email, phone, DateTime.Now, profileUrl);
+        //_passwordHashRepository.Create(user.Email, hash, salt, hashAlgorithm.GetName());
+        return new User
+        {
+            Email = null,
+            FullName = null,
+            PhoneNumber = null,
+            Created = default,
+            ProfileUrl = null
+        };
     }
 }

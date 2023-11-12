@@ -23,7 +23,7 @@ public class PasswordHashRepository
     public void Create(string userId, string hash, string salt, string algorithm)
     {
         // Define the SQL query to insert a new password hash
-        string sql = "INSERT INTO password_hash (user_email, hash, salt, algorithm) " + 
+        string sql = "INSERT INTO users.password_hash (user_email, hash, salt, algorithm) " + 
                      "VALUES (@userId, @hash, @salt, @algorithm)";
 
             // Create an object with the provided data

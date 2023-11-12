@@ -15,8 +15,9 @@ public class UserRepository
     }
 
 
-    public User Create(string fullName, string email, string phone, string profileUrl)
+    public User Create(string fullName, string email, string phone, DateTime created, string profileUrl)
     {
+        
         var sql = $@"
             INSERT INTO users.user (Email, FullName, PhoneNumber, Created, ProfileUrl) " +
                   "VALUES (@Email, @FullName, @PhoneNumber, @Created, @ProfileUrl) " +
