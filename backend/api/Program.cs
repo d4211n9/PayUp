@@ -38,14 +38,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseRouting();
+
 
 app.UseAuthentication();
 app.UseAuthorization(); // Add it here
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
+
 app.MapControllers();
 
 app.UseCors(options =>

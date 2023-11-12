@@ -28,7 +28,7 @@ public class UserRepository
             Email = email,
             FullName = fullName,
             PhoneNumber = phone,
-            Created = DateTime.Now,
+            Created = created,
             ProfileUrl = profileUrl
         };
         using (var conn = _dataSource.OpenConnection())
