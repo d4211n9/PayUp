@@ -22,6 +22,7 @@ public class AccountController: ControllerBase
     public IActionResult Register([FromBody] RegisterModel model)
     {
         var user = _service.Register(model);
+        Console.Write("mekwl");
         return Created();
     }
     

@@ -23,7 +23,7 @@ public class AccountService
         
         //todo should create our user in database
         var user = _userRepository.Create(model.Email, model.FullName, model.PhoneNumber, model.ProfileUrl);
-        _passwordHashRepository.Create(user.Email, hash, salt, hashAlgorithm.GetName());
+       // _passwordHashRepository.Create(user.Email, hash, salt, hashAlgorithm.GetName());
         return user;
     }
     
