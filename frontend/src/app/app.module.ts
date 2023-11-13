@@ -12,7 +12,8 @@ import {HTTP_INTERCEPTORS} from "@angular/common/http";
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true },
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
