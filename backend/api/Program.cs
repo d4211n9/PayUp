@@ -60,6 +60,6 @@ app.UseCors(options =>
 });
 
 app.UseMiddleware<JwtBearerHandler>();
-//app.UseMiddleware<GlobalExceptionHandler>();
+app.UseMiddleware<GlobalExceptionHandler>();
 app.Run();
 

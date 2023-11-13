@@ -6,8 +6,7 @@ namespace infrastructure.dataModels;
 public class SessionData
 {
     public required string UserId { get; init; }
-
-
+    
     public static SessionData FromUser(User user)
     {
         return new SessionData { UserId = user.Email};
