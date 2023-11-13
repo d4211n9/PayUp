@@ -1,3 +1,44 @@
-<p>
-  register works!
-</p>
+<ion-grid class="ion-align-items-center ion-justify-content-center ion-no-margin ion-text-center" style="display: grid">
+  <ion-card id="register-card">
+    <ion-card-header color="primary">
+      <ion-card-title class="ion-text-center">
+        Sign up for PayUp
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content class="ion-color ion-color-danger">
+      <ion-list>
+        <ion-item>
+          <ion-input label="Full name *" label-placement="stacked">
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input label="E-mail *" label-placement="stacked">
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input label="Phone *" label-placement="stacked">
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input label="Password *" label-placement="stacked">
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input label="Repeat password *" label-placement="stacked">
+          </ion-input>
+        </ion-item>
+      </ion-list>
+      <div class="ion-text-center">
+        <ion-button color="warning">
+          Create account
+        </ion-button>
+      </div>
+      <ion-text>
+        Already have an account?
+        <a>
+          Log in
+        </a>
+      </ion-text>
+    </ion-card-content>
+  </ion-card>
+</ion-grid>

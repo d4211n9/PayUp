@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {LoginComponent} from "../login/login.component";
 
 @Component({
   selector: 'app-register',
@@ -11,4 +12,5 @@ export class RegisterComponent  implements OnInit {
 
   ngOnInit() {}
 
+  protected readonly LoginComponent = LoginComponent;
 }
