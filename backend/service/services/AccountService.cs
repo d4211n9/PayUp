@@ -38,7 +38,7 @@ public class AccountService
 
             if (isValid)
             {
-               var user = _userRepository.GetById(passwordHash.Email);
+               var user = _userRepository.GetById(model.Email);
                if (ReferenceEquals(user, null)) throw new KeyNotFoundException("Could not load user");
                
                return user;
@@ -69,7 +69,7 @@ public class AccountService
             if (ReferenceEquals(user, null)) throw new SqlTypeException("Could not Create user");
 
             var isCreated =_passwordHashRepository.Create(user.Email, hash, salt, hashAlgorithm.GetName()); //stores the password
-                if (isCreated) throw new SqlTypeException("Could not Create Password");
+                if (isCreated == false) throw new SqlTypeException("Could not Create Password");
                 return user;
         }
         catch (SqlTypeException e)
@@ -82,5 +82,9 @@ public class AccountService
             _logger.LogError("Register error: {Message}", e);
             throw new Exception("Could not Register User");
         }
+    }
+    public User? Get(SessionData data)
+    {
+        return _userRepository.GetById(data.UserId);
     }
 }

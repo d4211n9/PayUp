@@ -1,5 +1,6 @@
 using api;
-using api.controllers;
+using api.middelware;
+using api.Middleware;
 using infrastructure;
 using infrastructure.repository;
 using service.services;
@@ -25,9 +26,13 @@ if (builder.Environment.IsProduction())
     builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString);
 }
 
+
 builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddSingleton<PasswordHashRepository>();
 builder.Services.AddSingleton<AccountService>();
+
+builder.Services.AddJwtService();
+builder.Services.AddSwaggerGenWithBearerJWT();
 
 
 var app = builder.Build();
@@ -38,6 +43,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 
 
 app.UseAuthentication();
@@ -53,5 +59,7 @@ app.UseCors(options =>
         .AllowCredentials();
 });
 
+app.UseMiddleware<JwtBearerHandler>();
+//app.UseMiddleware<GlobalExceptionHandler>();
 app.Run();
 
