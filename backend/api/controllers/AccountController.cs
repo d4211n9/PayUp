@@ -11,7 +11,6 @@ namespace api.controllers;
 [ApiController]
 public class AccountController: ControllerBase
 {
-    
     private readonly AccountService _service;
     private readonly JwtService _jwtService;
 
@@ -32,15 +31,11 @@ public class AccountController: ControllerBase
         };
     }
     
-    
-    
-    
     [HttpPost]
     [Route("/api/account/login")]
     public IActionResult Login([FromBody] LoginModel model)
     {
         var user = _service.Authenticate(model);
-        Console.Write("user     " + user);
         if (user == null) return Unauthorized();
         
         var token = _jwtService.IssueToken(SessionData.FromUser(user!));
@@ -60,7 +55,7 @@ public class AccountController: ControllerBase
     public ResponseDto WhoAmI()
     {
         var data = HttpContext.GetSessionData();
-        var user = _service.Get(data);
+        var user = _service.Get(data!);
         return new ResponseDto
         {
             ResponseData = user

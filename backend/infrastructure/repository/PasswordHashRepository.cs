@@ -4,7 +4,6 @@ using Npgsql;
 
 namespace infrastructure.repository;
 
-
 public class PasswordHashRepository
 {
     private readonly NpgsqlDataSource _dataSource;
@@ -22,26 +21,19 @@ public class PasswordHashRepository
             ";
         using (var conn = _dataSource.OpenConnection())
         {
-            return conn.QueryFirstOrDefault<PasswordHash>(sql, new { email });
+            return conn.QueryFirstOrDefault<PasswordHash>(sql, new { email }) ?? throw new InvalidOperationException();
         }
         
     }
     
-
-    public bool Create(string userId, string hash, string salt, string algorithm)
+    public bool Create(PasswordHash passwordHash)
     {
         // Define the SQL query to insert a new password hash
         string sql = "INSERT INTO users.password_hash (user_email, hash, salt, algorithm) " + 
-                     "VALUES (@userId, @hash, @salt, @algorithm)";
+                     "VALUES (@Email, @Hash, @Salt, @Algorithm)";
 
             // Create an object with the provided data
-        var passwordHash = new
-        { 
-            userId = userId, 
-            hash = hash, 
-            salt = salt, 
-            algorithm = algorithm
-            };
+       
 
         using (var conn = _dataSource.OpenConnection())
         {

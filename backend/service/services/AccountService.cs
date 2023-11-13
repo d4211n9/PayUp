@@ -20,13 +20,12 @@ public class AccountService
         ILogger<AccountService> logger,
         PasswordHashRepository passwordHashRepository)
     {
- 
         _userRepository = userRepository;
         _logger = logger;
         _passwordHashRepository = passwordHashRepository;
     }
 
-    public User? Authenticate(LoginModel model)
+    public User Authenticate(LoginModel model)
     {
         try
         {
@@ -64,12 +63,19 @@ public class AccountService
             var hashAlgorithm = PasswordHashAlgorithm.Create(); //chooses hashing algorithm and hashes password
             var salt = hashAlgorithm.GenerateSalt();
             var hash = hashAlgorithm.HashPassword(model.Password, salt);
-
-            var user = _userRepository.Create(model, DateTime.Now); //creates the user 
+            var password = new PasswordHash
+            {
+                Email = model.Email,
+                Hash = hash,
+                Salt = salt,
+                Algorithm = hashAlgorithm.GetName()
+            };
+            
+           var user = _userRepository.Create(model, DateTime.Now); //creates the user 
             if (ReferenceEquals(user, null)) throw new SqlTypeException("Could not Create user");
 
-            var isCreated =_passwordHashRepository.Create(user.Email, hash, salt, hashAlgorithm.GetName()); //stores the password
-                if (isCreated == false) throw new SqlTypeException("Could not Create Password");
+            var isCreated =_passwordHashRepository.Create(password); //stores the password
+                if (isCreated == false) throw new SqlTypeException("Could not create user");
                 return user;
         }
         catch (SqlTypeException e)

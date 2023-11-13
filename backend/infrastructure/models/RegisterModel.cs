@@ -4,7 +4,7 @@ namespace api.models;
 
 public class RegisterModel
 {
-    [Required] public required string Email { get; set; }
+    [Required] public required string Email { get; set; }//todo should check that it is a valid mail 
     
     [Required] public required string FullName { get; set; }
 
