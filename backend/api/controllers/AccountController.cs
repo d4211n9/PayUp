@@ -21,7 +21,7 @@ public class AccountController: ControllerBase
     [Route("/api/account/register")]
     public ResponseDto Register([FromBody] RegisterModel model)
     {
-        var user = _service.Register(model.Email, model.FullName, model.Password, model.PhoneNumber, model.ProfileUrl);
+        var user = _service.Register(model);
         return new ResponseDto
         {
             MessageToClient = "Successfully registered"
@@ -35,7 +35,7 @@ public class AccountController: ControllerBase
     [Route("/api/account/login")]
     public ResponseDto Login([FromBody] LoginModel model)
     {
-        var user = _service.Authenticate(model.Email, model.Password);
+        var user = _service.Authenticate(model);
         return new ResponseDto
         {
             MessageToClient = "Successfully authenticated"

@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using api.models;
+using Dapper;
 using infrastructure.dataModels;
 using Npgsql;
 
@@ -15,7 +16,7 @@ public class UserRepository
     }
 
 
-    public User Create(string fullName, string email, string phone, DateTime created, string profileUrl)
+    public User Create(RegisterModel model, DateTime created)
     {
         
         var sql = $@"
@@ -25,25 +26,27 @@ public class UserRepository
 
         var user = new User
         {
-            Email = email,
-            FullName = fullName,
-            PhoneNumber = phone,
+            Email = model.Email,
+            FullName = model.FullName,
+            PhoneNumber = model.PhoneNumber,
             Created = created,
-            ProfileUrl = profileUrl
+            ProfileUrl = model.ProfileUrl
         };
         using (var conn = _dataSource.OpenConnection())
         {
-            return conn.QueryFirst<User>(sql, new {user});
+            return conn.QueryFirst<User>(sql, user);
         }
     }
 
     public User? GetById(string id)
     {
-        throw new NotImplementedException();
-    }
-
-    public IEnumerable<User> GetAll()
-    {
-        throw new NotImplementedException();
+        var sql = @"
+        SELECT * FROM users.user
+        WHERE email = @id;";
+        
+        using (var conn = _dataSource.OpenConnection())
+        {
+            return conn.QueryFirstOrDefault<User>(sql, new { id });
+        }
     }
 }

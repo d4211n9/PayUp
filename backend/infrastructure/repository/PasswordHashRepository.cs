@@ -16,11 +16,19 @@ public class PasswordHashRepository
 
     public PasswordHash GetByEmail(string email)
     {
-        throw new NotImplementedException();
+        var sql = $@"
+            select * from users.password_hash
+            where user_email = @email;
+            ";
+        using (var conn = _dataSource.OpenConnection())
+        {
+            return conn.QueryFirstOrDefault<PasswordHash>(sql, new { email });
+        }
+        
     }
     
 
-    public void Create(string userId, string hash, string salt, string algorithm)
+    public bool Create(string userId, string hash, string salt, string algorithm)
     {
         // Define the SQL query to insert a new password hash
         string sql = "INSERT INTO users.password_hash (user_email, hash, salt, algorithm) " + 
@@ -39,6 +47,7 @@ public class PasswordHashRepository
         {
             // Execute the SQL query using Dapper
             conn.Execute(sql, passwordHash);
+            return true;
         }
     }
 

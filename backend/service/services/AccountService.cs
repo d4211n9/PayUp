@@ -1,7 +1,10 @@
 ﻿
+using System.Data.SqlTypes;
 using System.Security.Authentication;
+using api.models;
 using infrastructure.dataModels;
 using infrastructure.repository;
+using Microsoft.Extensions.Logging;
 using service.services.Password;
 
 namespace service.services;
@@ -10,48 +13,74 @@ public class AccountService
 {
 
     private readonly PasswordHashRepository _passwordHashRepository;
+    private readonly ILogger<AccountService> _logger;
     private readonly UserRepository _userRepository;
 
     public AccountService(UserRepository userRepository,
+        ILogger<AccountService> logger,
         PasswordHashRepository passwordHashRepository)
     {
  
         _userRepository = userRepository;
+        _logger = logger;
         _passwordHashRepository = passwordHashRepository;
     }
 
-    public User? Authenticate(string email, string password)
+    public User? Authenticate(LoginModel model)
     {
         try
         {
-            var passwordHash = _passwordHashRepository.GetByEmail(email);
+            var passwordHash = _passwordHashRepository.GetByEmail(model.Email); //gets the hash from database and authenticates it  
+            if (ReferenceEquals(passwordHash, null)) throw new KeyNotFoundException("Invalid credential");
+            
             var hashAlgorithm = PasswordHashAlgorithm.Create(passwordHash.Algorithm);
-            var isValid = hashAlgorithm.VerifyHashedPassword(password, passwordHash.Hash, passwordHash.Salt);
-            if (isValid) return _userRepository.GetById(passwordHash.UserId);
+            var isValid = hashAlgorithm.VerifyHashedPassword(model.Password, passwordHash.Hash, passwordHash.Salt);
+
+            if (isValid)
+            {
+               var user = _userRepository.GetById(passwordHash.Email);
+               if (ReferenceEquals(user, null)) throw new KeyNotFoundException("Could not load user");
+               
+               return user;
+            }
+        }
+        catch (KeyNotFoundException k)
+        {
+            _logger.LogError("Authenticate error: {Message}", k);
+            throw new Exception(k.Message);
         }
         catch (Exception e)
-        {
-            //_logger.LogError("Authenticate error: {Message}", e);
+        {    
+            _logger.LogError("Authenticate error: {Message}", e);
+            throw new Exception("Could not Authenticate User");
         }
-
         throw new InvalidCredentialException("Invalid credential!");
     }
 
-    public User Register(string fullName, string email, string password, string phone, string profileUrl)
+    public User Register(RegisterModel model)
     {
-        var hashAlgorithm = PasswordHashAlgorithm.Create();
-        var salt = hashAlgorithm.GenerateSalt();
-        var hash = hashAlgorithm.HashPassword(password, salt);
-        Console.Write(password +"  hash  " + hash);
-        var user = _userRepository.Create(fullName, email, phone, DateTime.Now, profileUrl); 
-        //_passwordHashRepository.Create(user.Email, hash, salt, hashAlgorithm.GetName());
-        return new User
+        try
         {
-            Email = null,
-            FullName = null,
-            PhoneNumber = null,
-            Created = default,
-            ProfileUrl = null
-        };
+            var hashAlgorithm = PasswordHashAlgorithm.Create(); //chooses hashing algorithm and hashes password
+            var salt = hashAlgorithm.GenerateSalt();
+            var hash = hashAlgorithm.HashPassword(model.Password, salt);
+
+            var user = _userRepository.Create(model, DateTime.Now); //creates the user 
+            if (ReferenceEquals(user, null)) throw new SqlTypeException("Could not Create user");
+
+            var isCreated =_passwordHashRepository.Create(user.Email, hash, salt, hashAlgorithm.GetName()); //stores the password
+                if (isCreated) throw new SqlTypeException("Could not Create Password");
+                return user;
+        }
+        catch (SqlTypeException e)
+        {
+            _logger.LogError("Register error: {Message}", e);
+            throw new Exception(e.Message);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Register error: {Message}", e);
+            throw new Exception("Could not Register User");
+        }
     }
 }
