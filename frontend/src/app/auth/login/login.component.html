@@ -10,12 +10,14 @@
     <div style="display: flex; justify-content: center; align-items: center;">
       <ion-card class="ion-padding" style="overflow: hidden; border-radius: 15px; max-width: 500px; width: 90%;">
         <form [formGroup]="form" (ngSubmit)="submit()">
+
           <ion-item>
             <ion-input label="Email" labelPlacement="stacked" formControlName="email"></ion-input>
           </ion-item>
           <div style="margin-left: 2%;" slot="label" *ngIf="email.touched && email.invalid">
             <ion-text color="danger">Valid email is required</ion-text>
           </div>
+
           <ion-item>
             <ion-input type="password" label="Password" labelPlacement="stacked" formControlName="password"></ion-input>
             <ion-button fill="clear" color="medium" size="small" class="small-text">Forgot password?</ion-button>

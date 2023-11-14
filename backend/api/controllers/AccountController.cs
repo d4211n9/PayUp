@@ -61,6 +61,4 @@ public class AccountController: ControllerBase
             ResponseData = user
         };
     }
-    
-
 }
