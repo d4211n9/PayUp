@@ -20,7 +20,8 @@ export interface Registration {
     email: String;
     fullName: string;
     password: string;
-    profileUrl: string | null,
+    phoneNumber: string,
+    profileUrl: string,
 }
 
 @Injectable()
@@ -36,6 +37,6 @@ export class AccountService {
     }
 
     register(value: Registration) {
-        return this.http.post<any>('/api/account/register', value);
+        return this.http.post<any>('http://localhost:5100/api/account/register', value);
     }
 }

@@ -36,7 +36,7 @@ export class LoginComponent  implements OnInit {
     this.token.setToken(token);
 
 
-    (await this.toast.create({
+    await (await this.toast.create({
       message: "Welcome back!",
       color: "success",
       duration: 5000

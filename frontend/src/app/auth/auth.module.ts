@@ -23,7 +23,7 @@ import {ErrorHttpInterceptor} from "../../interceptors/error-http-interceptors";
       HttpClientModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
+
     {provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true },
       AccountService
   ]
