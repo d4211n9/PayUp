@@ -9,6 +9,8 @@ import { AppRoutingModule } from './app-routing.module';
 import {ErrorHttpInterceptor} from "../interceptors/error-http-interceptors";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {AuthModule} from "./auth/auth.module";
+import {TokenService} from "../services/TokenService";
+import {AuthHttpInterceptor} from "../interceptors/auth-http-interceptor";
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,7 +20,10 @@ import {AuthModule} from "./auth/auth.module";
             AuthModule],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true },
-    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
+    TokenService,],
   bootstrap: [AppComponent],
+
 })
 export class AppModule {}

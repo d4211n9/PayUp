@@ -4,6 +4,12 @@ import {RegisterComponent} from "./register/register.component";
 import {LoginComponent} from "./login/login.component";
 import {IonicModule} from "@ionic/angular";
 import {RouterLink} from "@angular/router";
+import {TokenService} from "../../services/TokenService";
+import {ReactiveFormsModule} from "@angular/forms";
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule, HttpHandler} from "@angular/common/http";
+import {AuthHttpInterceptor} from "../../interceptors/auth-http-interceptor";
+import {AccountService} from "./account.service";
+import {ErrorHttpInterceptor} from "../../interceptors/error-http-interceptors";
 
 
 
@@ -12,7 +18,14 @@ import {RouterLink} from "@angular/router";
   imports: [
     CommonModule,
     IonicModule,
-    RouterLink
+    RouterLink,
+    ReactiveFormsModule,
+      HttpClientModule
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true },
+      AccountService
   ]
 })
 export class AuthModule { }

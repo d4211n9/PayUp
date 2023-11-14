@@ -1,3 +1,38 @@
-<p>
-  login works!
-</p>
+<ion-content class="ion-padding" color="light" style="height: 80vh;">
+  <div style="display: block; justify-content: center; align-items: center; margin-top: 60px">
+    <div style="display: flex; justify-content: center;">
+      <ion-icon size="large" name="logo-angular"></ion-icon>
+    </div>
+    <ion-card-header class="ion-text-center">
+      <h1>Sign in to PayUp</h1>
+    </ion-card-header>
+
+    <div style="display: flex; justify-content: center; align-items: center;">
+      <ion-card class="ion-padding" style="overflow: hidden; border-radius: 15px; max-width: 500px; width: 90%;">
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <ion-item>
+            <ion-input label="Email" labelPlacement="stacked" formControlName="email"></ion-input>
+          </ion-item>
+          <div style="margin-left: 2%;" slot="label" *ngIf="email.touched && email.invalid">
+            <ion-text color="danger">Valid email is required</ion-text>
+          </div>
+          <ion-item>
+            <ion-input type="password" label="Password" labelPlacement="stacked" formControlName="password"></ion-input>
+            <ion-button fill="clear" color="medium" size="small" class="small-text">Forgot password?</ion-button>
+          </ion-item>
+          <div slot="label" style="margin-left: 2%;" *ngIf="password.touched && password.errors?.['required']">
+            <ion-text color="danger">Required</ion-text>
+          </div>
+
+          <ion-checkbox class="ion-padding" labelPlacement="end">Remember me</ion-checkbox>
+
+          <div class="ion-padding" style="display: flex; justify-content: center;">
+            <ion-button color="warning" size="large" id="btn-submit" [disabled]="form.invalid" (click)="submit()">Sign in</ion-button>
+          </div>
+
+          <p class="ion-text-center">New to PayUp? <a href="/register">Create an account</a></p>
+        </form>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>
