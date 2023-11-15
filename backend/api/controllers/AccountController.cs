@@ -27,7 +27,7 @@ public class AccountController: ControllerBase
         var user = _service.Register(model);
         return new ResponseDto
         {
-            MessageToClient = "Successfully registered"
+            MessageToClient = "Successfully registered",
         };
     }
     
