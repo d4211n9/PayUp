@@ -1,6 +1,4 @@
-﻿using infrastructure.dataModels;
-
-namespace infrastructure.dataModels;
+﻿namespace infrastructure.dataModels;
 
 
 public class SessionData

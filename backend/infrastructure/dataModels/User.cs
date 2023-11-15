@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-
-namespace infrastructure.dataModels;
+﻿namespace infrastructure.dataModels;
 
 public class User
 {
