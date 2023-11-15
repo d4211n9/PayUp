@@ -86,29 +86,60 @@ Best regards, Alex.
     }
 
     public static string RebuildScript = @"
+-- Drop the 'users.password_hash' table if it exists
+DROP TABLE IF EXISTS users.password_hash;
+
+DROP TABLE IF EXISTS groups.groupmembers;
+
+DROP TABLE IF EXISTS groups.group;
+
+DROP SCHEMA IF EXISTS groups;
+
 -- Drop the 'users.user' table if it exists
-DROP TABLE IF EXISTS users.user CASCADE;
+DROP TABLE IF EXISTS users.user;
 
--- Drop the 'password_hash' table if it exists
-DROP TABLE IF EXISTS users.password_hash CASCADE;
+DROP SCHEMA IF EXISTS users;
 
+-- Create the 'users' schema
+CREATE SCHEMA users;
 
 -- Create the 'users.user' table with 'Email' as the primary key
 CREATE TABLE users.user (
-    Email VARCHAR(50) PRIMARY KEY,
+    Id SERIAL PRIMARY KEY,
+    Email VARCHAR(50),
     FullName VARCHAR(50) NOT NULL,
     PhoneNumber VARCHAR(15) NOT NULL,
     Created TIMESTAMP NOT NULL,
     ProfileUrl VARCHAR(100) NOT NULL
 );
 
--- Create the 'users.password_hash' table with a foreign key reference to 'Email'
+-- Create the 'password_hash' table with a foreign key reference to 'Email'
 CREATE TABLE users.password_hash (
-    user_email VARCHAR(50),
+    user_id int,
     hash VARCHAR(350) NOT NULL,
     salt VARCHAR(180) NOT NULL,
     algorithm VARCHAR(12) NOT NULL,
-    FOREIGN KEY(user_email) REFERENCES users.user(Email)
+    FOREIGN KEY(user_id) REFERENCES users.user(Id)
+);
+
+CREATE SCHEMA groups;
+
+CREATE TABLE groups.group (
+    Id SERIAL PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    Description VARCHAR(200) NOT NULL,
+    ImageUrl VARCHAR(100) NOT NULL,
+    CreatedDate TIMESTAMP NOT NULL
+);
+
+-- Create the 'groups.groupmembers' table with foreign key references to users.user & groups.group tables
+CREATE TABLE groups.groupmembers (
+    UserId INT NOT NULL,
+    GroupId INT NOT NULL,
+    Owner BOOLEAN NOT NULL,
+    FOREIGN KEY (UserId) REFERENCES users.user(Id),
+    FOREIGN KEY (GroupId) REFERENCES groups.group(Id),
+    PRIMARY KEY (UserId, GroupId)
 );
  ";
 
