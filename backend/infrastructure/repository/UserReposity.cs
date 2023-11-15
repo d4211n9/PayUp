@@ -22,15 +22,16 @@ public class UserRepository
         var sql = $@"
             INSERT INTO users.user (Email, FullName, PhoneNumber, Created, ProfileUrl) " +
                   "VALUES (@Email, @FullName, @PhoneNumber, @Created, @ProfileUrl) " +
-                  "RETURNING Email, FullName, PhoneNumber, Created, ProfileUrl";
+                  "RETURNING *";
 
-        var user = new User
+        var user = new RegisterModel
         {
             Email = model.Email,
             FullName = model.FullName,
             PhoneNumber = model.PhoneNumber,
             Created = created,
-            ProfileUrl = model.ProfileUrl
+            ProfileUrl = model.ProfileUrl,
+            Password = null,
         };
         using (var conn = _dataSource.OpenConnection())
         {
@@ -42,11 +43,23 @@ public class UserRepository
     {
         var sql = @"
         SELECT * FROM users.user
-        WHERE email = @id;";
+        WHERE Id = @id;";
         
         using (var conn = _dataSource.OpenConnection())
         {
             return conn.QueryFirstOrDefault<User>(sql, new { id });
+        }
+    }
+    
+    public int GetByEmail(string email)
+    {
+        var sql = @"
+        SELECT Id FROM users.user
+        WHERE email = @email;";
+        
+        using (var conn = _dataSource.OpenConnection())
+        {
+            return conn.QueryFirstOrDefault<int>(sql, new { email });
         }
     }
 }

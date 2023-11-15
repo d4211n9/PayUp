@@ -13,15 +13,15 @@ public class PasswordHashRepository
         _dataSource = dataSource;
     }
 
-    public PasswordHash GetByEmail(string email)
+    public PasswordHash GetByEmail(int i)
     {
         var sql = $@"
             select * from users.password_hash
-            where user_email = @email;
+            where user_id = @i;
             ";
         using (var conn = _dataSource.OpenConnection())
         {
-            return conn.QueryFirstOrDefault<PasswordHash>(sql, new { email }) ?? throw new InvalidOperationException();
+            return conn.QueryFirstOrDefault<PasswordHash>(sql, new { i }) ?? throw new InvalidOperationException();
         }
         
     }
@@ -29,12 +29,10 @@ public class PasswordHashRepository
     public bool Create(PasswordHash passwordHash)
     {
         // Define the SQL query to insert a new password hash
-        string sql = "INSERT INTO users.password_hash (user_email, hash, salt, algorithm) " + 
-                     "VALUES (@Email, @Hash, @Salt, @Algorithm)";
-
-            // Create an object with the provided data
-       
-
+        string sql = "INSERT INTO users.password_hash (user_id, hash, salt, algorithm) " + 
+                     "VALUES (@Id, @Hash, @Salt, @Algorithm)";
+        
+        // Create an object with the provided data
         using (var conn = _dataSource.OpenConnection())
         {
             // Execute the SQL query using Dapper

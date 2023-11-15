@@ -29,7 +29,8 @@ public class AccountService
     {
         try
         {
-            var passwordHash = _passwordHashRepository.GetByEmail(model.Email); //gets the hash from database and authenticates it  
+            var user_id = _userRepository.GetByEmail(model.Email);
+            var passwordHash = _passwordHashRepository.GetByEmail(user_id); //gets the hash from database and authenticates it  
             if (ReferenceEquals(passwordHash, null)) throw new KeyNotFoundException("Invalid credential");
             
             var hashAlgorithm = PasswordHashAlgorithm.Create(passwordHash.Algorithm);
@@ -60,20 +61,22 @@ public class AccountService
     {
         try
         {
+            
+            var user = _userRepository.Create(model, DateTime.Now); //creates the user 
+            if (ReferenceEquals(user, null)) throw new SqlTypeException("Could not Create user");
+
             var hashAlgorithm = PasswordHashAlgorithm.Create(); //chooses hashing algorithm and hashes password
             var salt = hashAlgorithm.GenerateSalt();
             var hash = hashAlgorithm.HashPassword(model.Password, salt);
             var password = new PasswordHash
             {
-                Email = model.Email,
+                Id = user.Id,
                 Hash = hash,
                 Salt = salt,
                 Algorithm = hashAlgorithm.GetName()
             };
+            Console.Write("this is your id  " + user.Id);
             
-           var user = _userRepository.Create(model, DateTime.Now); //creates the user 
-            if (ReferenceEquals(user, null)) throw new SqlTypeException("Could not Create user");
-
             var isCreated =_passwordHashRepository.Create(password); //stores the password
                 if (isCreated == false) throw new SqlTypeException("Could not create user");
                 return user;

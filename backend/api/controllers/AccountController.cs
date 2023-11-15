@@ -54,11 +54,14 @@ public class AccountController: ControllerBase
     [Route("/api/account/whoami")]
     public ResponseDto WhoAmI()
     {
+        throw new NotImplementedException();
+        /*
         var data = HttpContext.GetSessionData();
         var user = _service.Get(data!);
         return new ResponseDto
         {
             ResponseData = user
         };
+        */
     }
 }
