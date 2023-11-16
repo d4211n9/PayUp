@@ -18,9 +18,8 @@ public class UserRepository
 
     public User Create(RegisterModel model, DateTime created)
     {
-        
         var sql = $@"
-            INSERT INTO users.user (Email, FullName, PhoneNumber, Created, ProfileUrl) " +
+            INSERT INTO users.user (email, full_name, phone_number, created, profile_url) " +
                   "VALUES (@Email, @FullName, @PhoneNumber, @Created, @ProfileUrl) " +
                   "RETURNING *";
 
@@ -43,7 +42,7 @@ public class UserRepository
     {
         var sql = @"
         SELECT * FROM users.user
-        WHERE Id = @id;";
+        WHERE email = @id;";
         
         using (var conn = _dataSource.OpenConnection())
         {
@@ -51,10 +50,10 @@ public class UserRepository
         }
     }
     
-    public int GetByEmail(string email)
+    public int GetIdByEmail(string email)
     {
         var sql = @"
-        SELECT Id FROM users.user
+        SELECT id FROM users.user
         WHERE email = @email;";
         
         using (var conn = _dataSource.OpenConnection())

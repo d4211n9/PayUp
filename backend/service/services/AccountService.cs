@@ -29,8 +29,9 @@ public class AccountService
     {
         try
         {
-            var user_id = _userRepository.GetByEmail(model.Email);
-            var passwordHash = _passwordHashRepository.GetByEmail(user_id); //gets the hash from database and authenticates it  
+            //todo replace code below so it first gets the PasswordHash from the user i (join tables..)
+            //todo then just fetch user from user repo
+            var passwordHash = _passwordHashRepository.GetById(model.Email); //gets the hash from database and authenticates it  
             if (ReferenceEquals(passwordHash, null)) throw new KeyNotFoundException("Invalid credential");
             
             var hashAlgorithm = PasswordHashAlgorithm.Create(passwordHash.Algorithm);

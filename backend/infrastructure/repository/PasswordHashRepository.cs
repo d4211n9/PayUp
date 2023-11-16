@@ -13,15 +13,16 @@ public class PasswordHashRepository
         _dataSource = dataSource;
     }
 
-    public PasswordHash GetByEmail(int i)
+    public PasswordHash GetById(string email)
     {
         var sql = $@"
             select * from users.password_hash
-            where user_id = @i;
+            JOIN users.user ON password_hash.user_id = id
+            WHERE email = @email;
             ";
         using (var conn = _dataSource.OpenConnection())
         {
-            return conn.QueryFirstOrDefault<PasswordHash>(sql, new { i }) ?? throw new InvalidOperationException();
+            return conn.QueryFirstOrDefault<PasswordHash>(sql, new { email }) ?? throw new InvalidOperationException();
         }
         
     }
