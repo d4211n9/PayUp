@@ -3,28 +3,18 @@ using api.models;
 using api.TransferModels;
 using infrastructure.dataModels;
 using Microsoft.AspNetCore.Mvc;
-using service;
 using service.services;
 
 namespace api.controllers;
 
 [ApiController]
-public class AccountController: ControllerBase
+public class AccountController(AccountService service, JwtService jwtService) : ControllerBase
 {
-    private readonly AccountService _service;
-    private readonly JwtService _jwtService;
-
-    public AccountController(AccountService service, JwtService jwtService)
-    {
-        _service = service;
-        _jwtService = jwtService;
-    }
-    
     [HttpPost]
     [Route("/api/account/register")]
     public ResponseDto Register([FromBody] RegisterModel model)
     {
-        var user = _service.Register(model);
+        var user = service.Register(model);
         return new ResponseDto
         {
             MessageToClient = "Successfully registered",
@@ -35,10 +25,10 @@ public class AccountController: ControllerBase
     [Route("/api/account/login")]
     public IActionResult Login([FromBody] LoginModel model)
     {
-        var user = _service.Authenticate(model);
+        var user = service.Authenticate(model);
         if (user == null) return Unauthorized();
         
-        var token = _jwtService.IssueToken(SessionData.FromUser(user!));
+        var token = jwtService.IssueToken(SessionData.FromUser(user!));
         return Ok(new { token });
     }
     
@@ -54,14 +44,11 @@ public class AccountController: ControllerBase
     [Route("/api/account/whoami")]
     public ResponseDto WhoAmI()
     {
-        throw new NotImplementedException();
-        /*
         var data = HttpContext.GetSessionData();
-        var user = _service.Get(data!);
+        var user = service.Get(data!);
         return new ResponseDto
         {
             ResponseData = user
         };
-        */
     }
 }
