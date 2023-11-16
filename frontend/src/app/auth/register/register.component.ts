@@ -43,7 +43,8 @@ export class RegisterComponent  implements OnInit {
 
     var userInfo:Registration =
       {
-      email: this.form.controls.email.value!,
+        created: new Date(Date.now()),
+        email: this.form.controls.email.value!,
       fullName: this.form.controls.name.value!,
       password: this.form.controls.password.value!,
         phoneNumber: this.form.controls.phone.value!,

@@ -1,6 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import {Timestamp} from "rxjs";
+import {DatetimeChangeEventDetail} from "@ionic/angular";
+import {formatDate} from '@angular/common';
+
 
 export interface User {
     email: string;
@@ -21,6 +24,7 @@ export interface Registration {
     fullName: string;
     password: string;
     phoneNumber: string,
+    created: Date,
     profileUrl: string,
 }
 
