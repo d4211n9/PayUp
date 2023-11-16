@@ -89,11 +89,11 @@ Best regards, Alex.
 -- Drop the 'users.password_hash' table if it exists
 DROP TABLE IF EXISTS users.password_hash;
 
-DROP TABLE IF EXISTS groups.groupmembers;
+DROP TABLE IF EXISTS groups.group_members;
 
-DROP TABLE IF EXISTS groups.group;
+DROP TABLE IF EXISTS groups.group CASCADE;
 
-DROP SCHEMA IF EXISTS groups;
+DROP SCHEMA IF EXISTS groups CASCADE;
 
 -- Drop the 'users.user' table if it exists
 DROP TABLE IF EXISTS users.user;
@@ -105,17 +105,17 @@ CREATE SCHEMA users;
 
 -- Create the 'users.user' table with 'Email' as the primary key
 CREATE TABLE users.user (
-    Id SERIAL PRIMARY KEY,
-    Email VARCHAR(50),
-    FullName VARCHAR(50) NOT NULL,
-    PhoneNumber VARCHAR(15) NOT NULL,
-    Created TIMESTAMP NOT NULL,
-    ProfileUrl VARCHAR(100) NOT NULL
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(50) UNIQUE,
+    full_name VARCHAR(50) NOT NULL,
+    phone_number VARCHAR(15) NOT NULL,
+    created TIMESTAMP NOT NULL,
+    profile_url VARCHAR(100) NOT NULL
 );
 
 -- Create the 'password_hash' table with a foreign key reference to 'Email'
 CREATE TABLE users.password_hash (
-    user_id int,
+    user_id int PRIMARY KEY,
     hash VARCHAR(350) NOT NULL,
     salt VARCHAR(180) NOT NULL,
     algorithm VARCHAR(12) NOT NULL,
@@ -125,21 +125,21 @@ CREATE TABLE users.password_hash (
 CREATE SCHEMA groups;
 
 CREATE TABLE groups.group (
-    Id SERIAL PRIMARY KEY,
-    Name VARCHAR(50) NOT NULL,
-    Description VARCHAR(200) NOT NULL,
-    ImageUrl VARCHAR(100) NOT NULL,
-    CreatedDate TIMESTAMP NOT NULL
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    description VARCHAR(200) NOT NULL,
+    image_url VARCHAR(100) NOT NULL,
+    created_date TIMESTAMP NOT NULL
 );
 
--- Create the 'groups.groupmembers' table with foreign key references to users.user & groups.group tables
-CREATE TABLE groups.groupmembers (
-    UserId INT NOT NULL,
-    GroupId INT NOT NULL,
-    Owner BOOLEAN NOT NULL,
-    FOREIGN KEY (UserId) REFERENCES users.user(Id),
-    FOREIGN KEY (GroupId) REFERENCES groups.group(Id),
-    PRIMARY KEY (UserId, GroupId)
+-- Create the 'groups.group_members' table with foreign key references to users.user & groups.group tables
+CREATE TABLE groups.group_members (
+    user_id INT NOT NULL,
+    group_id INT NOT NULL,
+    owner BOOLEAN NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users.user(id),
+    FOREIGN KEY (group_id) REFERENCES groups.group(id),
+    PRIMARY KEY (user_id, group_id)
 );
  ";
 

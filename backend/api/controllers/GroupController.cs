@@ -11,6 +11,8 @@ public class GroupController(GroupService service) : ControllerBase
     [Route("/api/group/create")]
     public Group CreateGroup([FromBody] Group group)
     {
-        return service.CreateGroup(group);
+        //TODO When userId is changed to int remove hard-coding
+        var data = HttpContext.GetSessionData();
+        return service.CreateGroup(group, 1);
     }
 }
