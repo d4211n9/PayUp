@@ -38,27 +38,15 @@ public class UserRepository
         }
     }
 
-    public User? GetById(string id)
+    public User? GetByEmail(string email)
     {
         var sql = @"
         SELECT * FROM users.user
-        WHERE email = @id;";
-        
-        using (var conn = _dataSource.OpenConnection())
-        {
-            return conn.QueryFirstOrDefault<User>(sql, new { id });
-        }
-    }
-    
-    public int GetIdByEmail(string email)
-    {
-        var sql = @"
-        SELECT id FROM users.user
         WHERE email = @email;";
         
         using (var conn = _dataSource.OpenConnection())
         {
-            return conn.QueryFirstOrDefault<int>(sql, new { email });
+            return conn.QueryFirstOrDefault<User>(sql, new { email });
         }
     }
 }
