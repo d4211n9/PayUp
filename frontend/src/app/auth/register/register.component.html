@@ -47,14 +47,13 @@
                                 <ion-text color="danger">Required</ion-text>
                             </div>
 
-                            <ion-item>
-                                <ion-input label="Repeat password *" label-placement="stacked"
-                                           formControlName="repeatPassword">
-                                </ion-input>
-                            </ion-item>
-                            <div style="text-align: left; margin-left: 4%;" slot="label" *ngIf="repeatPassword.touched && repeatPassword.invalid">
-                                <ion-text color="danger">Must match Password</ion-text>
-                            </div>
+                          <ion-item>
+                            <ion-input label="Repeat password *" label-placement="stacked" formControlName="repeatPassword"></ion-input>
+                          </ion-item>
+                          <div style="text-align: left; margin-left: 4%;" slot="label" *ngIf="(repeatPassword.touched && repeatPassword.invalid)">
+                            <ion-text color="danger">RR</ion-text>
+                          </div>
+
 
                         </ion-list>
                         <div class="ion-text-center">

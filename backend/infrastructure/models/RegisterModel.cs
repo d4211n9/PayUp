@@ -4,7 +4,7 @@ namespace api.models;
 
 public class RegisterModel
 {
-    [Required, EmailAddress] public required string Email { get; set; } //todo should check that it is a valid mail 
+    [Required, EmailAddress] public required string Email { get; set; }
 
     [Required] public required string FullName { get; set; }
 
@@ -12,7 +12,7 @@ public class RegisterModel
 
     [Required, Phone] public required string PhoneNumber { get; set; }
 
-    [Required] public required DateTime Created { get; set; } //todo should check that it is a valid mail
+    [Required] public required DateTime Created { get; set; }
 
     [Required, Url] public required string ProfileUrl { get; set; }
 }
