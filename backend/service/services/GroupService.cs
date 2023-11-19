@@ -14,8 +14,10 @@ public class GroupService(
     {
         try
         {
-            var user = accountService.Get(sessionData);
+            group.CreatedDate = DateTime.UtcNow;
             Group createdGroup = repository.CreateGroup(group);
+            
+            var user = accountService.Get(sessionData);
             repository.AddUserToGroup(user!.Id, createdGroup.Id, true);
             return createdGroup;
         }
