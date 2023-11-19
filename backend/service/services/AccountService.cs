@@ -95,6 +95,6 @@ public class AccountService
     }
     public User? Get(SessionData data)
     {
-        return _userRepository.GetByEmail(data.UserId);
+        return _userRepository.GetById(data.UserId);
     }
 }

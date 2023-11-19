@@ -5,16 +5,16 @@ namespace infrastructure.dataModels;
 
 public class SessionData
 {
-    public required string UserId { get; init; }
+    public required int UserId { get; init; }
     
     public static SessionData FromUser(User user)
     {
-        return new SessionData { UserId = user.Email};
+        return new SessionData { UserId = user.Id};
     }
 
     public static SessionData FromDictionary(Dictionary<string, object> dict)
     {
-        return new SessionData { UserId = (string)dict[Keys.UserId]};
+        return new SessionData { UserId = (int)dict[Keys.UserId]};
     }
 
     public Dictionary<string, object> ToDictionary()
