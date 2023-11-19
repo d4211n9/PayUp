@@ -119,7 +119,7 @@ CREATE TABLE users.password_hash (
     hash VARCHAR(350) NOT NULL,
     salt VARCHAR(180) NOT NULL,
     algorithm VARCHAR(12) NOT NULL,
-    FOREIGN KEY(user_id) REFERENCES users.user(Id)
+    FOREIGN KEY(user_id) REFERENCES users.user(id)
 );
 
 CREATE SCHEMA groups;

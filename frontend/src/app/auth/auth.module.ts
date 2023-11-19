@@ -5,7 +5,7 @@ import {LoginComponent} from "./login/login.component";
 import {IonicModule} from "@ionic/angular";
 import {RouterLink} from "@angular/router";
 import {TokenService} from "../../services/TokenService";
-import {ReactiveFormsModule} from "@angular/forms";
+import {AbstractControl, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule, HttpHandler} from "@angular/common/http";
 import {AuthHttpInterceptor} from "../../interceptors/auth-http-interceptor";
 import {AccountService} from "./account.service";
@@ -25,7 +25,7 @@ import {ErrorHttpInterceptor} from "../../interceptors/error-http-interceptors";
   providers: [
 
     {provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true },
-      AccountService
+      AccountService,
   ]
 })
 export class AuthModule { }

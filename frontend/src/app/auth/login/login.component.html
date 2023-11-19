@@ -25,6 +25,9 @@
           <div slot="label" style="margin-left: 2%;" *ngIf="password.touched && password.errors?.['required']">
             <ion-text color="danger">Required</ion-text>
           </div>
+          <div slot="label" style="margin-left: 2%;" *ngIf="password.touched && password.invalid && !password.errors?.['required']">
+            <ion-text color="danger">Minimum 7 Chars</ion-text>
+          </div>
 
           <ion-checkbox class="ion-padding" labelPlacement="end">Remember me</ion-checkbox>
 
