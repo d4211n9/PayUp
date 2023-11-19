@@ -11,7 +11,7 @@ public class GroupRepository(NpgsqlDataSource dataSource)
         var sql =
             $@"
             insert into groups.group (name, description, image_url, created_date) 
-            values (@name, @description, @imageUrl, @createdDate) 
+            values (@Name, @Description, @Image_Url, @Created_Date) 
             returning *;
             ";
 
@@ -19,7 +19,7 @@ public class GroupRepository(NpgsqlDataSource dataSource)
         using (var conn = dataSource.OpenConnection())
         {
             return conn.QueryFirst<Group>(sql,
-                new { group.Name, group.Description, group.ImageUrl, group.CreatedDate });
+                new { group.Name, group.Description, group.Image_Url, group.Created_Date });
         }
     }
 

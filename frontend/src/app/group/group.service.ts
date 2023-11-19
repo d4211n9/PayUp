@@ -4,7 +4,8 @@ import {HttpClient} from "@angular/common/http";
 export interface Group {
   name: string,
   description: string,
-  imageUrl: string,
+  image_url: string,
+  created_date: Date
 }
 
 @Injectable()
