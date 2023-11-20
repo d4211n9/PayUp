@@ -7,11 +7,12 @@ namespace infrastructure.repository;
 public class GroupRepository
 {
     private readonly NpgsqlDataSource _dataSource;
+
     public GroupRepository(NpgsqlDataSource dataSource)
     {
         _dataSource = dataSource;
     }
-    
+
     public Group CreateGroup(Group group)
     {
         var sql =
@@ -29,19 +30,17 @@ public class GroupRepository
         }
     }
 
-    public void AddUserToGroup(int userId, int groupId, bool isOwner)
+    public bool AddUserToGroup(int userId, int groupId, bool isOwner)
     {
         var sql =
             $@"
             insert into groups.group_members (user_id, group_id, owner) 
-            values (@userId, @groupId, @isOwner) 
-            returning *;
+            values (@userId, @groupId, @isOwner);
             ";
 
         using (var conn = _dataSource.OpenConnection())
         {
-            conn.QueryFirst<Group>(sql,
-                new { userId, groupId, isOwner });
+            return conn.Execute(sql, new { userId, groupId, isOwner }) == 1;
         }
     }
 }
