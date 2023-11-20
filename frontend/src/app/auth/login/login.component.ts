@@ -17,20 +17,20 @@ export class LoginComponent implements OnInit {
     password: ['', [Validators.required, Validators.minLength(7)]],
   });
 
-  get email() {
-    return this.form.controls.email;
-  }
-
-  get password() {
-    return this.form.controls.password;
-  }
-
   constructor(
     private readonly fb: FormBuilder,
     private readonly toast: ToastController,
     private readonly service: AccountService,
     private readonly token: TokenService
   ) {
+  }
+
+  get email() {
+    return this.form.controls.email;
+  }
+
+  get password() {
+    return this.form.controls.password;
   }
 
   ngOnInit() {

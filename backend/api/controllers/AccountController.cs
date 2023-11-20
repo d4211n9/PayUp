@@ -3,18 +3,28 @@ using api.models;
 using api.TransferModels;
 using infrastructure.dataModels;
 using Microsoft.AspNetCore.Mvc;
+using service;
 using service.services;
 
 namespace api.controllers;
 
 [ApiController]
-public class AccountController(AccountService service, JwtService jwtService) : ControllerBase
+public class AccountController: ControllerBase
 {
+    private readonly AccountService _service;
+    private readonly JwtService _jwtService;
+
+    public AccountController(AccountService service, JwtService jwtService)
+    {
+        _service = service;
+        _jwtService = jwtService;
+    }
+    
     [HttpPost]
     [Route("/api/account/register")]
     public ResponseDto Register([FromBody] RegisterModel model)
     {
-        var user = service.Register(model);
+        var user = _service.Register(model);
         return new ResponseDto
         {
             MessageToClient = "Successfully registered",
@@ -25,10 +35,10 @@ public class AccountController(AccountService service, JwtService jwtService) : 
     [Route("/api/account/login")]
     public IActionResult Login([FromBody] LoginModel model)
     {
-        var user = service.Authenticate(model);
+        var user = _service.Authenticate(model);
         if (user == null) return Unauthorized();
         
-        var token = jwtService.IssueToken(SessionData.FromUser(user!));
+        var token = _jwtService.IssueToken(SessionData.FromUser(user!));
         return Ok(new { token });
     }
     
@@ -39,16 +49,4 @@ public class AccountController(AccountService service, JwtService jwtService) : 
         throw new NotImplementedException("not implemented yet");
     }
     
-    [RequireAuthentication]
-    [HttpGet]
-    [Route("/api/account/whoami")]
-    public ResponseDto WhoAmI()
-    {
-        var data = HttpContext.GetSessionData();
-        var user = service.Get(data!);
-        return new ResponseDto
-        {
-            ResponseData = user
-        };
-    }
 }

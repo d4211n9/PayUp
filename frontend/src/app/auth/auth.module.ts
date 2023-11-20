@@ -17,12 +17,13 @@ import {ErrorHttpInterceptor} from "../../interceptors/error-http-interceptors";
     IonicModule,
     RouterLink,
     ReactiveFormsModule,
-      HttpClientModule
+    HttpClientModule
   ],
   providers: [
 
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true },
-      AccountService,
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true},
+    AccountService,
   ]
 })
-export class AuthModule { }
+export class AuthModule {
+}

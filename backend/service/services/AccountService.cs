@@ -29,8 +29,6 @@ public class AccountService
     {
         try
         {
-            //todo replace code below so it first gets the PasswordHash from the user i (join tables..)
-            //todo then just fetch user from user repo
             var passwordHash = _passwordHashRepository.GetById(model.Email); //gets the hash from database and authenticates it  
             if (ReferenceEquals(passwordHash, null)) throw new KeyNotFoundException("Invalid credential");
             
@@ -62,7 +60,6 @@ public class AccountService
     {
         try
         {
-            
             var user = _userRepository.Create(model, DateTime.Now); //creates the user 
             if (ReferenceEquals(user, null)) throw new SqlTypeException("Could not Create user");
 
@@ -76,8 +73,7 @@ public class AccountService
                 Salt = salt,
                 Algorithm = hashAlgorithm.GetName()
             };
-            Console.Write("this is your id  " + user.Id);
-            
+
             var isCreated =_passwordHashRepository.Create(password); //stores the password
                 if (isCreated == false) throw new SqlTypeException("Could not create user");
                 return user;
@@ -92,9 +88,5 @@ public class AccountService
             _logger.LogError("Register error: {Message}", e);
             throw new Exception("Could not Register User");
         }
-    }
-    public User? Get(SessionData data)
-    {
-        return _userRepository.GetByEmail(data.UserId);
     }
 }
