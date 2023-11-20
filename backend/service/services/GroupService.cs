@@ -7,8 +7,7 @@ namespace service.services;
 
 public class GroupService(
     GroupRepository repository,
-    ILogger<GroupService> logger,
-    AccountService accountService)
+    UserService userService)
 {
     public Group CreateGroup(Group group, SessionData sessionData)
     {
@@ -26,7 +25,7 @@ public class GroupService(
 
         try //Add the creator as member(owner) in the group
         {
-            var user = accountService.Get(sessionData);
+            var user = userService.GetLoggedInUser(sessionData);
             repository.AddUserToGroup(user!.Id, createdGroup.Id, true);
         }
         catch (Exception e)
