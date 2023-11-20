@@ -38,12 +38,12 @@ public class UserRepository
 
     public User? GetById(int userId)
     {
-        var sql = @" 
+        var sql = @$" 
 SELECT
-    id as Id,
-    email as Email,
-    full_name as FullName,
-    phone_number as PhoneNumber,
+    id as {nameof(User.Id)},
+    email as {nameof(User.Email)},
+    full_name as {nameof(User.FullName)},
+    phone_number as {nameof(User.PhoneNumber)},
     created as Created,
     profile_url as ProfileUrl
         FROM users.user
