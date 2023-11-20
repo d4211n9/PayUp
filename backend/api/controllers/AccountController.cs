@@ -1,5 +1,4 @@
-﻿using api.filters;
-using api.models;
+﻿using api.models;
 using api.TransferModels;
 using infrastructure.dataModels;
 using Microsoft.AspNetCore.Mvc;
@@ -20,35 +19,22 @@ public class AccountController(AccountService service, JwtService jwtService) : 
             MessageToClient = "Successfully registered",
         };
     }
-    
+
     [HttpPost]
     [Route("/api/account/login")]
     public IActionResult Login([FromBody] LoginModel model)
     {
         var user = service.Authenticate(model);
         if (user == null) return Unauthorized();
-        
+
         var token = jwtService.IssueToken(SessionData.FromUser(user!));
         return Ok(new { token });
     }
-    
-    [HttpPost]//todo should take the email from body and send, and send an 200 status code if password is resend.
+
+    [HttpPost] //todo should take the email from body and send, and send an 200 status code if password is resend.
     [Route("/api/account/recover")]
     public IActionResult RecoverAccount([FromBody] LoginModel model)
     {
         throw new NotImplementedException("not implemented yet");
-    }
-    
-    [RequireAuthentication]
-    [HttpGet]
-    [Route("/api/account/whoami")]
-    public ResponseDto WhoAmI()
-    {
-        var data = HttpContext.GetSessionData();
-        var user = service.Get(data!);
-        return new ResponseDto
-        {
-            ResponseData = user
-        };
     }
 }

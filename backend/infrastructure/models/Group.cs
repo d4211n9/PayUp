@@ -17,8 +17,8 @@ public class Group
     
     [Required(ErrorMessage = "Group image URL is required")]
     [StringLength(100, ErrorMessage = "Group image URL is too long (max 100 characters)")]
-    public required string ImageUrl { get; set; }
+    public required string Image_Url { get; set; }
     
     [Required(ErrorMessage = "Created date is required")]
-    public DateTime CreatedDate { get; set; }
+    public DateTime Created_Date { get; set; }
 }

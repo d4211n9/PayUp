@@ -44,7 +44,47 @@
   </ion-header>
   <div id="container">
     <strong>Ready to create an app?</strong>
+<<<<<<< HEAD
     <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI
+=======
+    <p>Start with Ionic <a href="https://ionicframework.com/docs/components" rel="noopener noreferrer" target="_blank">UI
+>>>>>>> origin/2-as-a-user-i-want-to-create-a-group
+      Components</a></p>
+    <!--<ion-progress-bar type=""></ion-progress-bar>-->
+
+    <!--My Account icon and button-->
+    <ion-button id="btn_myaccount" slot="end" fill="clear">
+      <ion-icon
+        id="icon_myaccount" slot="icon-only" name="person-circle">
+      </ion-icon>
+    </ion-button>
+
+    <!--Notifications icon and button-->
+    <ion-button
+      id="btn_notifications" slot="end" fill="clear">
+      <ion-icon
+        id="icon_notifications" slot="icon-only" name="notifications">
+      </ion-icon>
+    </ion-button>
+
+    <!--Burger menu button-->
+    <ion-buttons
+      id="btn_menu-button" slot="start">
+      <ion-menu-button
+        auto-hide="false">
+      </ion-menu-button>
+    </ion-buttons>
+
+    <!--PayUp logo-->
+    <div
+      id="div_logo">
+      <ion-img id="imglogo"
+               src=".././assets/icon/payup_logo.png"
+               alt="...payup toolbar logo"
+      ></ion-img>
+    </div>
+
+    <p>Start with Ionic <a href="https://ionicframework.com/docs/components" rel="noopener noreferrer" target="_blank">UI
       Components</a></p>
   </div>
 </ion-content>

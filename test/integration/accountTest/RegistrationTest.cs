@@ -15,8 +15,8 @@ public class RegistrationTest
         Helper.TriggerRebuild();
     }
 
-    [TestCase("valid@email.com", "Valid Name", "ValidPassword", "88888888", "ValidUrl", TestName = "ValidRegistration")]
-    [TestCase("valid2@email.com", "Valid Name", "invPw", "88888888", "ValidUrl", TestName = "InvalidPassword")]
+    [TestCase("valid@email.com", "ValidName", "ValidPassword", "88888888",  "https://ichef.bbci.co.uk/news/999/cpsprodpb/15951/production/_117310488_16.jpg", TestName = "ValidRegistration")]
+    [TestCase("valid2@email.com", "Valid Name", "invPw", "88888888", "https://ichef.bbci.co.uk/news/999/cpsprodpb/15951/production/_117310488_16.jpg", TestName = "InvalidPassword")]
     public async Task Register(
         string email,
         string fullName,
@@ -31,6 +31,7 @@ public class RegistrationTest
             FullName = fullName,
             Password = password,
             PhoneNumber = phoneNumber,
+            Created = DateTime.Now,
             ProfileUrl = profileUrl
         };
 
@@ -47,6 +48,7 @@ public class RegistrationTest
         {
             throw new Exception(Helper.NoResponseMessage, e);
         }
+ 
         
         using (new AssertionScope())
         {

@@ -32,12 +32,29 @@ public class UserRepository
             ProfileUrl = model.ProfileUrl,
             Password = null,
         };
-        using (var conn = _dataSource.OpenConnection())
-        {
-            return conn.QueryFirst<User>(sql, user);
-        }
+        using var conn = _dataSource.OpenConnection();
+        return conn.QueryFirst<User>(sql, user);
     }
 
+    public User? GetById(int userId)
+    {
+        var sql = @$" 
+SELECT
+    id as {nameof(User.Id)},
+    email as {nameof(User.Email)},
+    full_name as {nameof(User.FullName)},
+    phone_number as {nameof(User.PhoneNumber)},
+    created as Created,
+    profile_url as ProfileUrl
+        FROM users.user
+        WHERE id = @userId;";
+        
+        using (var conn = _dataSource.OpenConnection())
+        {
+            return conn.QueryFirstOrDefault<User>(sql, new { userId });
+        }
+    }
+    
     public User? GetByEmail(string email)
     {
         var sql = @"
@@ -48,5 +65,17 @@ public class UserRepository
         {
             return conn.QueryFirstOrDefault<User>(sql, new { email });
         }
+    }
+
+    public User EditUserInfo(UserInfoDto user)
+    {
+        //todo edit name email and phone.. return all user info or should we even do that 
+        throw new NotImplementedException("is not implemented in user repo..");
+    }
+
+    public bool DeleteUser(int userId)
+    {
+        //todo delete user and return true if user is successfully deleted. 
+        throw new NotImplementedException("not implemented in the user repo");
     }
 }

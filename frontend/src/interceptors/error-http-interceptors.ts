@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
-import {
-  HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse
-} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 
 import {catchError, Observable} from 'rxjs';
 import {ToastController} from "@ionic/angular";
 
 
-
 @Injectable()
 export class ErrorHttpInterceptor implements HttpInterceptor {
+
+  constructor(private readonly toast: ToastController) {
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler):
     Observable<HttpEvent<any>> {
@@ -20,7 +20,6 @@ export class ErrorHttpInterceptor implements HttpInterceptor {
       throw e;
     }));
   }
-  constructor(private readonly toast: ToastController) {}
 
   private async showError(message: string) {
     return (await this.toast.create({
