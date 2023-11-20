@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System.Net.Http.Json;
+using Dapper;
 using Newtonsoft.Json;
 using Npgsql;
 
@@ -7,9 +8,11 @@ public static class Helper
     public static readonly Uri Uri;
     public static readonly string ProperlyFormattedConnectionString;
     public static readonly NpgsqlDataSource DataSource;
+    private static HttpClient _httpClient;
 
     static Helper()
     {
+        _httpClient = new HttpClient();
         string rawConnectionString;
         string envVarKeyName = "pgconn";
 
@@ -151,4 +154,58 @@ Below is the inner exception.
 Best regards, Alex
 🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨
 ";
+
+    public static async Task<string?> Authorize(string email)
+    {
+        //Register
+        var registration = new
+        {
+            Email = email,
+            FullName = "fullName",
+            Password = "password",
+            PhoneNumber = "12345678",
+            Created = DateTime.Now,
+            ProfileUrl = "https://cdn-icons-png.flaticon.com/512/615/615075.png"
+        };
+
+        string urlReg = "http://localhost:5100/api/account/register";
+
+        try
+        {
+            await _httpClient.PostAsJsonAsync(urlReg, registration);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(NoResponseMessage, e);
+        }
+
+        //Login
+        var login = new
+        {
+            Email = email,
+            Password = "password",
+        };
+
+        string urlLogin = "http://localhost:5100/api/account/login";
+        HttpResponseMessage response;
+
+        try
+        {
+            response = await _httpClient.PostAsJsonAsync(urlLogin, login);
+
+            var body = await response.Content.ReadAsStringAsync();
+            var data = JsonConvert.DeserializeObject<Response>(body);
+            var token = data.token;
+            return token;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(NoResponseMessage, e);
+        }
+    }
+
+    public class Response
+    {
+        public string? token { get; set; }
+    }
 }

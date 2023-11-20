@@ -1,0 +1,62 @@
+<ion-content class="ion-align-items-center ion-justify-content-center ion-no-margin ion-text-center"
+             style="display: grid"
+             color="light">
+
+  <div style="display: flex; justify-content: center; align-items: center;">
+    <ion-card id="register-card" class="ion-padding"
+              style="overflow: hidden; border-radius: 15px; max-width: 500px; width: 90%;">
+
+      <ion-card-header class="ion-text-center ion-no-padding">
+        <h1>Create Group</h1>
+      </ion-card-header>
+
+      <ion-card-content class="ion-color ion-color-danger">
+        <ion-list>
+          <form [formGroup]="form">
+            <div style="display: flex; justify-content: center; align-items: center;">
+              <div class="container">
+                <ion-img src="https://cdn-icons-png.flaticon.com/512/615/615075.png"></ion-img>
+                <ion-button class="btn" fill="clear" color="dark">
+                  <ion-icon slot="icon-only" name="create" size="small"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+
+            <ion-text>
+              Created: {{_now}}
+            </ion-text>
+
+
+            <ion-item>
+              <ion-input label="Group Name" label-placement="stacked" formControlName="name">
+              </ion-input>
+            </ion-item>
+            <div style="text-align: left; margin-left: 4%;" slot="label" *ngIf="name.touched && name.invalid">
+              <ion-text color="danger">Name is required</ion-text>
+            </div>
+
+            <br>
+
+            <ion-item>
+              <ion-textarea label="Description" label-placement="stacked" formControlName="description"
+                            [autoGrow]="true">
+              </ion-textarea>
+            </ion-item>
+            <div style="text-align: left; margin-left: 4%;" slot="label"
+                 *ngIf="description.touched && description.invalid">
+              <ion-text color="danger">Description is required</ion-text>
+            </div>
+
+          </form>
+        </ion-list>
+
+        <div class="ion-text-center">
+          <ion-button color="warning" [disabled]="form.invalid" (click)="create()">
+            Create
+          </ion-button>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

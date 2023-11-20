@@ -11,13 +11,16 @@ import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {AuthModule} from "./auth/auth.module";
 import {TokenService} from "../services/TokenService";
 import {AuthHttpInterceptor} from "../interceptors/auth-http-interceptor";
+import {GroupModule} from "./group/group.module";
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    AuthModule],
+    AuthModule,
+    GroupModule
+  ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true},
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
