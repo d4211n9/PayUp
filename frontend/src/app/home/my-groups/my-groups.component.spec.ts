@@ -3,7 +3,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { MyGroupsComponent } from './my-groups.component';
 
-describe('LandingPageComponent', () => {
+describe('MyGroupsComponent', () => {
   let component: MyGroupsComponent;
   let fixture: ComponentFixture<MyGroupsComponent>;
 
