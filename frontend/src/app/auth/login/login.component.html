@@ -1,0 +1,46 @@
+<ion-content class="ion-padding" color="light" style="height: 80vh;">
+  <div style="display: block; justify-content: center; align-items: center; margin-top: 60px">
+    <div style="display: flex; justify-content: center;">
+      <ion-icon name="logo-angular" size="large"></ion-icon>
+    </div>
+    <ion-card-header class="ion-text-center">
+      <h1>Sign in to PayUp</h1>
+    </ion-card-header>
+
+    <div style="display: flex; justify-content: center; align-items: center;">
+      <ion-card class="ion-padding" style="overflow: hidden; border-radius: 15px; max-width: 500px; width: 90%;">
+        <form (ngSubmit)="submit()" [formGroup]="form">
+
+          <ion-item>
+            <ion-input formControlName="email" label="Email" labelPlacement="stacked"></ion-input>
+          </ion-item>
+          <div *ngIf="email.touched && email.invalid" slot="label" style="margin-left: 2%;">
+            <ion-text color="danger">Valid email is required</ion-text>
+          </div>
+
+          <ion-item>
+            <ion-input formControlName="password" label="Password" labelPlacement="stacked" type="password"></ion-input>
+            <ion-button class="small-text" color="medium" fill="clear" size="small">Forgot password?</ion-button>
+          </ion-item>
+          <div *ngIf="password.touched && password.errors?.['required']" slot="label" style="margin-left: 2%;">
+            <ion-text color="danger">Required</ion-text>
+          </div>
+          <div *ngIf="password.touched && password.invalid && !password.errors?.['required']" slot="label"
+               style="margin-left: 2%;">
+            <ion-text color="danger">Minimum 7 Chars</ion-text>
+          </div>
+
+          <ion-checkbox class="ion-padding" labelPlacement="end">Remember me</ion-checkbox>
+
+          <div class="ion-padding" style="display: flex; justify-content: center;">
+            <ion-button (click)="submit()" [disabled]="form.invalid" color="warning" id="btn-submit" size="large">Sign
+              in
+            </ion-button>
+          </div>
+
+          <p class="ion-text-center">New to PayUp? <a href="/register">Create an account</a></p>
+        </form>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>
