@@ -16,4 +16,6 @@ public class GroupController(GroupService service) : ControllerBase
         var sessionData = HttpContext.GetSessionData();
         return service.CreateGroup(group, sessionData!);
     }
+    
+    
 }
