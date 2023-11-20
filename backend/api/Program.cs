@@ -30,6 +30,8 @@ if (builder.Environment.IsProduction())
 builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddSingleton<PasswordHashRepository>();
 builder.Services.AddSingleton<AccountService>();
+builder.Services.AddSingleton<UserService>();
+
 
 builder.Services.AddJwtService();
 builder.Services.AddSwaggerGenWithBearerJWT();

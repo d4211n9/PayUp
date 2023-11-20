@@ -20,6 +20,6 @@ jobs:
         run: cd test && sleep 60 && dotnet build && dotnet test
         env:
           pgconn: ${{secrets.pgconn}}
-          
+
       - name: Shutdown Web API once the tests are done running
         run: kill $API_PID
