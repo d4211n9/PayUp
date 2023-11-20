@@ -12,14 +12,14 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Build and run Web API + getting process ID for shutting down later
-        run: cd backend/api && dotnet run & echo "API_PID=$!" >> $GITHUB_ENV
         env:
           pgconn: ${{secrets.pgconn}}
+        run: cd backend/api && dotnet run & echo "API_PID=$!" >> $GITHUB_ENV
 
       - name: Run tests once API is running (sleep interval set to 60 seconds)
-        run: cd test && sleep 60 && dotnet build && dotnet test
         env:
           pgconn: ${{secrets.pgconn}}
+        run: cd test && sleep 60 && dotnet build && dotnet test
 
       - name: Shutdown Web API once the tests are done running
         run: kill $API_PID
