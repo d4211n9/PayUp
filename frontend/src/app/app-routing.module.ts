@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import {RegisterComponent} from "./auth/register/register.component";
 import {LoginComponent} from "./auth/login/login.component";
-import {MygroupsComponent} from "./home/mygroups/mygroups.component";
+import {MyGroupsComponent} from "./home/my-groups/my-groups.component";
 
 const routes: Routes = [
   {
@@ -24,7 +24,7 @@ const routes: Routes = [
   },
   {
     path: 'mygroups',
-    component: MygroupsComponent
+    component: MyGroupsComponent
   }
 ];
 
