@@ -36,15 +36,22 @@ public class UserRepository
         return conn.QueryFirst<User>(sql, user);
     }
 
-    public User? GetById(int id)
+    public User? GetById(int userId)
     {
-        var sql = @"
-        SELECT * FROM users.user
-        WHERE id = @id;";
+        var sql = @" 
+SELECT
+    id as Id,
+    email as Email,
+    full_name as FullName,
+    phone_number as PhoneNumber,
+    created as Created,
+    profile_url as ProfileUrl
+        FROM users.user
+        WHERE id = @userId;";
         
         using (var conn = _dataSource.OpenConnection())
         {
-            return conn.QueryFirstOrDefault<User>(sql, new { id });
+            return conn.QueryFirstOrDefault<User>(sql, new { userId });
         }
     }
     
