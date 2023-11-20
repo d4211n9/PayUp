@@ -3,23 +3,24 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
 jobs:
-  playwrighttests:
+  apitests:
     runs-on: ubuntu-latest
+
+    environment: pgconn
+    env:
+          pgconn: ${{secrets.pgconn}}
+    
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
-
+  
       - name: Build and run Web API + getting process ID for shutting down later
         run: cd backend/api && dotnet run & echo "API_PID=$!" >> $GITHUB_ENV
-        env:
-          pgconn: ${{secrets.pgconn}}
 
       - name: Run tests once API is running (sleep interval set to 60 seconds)
         run: cd test && sleep 60 && dotnet build && dotnet test
-        env:
-          pgconn: ${{secrets.pgconn}}
 
       - name: Shutdown Web API once the tests are done running
         run: kill $API_PID
