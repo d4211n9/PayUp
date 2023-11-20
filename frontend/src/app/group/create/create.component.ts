@@ -35,6 +35,8 @@ export class CreateComponent  implements OnInit {
   }
 
   async create() {
+    if(this.form.invalid) return;
+
     var groupInfo: Group = {
       name: this.form.controls.name.value!,
       description: this.form.controls.description.value!,
@@ -42,9 +44,8 @@ export class CreateComponent  implements OnInit {
       created_date: new Date(Date.now())
     };
 
-    if(this.form.invalid) return;
-
     const createdGroup = await firstValueFrom(this.service.create(groupInfo as Group));
+    
     await (await this.toast.create({
       message: "Your group '" + createdGroup.name + "' was created successfully",
       color: "success",

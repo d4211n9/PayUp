@@ -4,8 +4,14 @@ using Npgsql;
 
 namespace infrastructure.repository;
 
-public class GroupRepository(NpgsqlDataSource dataSource)
+public class GroupRepository
 {
+    private readonly NpgsqlDataSource _dataSource;
+    public GroupRepository(NpgsqlDataSource dataSource)
+    {
+        _dataSource = dataSource;
+    }
+    
     public Group CreateGroup(Group group)
     {
         var sql =
@@ -16,7 +22,7 @@ public class GroupRepository(NpgsqlDataSource dataSource)
             ";
 
         Group createdGroup;
-        using (var conn = dataSource.OpenConnection())
+        using (var conn = _dataSource.OpenConnection())
         {
             return conn.QueryFirst<Group>(sql,
                 new { group.Name, group.Description, group.Image_Url, group.Created_Date });
@@ -32,7 +38,7 @@ public class GroupRepository(NpgsqlDataSource dataSource)
             returning *;
             ";
 
-        using (var conn = dataSource.OpenConnection())
+        using (var conn = _dataSource.OpenConnection())
         {
             conn.QueryFirst<Group>(sql,
                 new { userId, groupId, isOwner });
