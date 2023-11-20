@@ -12,20 +12,28 @@ public class GroupService(
 {
     public Group CreateGroup(Group group, SessionData sessionData)
     {
-        try
+        Group createdGroup;
+        
+        try //Create the group
         {
             group.Created_Date = DateTime.UtcNow;
-            Group createdGroup = repository.CreateGroup(group);
-            
-            var user = accountService.Get(sessionData);
-            repository.AddUserToGroup(user!.Id, createdGroup.Id, true);
-            return createdGroup;
+            createdGroup = repository.CreateGroup(group);
         }
         catch (Exception e)
         {
-            logger.LogError("Create error: {Message}", e);
             throw new Exception("Could not create group");
         }
+
+        try //Add the creator as member(owner) in the group
+        {
+            var user = accountService.Get(sessionData);
+            repository.AddUserToGroup(user!.Id, createdGroup.Id, true);
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Could not add user to the group");
+        }
         
+        return createdGroup;
     }
 }
