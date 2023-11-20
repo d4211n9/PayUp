@@ -1,4 +1,5 @@
-﻿using api.models;
+﻿using System.Data.SqlTypes;
+using api.models;
 using Dapper;
 using Npgsql;
 
@@ -22,12 +23,17 @@ public class GroupRepository
             returning *;
             ";
 
-        Group createdGroup;
-        using (var conn = _dataSource.OpenConnection())
+        try
         {
+            using var conn = _dataSource.OpenConnection();
             return conn.QueryFirst<Group>(sql,
                 new { group.Name, group.Description, group.Image_Url, group.Created_Date });
         }
+        catch
+        {
+            throw new SqlTypeException("Could not create group");
+        }
+
     }
 
     public bool AddUserToGroup(int userId, int groupId, bool isOwner)
@@ -38,9 +44,14 @@ public class GroupRepository
             values (@userId, @groupId, @isOwner);
             ";
 
-        using (var conn = _dataSource.OpenConnection())
+        try
         {
+            using var conn = _dataSource.OpenConnection();
             return conn.Execute(sql, new { userId, groupId, isOwner }) == 1;
+        }
+        catch
+        {
+            throw new SqlTypeException("Could not add User to Group");
         }
     }
 }

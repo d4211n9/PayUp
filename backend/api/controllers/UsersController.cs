@@ -52,10 +52,10 @@ public class UsersController : ControllerBase
     [RequireAuthentication]
     [HttpDelete]
     [Route("/api/account/profile")]
-    public ResponseDto DeleteProfile([FromBody] UserInfoDto userId)
+    public ResponseDto DeleteProfile()
     {
         var data = HttpContext.GetSessionData();
-        var userDeleted = _service.DeleteAccount(data, userId.Id);
+        var userDeleted = _service.DeleteAccount(data);
         return new ResponseDto
         {
             ResponseData = userDeleted

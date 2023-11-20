@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System.Data.SqlTypes;
+using Dapper;
 using infrastructure.dataModels;
 using Npgsql;
 
@@ -20,11 +21,16 @@ public class PasswordHashRepository
             JOIN users.user ON password_hash.user_id = id
             WHERE email = @email;
             ";
-        using (var conn = _dataSource.OpenConnection())
+
+        try
         {
+            using var conn = _dataSource.OpenConnection();
             return conn.QueryFirstOrDefault<PasswordHash>(sql, new { email }) ?? throw new InvalidOperationException();
         }
-        
+        catch
+        {
+            throw new SqlTypeException("Find User");
+        }
     }
     
     public bool Create(PasswordHash passwordHash)
@@ -32,13 +38,17 @@ public class PasswordHashRepository
         // Define the SQL query to insert a new password hash
         string sql = "INSERT INTO users.password_hash (user_id, hash, salt, algorithm) " + 
                      "VALUES (@Id, @Hash, @Salt, @Algorithm)";
-        
-        // Create an object with the provided data
-        using (var conn = _dataSource.OpenConnection())
-        {
+        try
+        { 
+            // Create an object with the provided data
+            using var conn = _dataSource.OpenConnection();
             // Execute the SQL query using Dapper
             conn.Execute(sql, passwordHash);
             return true;
+        }
+        catch
+        {
+            throw new SqlTypeException("Create User");
         }
     }
 

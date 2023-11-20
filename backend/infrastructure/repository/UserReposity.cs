@@ -1,4 +1,5 @@
-﻿using api.models;
+﻿using System.Data.SqlTypes;
+using api.models;
 using Dapper;
 using infrastructure.dataModels;
 using Npgsql;
@@ -32,8 +33,16 @@ public class UserRepository
             ProfileUrl = model.ProfileUrl,
             Password = null,
         };
-        using var conn = _dataSource.OpenConnection();
-        return conn.QueryFirst<User>(sql, user);
+
+        try
+        {
+            using var conn = _dataSource.OpenConnection();
+            return conn.QueryFirst<User>(sql, user);
+        }
+        catch(Exception)
+        {
+            throw new SqlTypeException("could not create user");
+        }
     }
 
     public User? GetById(int userId)
@@ -49,9 +58,14 @@ SELECT
         FROM users.user
         WHERE id = @userId;";
         
-        using (var conn = _dataSource.OpenConnection())
+        try
         {
+            using var conn = _dataSource.OpenConnection();
             return conn.QueryFirstOrDefault<User>(sql, new { userId });
+        }
+        catch
+        {
+            throw new SqlTypeException("Could not retrieve user");
         }
     }
     
@@ -60,22 +74,51 @@ SELECT
         var sql = @"
         SELECT * FROM users.user
         WHERE email = @email;";
-        
-        using (var conn = _dataSource.OpenConnection())
+
+        try
         {
+            using var conn = _dataSource.OpenConnection();
             return conn.QueryFirstOrDefault<User>(sql, new { email });
+        }
+        catch (Exception e)
+        {
+            throw new SqlTypeException("Could not retrieve user");
+        }
+        
+    }
+
+    public User? EditUserInfo(UserInfoDto user)
+    {
+        var updateSql = @$"
+        UPDATE users.user
+        SET
+            full_name = @{nameof(user.FullName)},
+            email = @{nameof(user.Email)},
+            phone_number = @{nameof(user.PhoneNumber)},
+            profile_url = @{nameof(user.ProfileUrl)}
+        WHERE id = @{nameof(user.Id)}
+        RETURNING id as {nameof(User.Id)},
+                  email as {nameof(User.Email)},
+                  full_name as {nameof(User.FullName)},
+                  phone_number as {nameof(User.PhoneNumber)},
+                  created as Created,
+                  profile_url as ProfileUrl;";
+
+        try
+        {
+            using var conn = _dataSource.OpenConnection();
+            return conn.QueryFirstOrDefault<User>(updateSql, user);
+        }
+        catch(Exception e)
+        {
+            throw new SqlTypeException("Could not update user");
         }
     }
 
-    public User EditUserInfo(UserInfoDto user)
-    {
-        //todo edit name email and phone.. return all user info or should we even do that 
-        throw new NotImplementedException("is not implemented in user repo..");
-    }
 
     public bool DeleteUser(int userId)
     {
-        //todo delete user and return true if user is successfully deleted. 
-        throw new NotImplementedException("not implemented in the user repo");
+        throw new NotImplementedException("not implemented in repo");
+        //todo should soft delete the user object
     }
 }
