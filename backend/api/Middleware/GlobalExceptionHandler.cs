@@ -69,6 +69,7 @@ public class GlobalExceptionHandler
 
         return http.Response.WriteAsJsonAsync(new ResponseDto
         {
+            
             MessageToClient = exception.Message
         });
     }

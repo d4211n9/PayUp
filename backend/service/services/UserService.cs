@@ -27,17 +27,17 @@ public class UserService
         if (data.UserId != user.Id) //checks login user is equal to editUserObject.
             throw new SecurityException("You are not Authorised for this action");
         var responseUser = _userRepository.EditUserInfo(user);
-        if (ReferenceEquals(responseUser, null)) throw new SqlTypeException("Could not Edit user");//checks if response user is null before returning it.
+        if (ReferenceEquals(responseUser, null)) throw new SqlNullValueException("Could not Edit user");//checks if response user is null before returning it.
         return responseUser; 
     }
-
-
+    
+    
     public bool DeleteAccount(SessionData? data, int userId)
     {
         if (data.UserId != userId) //checks login user is equal to editUserObject.
             throw new SecurityException("You are not Authorised for this action");
         var wasDeleted = _userRepository.DeleteUser(userId);
-        if (!wasDeleted) throw new SqlTypeException("Could not Edit user");//checks if response is true before returning it.
+        if (!wasDeleted) throw new SqlNullValueException("Could not Edit user");//checks if response is true before returning it.
         return wasDeleted; 
     }
 }
