@@ -27,9 +27,9 @@ public class PasswordHashRepository
             using var conn = _dataSource.OpenConnection();
             return conn.QueryFirstOrDefault<PasswordHash>(sql, new { email }) ?? throw new InvalidOperationException();
         }
-        catch
+        catch(Exception e)
         {
-            throw new SqlTypeException("Find User");
+            throw new SqlTypeException("Find User", e);
         }
     }
     
@@ -46,9 +46,9 @@ public class PasswordHashRepository
             conn.Execute(sql, passwordHash);
             return true;
         }
-        catch
+        catch(Exception e)
         {
-            throw new SqlTypeException("Create User");
+            throw new SqlTypeException("Create User", e);
         }
     }
 

@@ -29,9 +29,9 @@ public class GroupRepository
             return conn.QueryFirst<Group>(sql,
                 new { group.Name, group.Description, group.Image_Url, group.Created_Date });
         }
-        catch
+        catch(Exception e)
         {
-            throw new SqlTypeException("Could not create group");
+            throw new SqlTypeException("Could not create group", e);
         }
 
     }
@@ -49,9 +49,9 @@ public class GroupRepository
             using var conn = _dataSource.OpenConnection();
             return conn.Execute(sql, new { userId, groupId, isOwner }) == 1;
         }
-        catch
+        catch(Exception e)
         {
-            throw new SqlTypeException("Could not add User to Group");
+            throw new SqlTypeException("Could not add User to Group", e);
         }
     }
 }

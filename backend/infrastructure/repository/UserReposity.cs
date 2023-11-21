@@ -39,9 +39,9 @@ public class UserRepository
             using var conn = _dataSource.OpenConnection();
             return conn.QueryFirst<User>(sql, user);
         }
-        catch(Exception)
+        catch(Exception e)
         {
-            throw new SqlTypeException("could not create user");
+            throw new SqlTypeException("could not create user", e);
         }
     }
 
@@ -63,9 +63,9 @@ SELECT
             using var conn = _dataSource.OpenConnection();
             return conn.QueryFirstOrDefault<User>(sql, new { userId });
         }
-        catch
+        catch(Exception e)
         {
-            throw new SqlTypeException("Could not retrieve user");
+            throw new SqlTypeException("Could not retrieve user", e);
         }
     }
     
@@ -82,7 +82,7 @@ SELECT
         }
         catch (Exception e)
         {
-            throw new SqlTypeException("Could not retrieve user");
+            throw new SqlTypeException("Could not retrieve user", e);
         }
         
     }
@@ -111,7 +111,7 @@ SELECT
         }
         catch(Exception e)
         {
-            throw new SqlTypeException("Could not update user");
+            throw new SqlTypeException("Could not update user", e);
         }
     }
 
