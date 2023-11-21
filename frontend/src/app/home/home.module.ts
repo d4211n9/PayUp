@@ -6,6 +6,8 @@ import {HomePage} from './home.page';
 
 import {HomePageRoutingModule} from './home-routing.module';
 import {GroupModule} from '../group/group.module';
+import {ProfileComponent} from "../profile/profile.component";
+import {ProfileModule} from "../profile/profile.module";
 
 
 @NgModule({
@@ -14,7 +16,8 @@ import {GroupModule} from '../group/group.module';
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-    GroupModule
+    GroupModule,
+    ProfileModule
   ],
   declarations: [HomePage]
 })

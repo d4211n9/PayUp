@@ -1,0 +1,63 @@
+<ion-content id="cc">
+
+<div id="content" class="item" *ngIf="fullUser$ | async as fullUser; else loading">
+
+  <div class="container" >
+  <ion-card id="imgCard">
+        <ion-img id="image" [src]="fullUser.profileUrl"></ion-img>
+        <ion-button class="btn" fill="clear" color="warning">
+          <ion-icon slot="icon-only" name="create" size="medium"></ion-icon>
+        </ion-button>
+  </ion-card>
+  </div>
+
+  <div id="info" class="item">
+    <ion-card id="infoCard" class="container">
+      <ion-list id="infoList">
+        <ion-item>
+          <ion-label id="Name">{{ fullUser.fullName }}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{ fullUser.email }}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{ fullUser.phoneNumber}}</ion-label>
+        </ion-item>
+        <p id="createdLabel">{{fullUser.created | date: 'short'}}</p>
+      </ion-list>
+      <ion-button class="btn" fill="clear" color="warning">
+        <ion-icon slot="icon-only" name="create" size="medium"></ion-icon>
+      </ion-button>
+    </ion-card>
+  </div>
+
+  <div id="paymentInfo" class="item, container">
+    <ion-card id="PaymentInfoCard">
+    <p>
+      payment info
+    </p>
+      <ion-button class="btn" fill="clear" color="warning">
+        <ion-icon slot="icon-only" name="create" size="medium"></ion-icon>
+      </ion-button>
+    </ion-card>
+
+  </div>
+
+  <div id="stats" class="item, container">
+    <ion-card id="statsCard">
+    <p>
+      money stats baby
+    </p>
+      <ion-button class="btn" fill="clear" color="warning">
+        <ion-icon slot="icon-only" name="create" size="medium"></ion-icon>
+      </ion-button>
+    </ion-card>
+  </div>
+
+</div>
+  <ng-template #loading>
+    <div class="spinner-container">
+    <ion-spinner class="custom-spinner" name="crescent" color="primary" size="large"></ion-spinner>
+    </div>
+  </ng-template>
+</ion-content>

@@ -12,6 +12,8 @@ import {AuthModule} from "./auth/auth.module";
 import {TokenService} from "../services/TokenService";
 import {AuthHttpInterceptor} from "../interceptors/auth-http-interceptor";
 import {GroupModule} from "./group/group.module";
+import {ProfileComponent} from "./profile/profile.component";
+import {ProfileModule} from "./profile/profile.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,7 +21,8 @@ import {GroupModule} from "./group/group.module";
     IonicModule.forRoot(),
     AppRoutingModule,
     AuthModule,
-    GroupModule
+    GroupModule,
+    ProfileModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true},

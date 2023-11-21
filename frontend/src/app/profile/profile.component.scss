@@ -1,0 +1,108 @@
+#content{
+  display: flex; /* or inline-flex */
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content:  space-around;
+  gap: 2px 10px;
+  width: 100%;
+
+  text-align: center;
+
+  padding: 2%;
+  min-height: auto;
+}
+
+
+div, #imgCard{
+  min-width: 33%;
+  flex-basis: 45vh;
+  flex-grow: 1; /* default 0 */
+  background-color: transparent;
+  margin-top: 0%;
+  margin-bottom: 0%;
+}
+
+ion-img{
+  width: 100%;
+  height: auto;
+}
+
+#info, #stats, #profileUrl {
+  flex-basis: 50vh; /* default auto */
+  flex-grow: 4; /* default 0 */
+}
+
+
+/* Style the button and place it in the middle of the container/image */
+.container .btn {
+  position: absolute;
+  top: 90%;
+  left: 95%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  border: none;
+  cursor: pointer;
+  color: white;
+  border-radius: 25%;
+}
+#info{
+  display: flex; /* or inline-flex */
+  justify-content: center;
+  align-items: center;
+}
+
+#infoCard{
+  display: flex; /* or inline-flex */
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+
+}
+
+#imgCard{
+  display: flex; /* or inline-flex */
+  justify-content: center;
+  align-items: center;
+}
+
+
+#infoList{
+  align-items: center;
+  width: 80%;
+  height: auto;
+  background-color: transparent;
+}
+ion-item{
+  border-radius: 10px;
+  margin: 2%;
+}
+
+#PaymentInfoCard, #statsCard{
+  height: 200px;
+}
+
+
+
+.spinner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Set to 100% of the viewport height */
+}
+
+.custom-spinner {
+  --padding-top: 0; /* Remove default padding */
+  --padding-bottom: 0; /* Remove default padding */
+  width: 4rem; /* Adjust the width as needed */
+  height: 4rem; /* Adjust the height as needed */
+}
+
+#createdLabel{
+  padding-top: 0%;
+  margin-top: 0%;
+  flex-basis: 100%;
+}
+
