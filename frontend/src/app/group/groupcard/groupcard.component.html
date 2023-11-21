@@ -1,13 +1,20 @@
-<ion-card id="groupcard">
 
+
+<ion-card id="groupcard">
   <ion-card-content>
 
-    <ion-thumbnail>
-    <ion-img> image_url </ion-img>
-    </ion-thumbnail>
+    <div>
+      <ion-thumbnail>
+        <ion-img
+          src="{{mygroups.image_url}}"
+          alt="{{mygroups.image_url}}">
+        </ion-img>
+      </ion-thumbnail>
+    </div>
 
-    <ion-card-title> Name </ion-card-title>
+    <div>
+      <ion-card-title> {{mygroups.name}} </ion-card-title>
+    </div>
 
   </ion-card-content>
-
-  </ion-card>
+</ion-card>
