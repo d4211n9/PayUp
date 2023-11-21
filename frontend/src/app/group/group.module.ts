@@ -6,10 +6,11 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {GroupService} from "./group.service";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {ErrorHttpInterceptor} from "../../interceptors/error-http-interceptors";
+import {InviteComponent} from "./invite/invite.component";
 
 
 @NgModule({
-  declarations: [CreateComponent],
+  declarations: [CreateComponent, InviteComponent],
   imports: [
     CommonModule,
     IonicModule,

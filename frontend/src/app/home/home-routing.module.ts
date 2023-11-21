@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomePage } from './home.page';
-import {InviteComponent} from "./group/invite/invite.component";
+import {InviteComponent} from "../group/invite/invite.component";
 
 const routes: Routes = [
   {
