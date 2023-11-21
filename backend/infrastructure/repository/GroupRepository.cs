@@ -75,4 +75,23 @@ public class GroupRepository
             throw new AuthenticationException();
         }
     }
+
+    public Group GetGroupById(int groupId)
+    {
+        var sql =
+            $@"
+            select * from groups.group 
+            where id = @groupId;
+            ";
+
+        try
+        {
+            using var conn = _dataSource.OpenConnection();
+            return conn.QueryFirst<Group>(sql, new { groupId });
+        }
+        catch (Exception e)
+        {
+            throw new SqlTypeException("Could not read the group", e);
+        }
+    }
 }

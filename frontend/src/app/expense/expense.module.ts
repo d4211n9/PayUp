@@ -7,6 +7,9 @@ import {IonicModule} from "@ionic/angular";
 
 @NgModule({
   declarations: [ExpensecardComponent],
+  exports: [
+    ExpensecardComponent
+  ],
   imports: [
     CommonModule,
     IonicModule

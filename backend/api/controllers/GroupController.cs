@@ -31,4 +31,12 @@ public class GroupController : ControllerBase
     {
         return _service.GetAllExpenses(groupId, HttpContext.GetSessionData()!);
     }
+    
+    [RequireAuthentication]
+    [HttpGet]
+    [Route("/api/group/{groupId}")]
+    public Group GetGroupById([FromRoute] int groupId)
+    {
+        return _service.GetGroupById(groupId, HttpContext.GetSessionData()!);
+    }
 }

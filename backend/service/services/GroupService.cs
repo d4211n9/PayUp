@@ -35,4 +35,10 @@ public class GroupService
         if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
         return _expenseRepo.GetAllExpenses(groupId);
     }
+
+    public Group GetGroupById(int groupId, SessionData sessionData)
+    {
+        if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
+        return _groupRepo.GetGroupById(groupId);
+    }
 }

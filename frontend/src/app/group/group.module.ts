@@ -7,10 +7,11 @@ import {GroupService} from "./group.service";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {ErrorHttpInterceptor} from "../../interceptors/error-http-interceptors";
 import {ExpenseModule} from "../expense/expense.module";
+import {ActivityComponent} from "./activity/activity.component";
 
 
 @NgModule({
-  declarations: [CreateComponent],
+  declarations: [CreateComponent, ActivityComponent],
   imports: [
     CommonModule,
     IonicModule,

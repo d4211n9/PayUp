@@ -1,18 +1,21 @@
-<div style="display: flex; justify-content: center; align-items: center;">
-  <ion-card style="overflow: hidden; border-radius: 15px; max-width: 500px; width: 90%;">
-    <div style="display: flex; justify-content: center; align-items: center;">
-      <ion-item>
-        <ion-card-title class="ion-padding">21/11</ion-card-title>
-        <ion-icon name="beer" class="ion-padding"></ion-icon>
-        <ion-list class="ion-padding">
-          <ion-card-subtitle>You paid 40 DKK</ion-card-subtitle>
-          <ion-card-title>Beers</ion-card-title>
-        </ion-list>
-        <ion-list class="ion-padding">
-          <ion-card-subtitle>You lent</ion-card-subtitle>
-          <ion-card-title>30 DKK</ion-card-title>
-        </ion-list>
-      </ion-item>
-    </div>
-  </ion-card>
-</div>
+<ion-card class="child" style="border-radius: 15px;">
+  <ion-item>
+    <ion-list class="ion-text-center" style="width: 10%">
+      <!-- Fix date hardcoding, fatter ikke hvorfor den brokker sig med expense.created_date -->
+      <ion-card-subtitle class="ion-text-uppercase small-text">Nov</ion-card-subtitle>
+      <ion-card-title class="medium-text">21</ion-card-title>
+    </ion-list>
+    <ion-icon name="beer" style="width: 10%"></ion-icon>
+    <ion-list class="ion-padding" style="width: 50%">
+      <!-- TODO: Vi skal hente 'payer' fra user_on_expense for at undgå hardcoding af "you" nedenunder -->
+      <ion-card-subtitle class="small-text">You paid {{expense.amount}} DKK</ion-card-subtitle>
+      <ion-card-title class="medium-text">{{expense.description}}</ion-card-title>
+    </ion-list>
+    <ion-list class="ion-text-end" style="width: 30%">
+      <!-- TODO: Vi skal hente info fra user_on_expense for at undgå hardcoding det her -->
+      <ion-card-subtitle class="small-text">You lent</ion-card-subtitle>
+      <ion-card-title class="medium-text">30 DKK</ion-card-title>
+    </ion-list>
+  </ion-item>
+</ion-card>
+

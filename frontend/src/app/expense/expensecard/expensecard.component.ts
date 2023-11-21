@@ -1,14 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {Expense} from "../../group/group.service";
+import {DatePipe} from "@angular/common";
 
 @Component({
-  selector: 'app-expensecard',
+  selector: 'expensecard',
   templateUrl: './expensecard.component.html',
   styleUrls: ['./expensecard.component.scss'],
 })
 export class ExpensecardComponent  implements OnInit {
 
-  constructor() { }
+  constructor() {
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
+
+  @Input() expense!: Expense;
 
 }

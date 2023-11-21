@@ -1,0 +1,43 @@
+<ion-content color="light" class="parent ion-padding">
+    <ion-card class="child ion-padding"
+              style="overflow: hidden; border-radius: 15px; max-width: 500px; width: 90%; min-height: 300px; height: 100%;">
+
+        <ion-title class="ion-padding ion-text-center" color="dark">{{group?.name}}</ion-title>
+
+        <ion-button class="parent" id="click-trigger">Menu</ion-button>
+        <ion-popover trigger="click-trigger" triggerAction="click">
+            <ng-template>
+                <ion-button class="parent">Activity</ion-button>
+                <ion-button class="parent">Balances</ion-button>
+                <ion-button class="parent">Totals</ion-button>
+            </ng-template>
+        </ion-popover>
+
+        <!--
+        <ion-toolbar>
+            <ion-segment scrollable="true" value="Activity">
+                <ion-segment-button value="Activity">
+                    <ion-label>Activity</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="Balances">
+                    <ion-label>Balances</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="Totals">
+                    <ion-label>Totals</ion-label>
+                </ion-segment-button>
+            </ion-segment>
+        </ion-toolbar>
+        -->
+
+        <div class="child" style="overflow: hidden; border-radius: 15px;">
+            <expensecard class="child" *ngFor="let expense of expenses" [expense]="expense"></expensecard>
+        </div>
+    </ion-card>
+
+    <ion-fab slot="fixed" vertical="bottom" horizontal="center">
+        <ion-fab-button color="warning">
+            <ion-icon name="add" color="dark"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+
+</ion-content>
