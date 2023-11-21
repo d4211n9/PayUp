@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, ValidationErrors, Validators} from "@angular/forms";
 import {firstValueFrom} from "rxjs";
 import {AccountService, Credentials, Registration} from "../account.service";
 import {TokenService} from "../../../services/TokenService";
 import {ToastController} from "@ionic/angular";
+
 
 @Component({
   selector: 'app-register',
@@ -16,9 +17,17 @@ export class RegisterComponent implements OnInit {
     name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
-    repeatPassword: ['', Validators.required],
+    repeatPassword: ['', [Validators.required]],
     phone: ['', Validators.required],
-  });
+  }, {validators: this.isPasswordSame});
+
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly token: TokenService,
+    private readonly toast: ToastController,
+    private readonly service: AccountService,
+  ) {
+  }
 
   get name() {
     return this.form.controls.name;
@@ -39,18 +48,9 @@ export class RegisterComponent implements OnInit {
   get repeatPassword() {
     return this.form.controls.repeatPassword;
   }
-  
-  constructor(
-    private readonly fb: FormBuilder,
-    private readonly token: TokenService,
-    private readonly toast: ToastController,
-    private readonly service: AccountService,
-  ) {
-  }
 
   ngOnInit() {
   }
-
 
   async register() {
 
@@ -78,4 +78,13 @@ export class RegisterComponent implements OnInit {
       duration: 5000
     })).present();
   }
+
+  isPasswordSame(control: AbstractControl): ValidationErrors | null {
+    const password = control.get('password')?.value;
+    const repeatPassword = control.get('repeatPassword')?.value;
+
+    return password === repeatPassword ? null : {passwordsNotMatch: false};
+  }
 }
+
+

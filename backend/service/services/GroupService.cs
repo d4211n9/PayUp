@@ -1,29 +1,29 @@
-﻿using api.models;
+﻿using System.Data.SqlTypes;
+using api.models;
 using infrastructure.dataModels;
 using infrastructure.repository;
-using Microsoft.Extensions.Logging;
 
 namespace service.services;
 
-public class GroupService(
-    GroupRepository repository,
-    ILogger<GroupService> logger,
-    AccountService accountService)
+public class GroupService
 {
+    private readonly GroupRepository _groupRepo;
+
+    public GroupService(GroupRepository groupRepo)
+    {
+        _groupRepo = groupRepo;
+    }
+
     public Group CreateGroup(Group group, SessionData sessionData)
     {
-        try
-        {
-            var user = accountService.Get(sessionData);
-            Group createdGroup = repository.CreateGroup(group);
-            repository.AddUserToGroup(user!.Id, createdGroup.Id, true);
-            return createdGroup;
-        }
-        catch (Exception e)
-        {
-            logger.LogError("Create error: {Message}", e);
-            throw new Exception("Could not create group");
-        }
-        
+        //Create the group
+        group.Created_Date = DateTime.UtcNow;
+        var responseGroup = _groupRepo.CreateGroup(group);
+        if (ReferenceEquals(responseGroup, null)) throw new SqlNullValueException(" create group");
+
+        //Add the creator as member(owner) in the group
+        var addedToGroup = _groupRepo.AddUserToGroup(sessionData.UserId, responseGroup.Id, true);
+        if (!addedToGroup) throw new SqlNullValueException(" add user to the group");
+        return responseGroup;
     }
 }

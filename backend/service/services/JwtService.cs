@@ -50,7 +50,6 @@ public class JwtService
             ValidAlgorithms = new[] { SignatureAlgorithm },
 
             // Default value is true already.
-            // They are just set here to emphasise the importance.
             ValidateAudience = true,
             ValidateIssuer = true,
             ValidateLifetime = true,

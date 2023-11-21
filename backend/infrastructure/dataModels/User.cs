@@ -12,3 +12,12 @@ public class User
     [Required, Timestamp] public required DateTime Created { get; set; }
     [Required, Url] public required string ProfileUrl { get; set; }
 }
+
+public class UserInfoDto
+{
+    public required int Id { get; set; }
+    [Required, EmailAddress] public required string Email { get; set; }
+    [Required] public required string FullName { get; set; }
+    [Required, Phone] public required string PhoneNumber { get; set; }
+    [Required, Url] public required string ProfileUrl { get; set; }
+}
