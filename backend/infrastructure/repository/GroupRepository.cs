@@ -1,4 +1,5 @@
 ﻿using System.Data.SqlTypes;
+using System.Security.Authentication;
 using api.models;
 using Dapper;
 using Npgsql;
@@ -52,6 +53,26 @@ public class GroupRepository
         catch(Exception e)
         {
             throw new SqlTypeException("Could not add User to Group", e);
+        }
+    }
+
+    public bool IsUserInGroup(int userId, int groupId)
+    {
+        var sql =
+            $@"
+            select * from groups.group_members 
+            where user_id = @userId  
+            and group_id = @groupId;
+            ";
+
+        try
+        {
+            using var conn = _dataSource.OpenConnection();
+            return conn.QuerySingleOrDefault(sql, new { userId, groupId }) != null;
+        }
+        catch (Exception e)
+        {
+            throw new AuthenticationException();
         }
     }
 }

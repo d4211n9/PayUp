@@ -23,4 +23,12 @@ public class GroupController : ControllerBase
         var sessionData = HttpContext.GetSessionData();
         return _service.CreateGroup(group, sessionData!);
     }
+    
+    [RequireAuthentication]
+    [HttpGet]
+    [Route("/api/group/{groupId}/expenses")]
+    public IEnumerable<Expense> GetAllExpenses([FromRoute] int groupId)
+    {
+        return _service.GetAllExpenses(groupId, HttpContext.GetSessionData()!);
+    }
 }
