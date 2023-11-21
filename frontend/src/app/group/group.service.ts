@@ -22,4 +22,6 @@ export class GroupService {
     return this.http.get<Group>(environment.apiBaseUrl + '/mygroups')
   }
 
+
+  
 }

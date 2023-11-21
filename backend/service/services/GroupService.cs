@@ -43,8 +43,8 @@ public class GroupService
         return createdGroup;
     }
 
-    public Group GetMyGroups(Group group, SessionData sessionData)
+    public IEnumerable<Group> GetMyGroups(int userId)
     {
-        throw new NotImplementedException();
+        return _groupRepo.GetMyGroups(userId);
     }
 }

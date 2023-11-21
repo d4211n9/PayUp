@@ -29,6 +29,21 @@ public class GroupRepository
         }
     }
 
+    public IEnumerable<Group> GetMyGroups(int userId)
+    {
+        var sql =
+            $@"
+            select * from groups.group_members
+            join groups.group on groups.group_members.group_id = id 
+            where groups.group_members.user_id = @userId;";
+
+        using (var conn = _dataSource.OpenConnection())
+        {
+            return conn.Query<Group>(sql, new {userId});
+        }
+    }
+    
+
     public void AddUserToGroup(int userId, int groupId, bool isOwner)
     {
         var sql =
