@@ -8,6 +8,11 @@ export interface Group {
   created_date: Date
 }
 
+export interface GroupInvite {
+  group_id: number
+  user_id: number
+}
+
 @Injectable()
 export class GroupService {
   constructor(private readonly http: HttpClient) {
@@ -17,4 +22,7 @@ export class GroupService {
     return this.http.post<Group>('http://localhost:5100/api/group/create', value)
   }
 
+  invite(group_invite: GroupInvite) {
+    return this.http.post<Boolean>('http://localhost:5100/api/group/invite', group_invite);
+  }
 }
