@@ -17,27 +17,25 @@ public class UserService
     public User GetLoggedInUser(SessionData data)
     {
         var user = _userRepository.GetById(data.UserId);
-        if (ReferenceEquals(user, null))
-            throw new SqlNullValueException("Could not find user");
+        if (ReferenceEquals(user, null)) throw new SqlNullValueException();
         return user;
     }
 
     public User EditProfileInfo(SessionData? data, UserInfoDto user)
     {
-        if (data.UserId != user.Id) //checks login user is equal to editUserObject.
-            throw new SecurityException("You are not Authorised for this action");
+        //checks login user is equal to editUserObject.
+        if (data.UserId != user.Id) throw new SecurityException();
+        
         var responseUser = _userRepository.EditUserInfo(user);
-        if (ReferenceEquals(responseUser, null)) throw new SqlNullValueException("Could not Edit user");//checks if response user is null before returning it.
+        if (ReferenceEquals(responseUser, null)) throw new SqlNullValueException("Edit User");//checks if response user is null before returning it.
         return responseUser; 
     }
     
     
-    public bool DeleteAccount(SessionData? data, int userId)
+    public bool DeleteAccount(SessionData? data)
     {
-        if (data.UserId != userId) //checks login user is equal to editUserObject.
-            throw new SecurityException("You are not Authorised for this action");
-        var wasDeleted = _userRepository.DeleteUser(userId);
-        if (!wasDeleted) throw new SqlNullValueException("Could not Edit user");//checks if response is true before returning it.
+        var wasDeleted = _userRepository.DeleteUser(data.UserId);
+        if (!wasDeleted) throw new SqlNullValueException(" delete user");//checks if response is true before returning it.
         return wasDeleted; 
     }
 }
