@@ -42,4 +42,9 @@ public class GroupService
         
         return createdGroup;
     }
+
+    public Group GetMyGroups(Group group, SessionData sessionData)
+    {
+        throw new NotImplementedException();
+    }
 }

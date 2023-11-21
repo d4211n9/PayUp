@@ -23,6 +23,14 @@ public class GroupController : ControllerBase
         var sessionData = HttpContext.GetSessionData();
         return _service.CreateGroup(group, sessionData!);
     }
-    
+
+    [RequireAuthentication]
+    [HttpGet]
+    [Route("/api/mygroups")]
+    public Group GetGroup([FromBody] Group group)
+    {
+        var sessionData = HttpContext.GetSessionData();
+        return _service.GetMyGroups(group, sessionData!);
+    }
     
 }

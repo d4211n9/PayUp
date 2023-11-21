@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
+import {environment} from "../../environments/environment";
 
 export interface Group {
   name: string,
@@ -15,6 +16,10 @@ export class GroupService {
 
   create(value: Group) {
     return this.http.post<Group>('http://localhost:5100/api/group/create', value)
+  }
+
+  get(value: Group) {
+    return this.http.get<Group>(environment.apiBaseUrl + '/mygroups')
   }
 
 }

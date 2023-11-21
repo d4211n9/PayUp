@@ -6,7 +6,7 @@ import {HomePage} from './home.page';
 
 import {HomePageRoutingModule} from './home-routing.module';
 import {GroupModule} from '../group/group.module';
-import {MyGroupsComponent} from "./my-groups/my-groups.component";
+import {MyGroupsComponent} from "../group/my-groups/my-groups.component";
 
 
 @NgModule({
