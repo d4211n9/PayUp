@@ -3,6 +3,7 @@ import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 import {RegisterComponent} from "./auth/register/register.component";
 import {LoginComponent} from "./auth/login/login.component";
 import {CreateComponent} from "./group/create/create.component";
+import {ExpensecardComponent} from "./expense/expensecard/expensecard.component";
 
 const routes: Routes = [
   {
@@ -25,6 +26,10 @@ const routes: Routes = [
   {
     path: 'group/create',
     component: CreateComponent
+  },
+  { //TODO fjern den her path når kortet er fint
+    path: 'expensecard',
+    component: ExpensecardComponent
   }
 ];
 

@@ -6,6 +6,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {GroupService} from "./group.service";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {ErrorHttpInterceptor} from "../../interceptors/error-http-interceptors";
+import {ExpenseModule} from "../expense/expense.module";
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import {ErrorHttpInterceptor} from "../../interceptors/error-http-interceptors";
   imports: [
     CommonModule,
     IonicModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ExpenseModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true},
