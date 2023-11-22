@@ -87,8 +87,9 @@ SELECT
         
     }
 
-    public User? EditUserInfo(UserInfoDto user)
+    public User? EditUserInfo(UserInfoDto user, int id)
     {
+        user.Id = id;
         var updateSql = @$"
         UPDATE users.user
         SET
@@ -96,7 +97,7 @@ SELECT
             email = @{nameof(user.Email)},
             phone_number = @{nameof(user.PhoneNumber)},
             profile_url = @{nameof(user.ProfileUrl)}
-        WHERE id = @{nameof(user.Id)}
+        WHERE id = @Id
         RETURNING id as {nameof(User.Id)},
                   email as {nameof(User.Email)},
                   full_name as {nameof(User.FullName)},

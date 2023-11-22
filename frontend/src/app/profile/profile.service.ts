@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {AccountService, User} from "../auth/account.service";
+import {Group} from "../group/group.service";
 
 export interface FullUser {
   id: number;
@@ -8,6 +9,13 @@ export interface FullUser {
   fullName: string;
   phoneNumber: string,
   created: Date,
+  profileUrl: string,
+}
+
+export interface EditUserDto {
+  email: String;
+  fullName: string;
+  phoneNumber: string,
   profileUrl: string,
 }
 
@@ -20,4 +28,7 @@ export class ProfileService {
     return this.http.get<FullUser>('http://localhost:5100/api/user/currentuser');
   }
 
+  editCurrentUser(user: EditUserDto) {
+    return this.http.put<FullUser>('http://localhost:5100/api/user/profileinfo', user);
+  }
 }

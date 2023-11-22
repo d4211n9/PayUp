@@ -6,6 +6,7 @@ using service.services;
 
 namespace api.controllers;
 
+[ApiController]
 public class UsersController : ControllerBase
 {
     //todo need these for profile view
@@ -35,15 +36,12 @@ public class UsersController : ControllerBase
 
     [RequireAuthentication]
     [HttpPut]
-    [Route("/api/account/profileinfo")]
-    public ResponseDto EditProfileInfo([FromBody] UserInfoDto model)
+    [Route("/api/user/profileinfo")]
+    public User EditProfileInfo([FromBody] UserInfoDto model)
     {
         var data = HttpContext.GetSessionData();
         var user = _service.EditProfileInfo(data, model);
-        return new ResponseDto
-        {
-            ResponseData = user
-        };
+        return user;
     }
     
     [RequireAuthentication]
