@@ -233,4 +233,41 @@ Best regards, Alex
     {
         public string? token { get; set; }
     }
+
+    public static void AddExpenses()
+    {
+        using var conn = DataSource.OpenConnection();
+        try
+        {
+            conn.Execute(ExpensesScript);
+        }
+        catch (Exception e)
+        {
+            throw new Exception($@"THERE WAS AN ERROR ADDING EXPENSES TO THE DATABASE.", e);
+        }
+    }
+    
+    public static string ExpensesScript = @"
+insert into users.user (email, full_name, phone_number, created, profile_url) VALUES ('user2@example.com', 'string', '12341234', '2023-11-21 10:48:24.584797', 'https://cdn-icons-png.flaticon.com/512/615/615075.png');
+
+insert into groups.group (id, name, description, image_url, created_date) VALUES (1, 'Studiegruppen', 'description', 'https://cdn-icons-png.flaticon.com/512/615/615075.png', '2023-11-21 10:48:24.584797');
+insert into groups.group (id, name, description, image_url, created_date) VALUES (2, 'Weekend tur', 'description', 'https://cdn-icons-png.flaticon.com/512/615/615075.png', '2023-11-21 10:48:24.584797');
+
+insert into groups.group_members (user_id, group_id, owner) VALUES (1, 1, true);
+insert into groups.group_members (user_id, group_id, owner) VALUES (2, 1, false);
+insert into groups.group_members (user_id, group_id, owner) VALUES (2, 2, true);
+
+insert into expenses.expense (id, group_id, description, amount, created_date) values (1, 1, 'Første omgang', 40, '2023-11-21 10:48:24.584797');
+insert into expenses.expense (id, group_id, description, amount, created_date) values (2, 1, 'Bare lige en mere bajs', 40, '2023-11-21 10:48:24.584797');
+insert into expenses.expense (id, group_id, description, amount, created_date) values (3, 2, 'Sidste øl', 40, '2023-11-21 10:48:24.584797');
+insert into expenses.expense (id, group_id, description, amount, created_date) values (4, 2, 'ALLERSIDSTE', 40, '2023-11-21 10:48:24.584797');
+
+insert into expenses.user_on_expense (user_id, expense_id, payer) values (1, 1, true);
+insert into expenses.user_on_expense (user_id, expense_id, payer) values (2, 1, false);
+insert into expenses.user_on_expense (user_id, expense_id, payer) values (1, 2, false);
+insert into expenses.user_on_expense (user_id, expense_id, payer) values (2, 2, true);
+insert into expenses.user_on_expense (user_id, expense_id, payer) values (2, 3, true);
+insert into expenses.user_on_expense (user_id, expense_id, payer) values (2, 4, true);
+
+";
 }
