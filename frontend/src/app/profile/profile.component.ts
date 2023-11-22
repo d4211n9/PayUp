@@ -11,8 +11,7 @@ import {ToastController} from "@ionic/angular";
 })
 export class ProfileComponent  implements OnInit {
 
-
-   fullUser$!: Observable<FullUser>;
+  fullUser$!: Observable<FullUser>;
   editMode = false;
   editedUser!: EditUserDto;
   constructor(private readonly service: ProfileService,
@@ -29,8 +28,6 @@ export class ProfileComponent  implements OnInit {
     phone: ['', Validators.required],
     imageUrl: [''],
   });
-
-
 
   enterEditMode() {
     this.editMode = true;
@@ -60,5 +57,9 @@ export class ProfileComponent  implements OnInit {
       duration: 5000
     })).present();
     this.exitEditMode();
+  }
+
+  enterEditPictureMode() {
+
   }
 }

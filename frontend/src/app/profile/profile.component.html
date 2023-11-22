@@ -3,7 +3,7 @@
     <div class="container">
       <ion-card id="imgCard">
         <ion-img id="image" [src]="fullUser.profileUrl"></ion-img>
-        <ion-button class="btn" fill="clear" color="warning" (click)="enterEditMode()">
+        <ion-button class="btn" fill="clear" color="warning" (click)="enterEditPictureMode()">
           <ion-icon slot="icon-only" name="create" size="medium"></ion-icon>
         </ion-button>
       </ion-card>
@@ -64,7 +64,7 @@
         <p>
           payment info
         </p>
-        <ion-button class="btn" fill="clear" color="warning" (click)="enterEditMode()" *ngIf="!editMode">
+        <ion-button class="btn" fill="clear" color="warning" *ngIf="!editMode">
           <ion-icon slot="icon-only" name="create" size="medium"></ion-icon>
         </ion-button>
       </ion-card>
@@ -75,7 +75,7 @@
         <p>
           money stats baby
         </p>
-        <ion-button class="btn" fill="clear" color="warning" (click)="enterEditMode()" *ngIf="!editMode">
+        <ion-button class="btn" fill="clear" color="warning"  *ngIf="!editMode">
           <ion-icon slot="icon-only" name="create" size="medium"></ion-icon>
         </ion-button>
       </ion-card>
