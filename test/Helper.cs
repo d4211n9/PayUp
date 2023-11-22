@@ -89,18 +89,18 @@ Best regards, Alex.
     }
 
     public static string RebuildScript = @"
--- Drop the 'users.password_hash' table if it exists
-DROP TABLE IF EXISTS users.password_hash;
+DROP TABLE IF EXISTS expenses.user_on_expense CASCADE;
+DROP TABLE IF EXISTS expenses.expense CASCADE;
+DROP SCHEMA IF EXISTS expenses CASCADE;
 
 DROP TABLE IF EXISTS groups.group_members;
-
 DROP TABLE IF EXISTS groups.group CASCADE;
-
 DROP SCHEMA IF EXISTS groups CASCADE;
 
+-- Drop the 'users.password_hash' table if it exists
+DROP TABLE IF EXISTS users.password_hash;
 -- Drop the 'users.user' table if it exists
 DROP TABLE IF EXISTS users.user;
-
 DROP SCHEMA IF EXISTS users;
 
 -- Create the 'users' schema
@@ -125,8 +125,10 @@ CREATE TABLE users.password_hash (
     FOREIGN KEY(user_id) REFERENCES users.user(id)
 );
 
+-- Create the groups schema
 CREATE SCHEMA groups;
 
+-- Create the 'groups.group' table
 CREATE TABLE groups.group (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
@@ -143,6 +145,29 @@ CREATE TABLE groups.group_members (
     FOREIGN KEY (user_id) REFERENCES users.user(id),
     FOREIGN KEY (group_id) REFERENCES groups.group(id),
     PRIMARY KEY (user_id, group_id)
+);
+
+-- Create the expenses schema
+CREATE SCHEMA expenses;
+
+-- Create the 'expenses.expense' table with foreign key references to users.user & groups.group.
+CREATE TABLE expenses.expense (
+    id SERIAL PRIMARY KEY,
+    group_id INT NOT NULL,
+    description VARCHAR(200) NOT NULL,
+    amount MONEY NOT NULL,
+    created_date TIMESTAMP NOT NULL,
+    FOREIGN KEY (group_id) REFERENCES groups.group(id)
+);
+
+-- Create the 'expenses.user_on_expense' table
+CREATE TABLE expenses.user_on_expense (
+    user_id INT NOT NULL,
+    expense_id INT NOT NULL,
+    payer BOOLEAN NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users.user(id),
+    FOREIGN KEY (expense_id) REFERENCES expenses.expense(id),
+    PRIMARY KEY (user_id, expense_id)
 );
  ";
 

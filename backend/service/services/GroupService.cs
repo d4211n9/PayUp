@@ -20,7 +20,7 @@ public class GroupService
     public Group CreateGroup(Group group, SessionData sessionData)
     {
         //Create the group
-        group.Created_Date = DateTime.UtcNow;
+        group.CreatedDate = DateTime.UtcNow;
         var responseGroup = _groupRepo.CreateGroup(group);
         if (ReferenceEquals(responseGroup, null)) throw new SqlNullValueException(" create group");
 
@@ -31,7 +31,7 @@ public class GroupService
     }
 
     public IEnumerable<Expense> GetAllExpenses(int groupId, SessionData sessionData)
-    { 
+    {
         if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
         return _expenseRepo.GetAllExpenses(groupId);
     }

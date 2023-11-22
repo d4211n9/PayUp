@@ -17,4 +17,7 @@ export class ExpensecardComponent  implements OnInit {
 
   @Input() expense!: Expense;
 
+  openExpense() {
+    console.log("TODO HAHahah goteeeem")
+  }
 }

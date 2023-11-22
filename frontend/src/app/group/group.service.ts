@@ -6,14 +6,14 @@ import {firstValueFrom} from "rxjs";
 export interface Group {
   name: string,
   description: string,
-  image_url: string,
-  created_date: Date
+  imageUrl: string,
+  createdDate: Date
 }
 
 export interface Expense {
   description: string,
   amount: number,
-  created_date: Date
+  createdDate: Date
 }
 
 @Injectable()
