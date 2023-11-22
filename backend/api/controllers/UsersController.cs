@@ -9,12 +9,9 @@ namespace api.controllers;
 [ApiController]
 public class UsersController : ControllerBase
 {
-    //todo need these for profile view
-    //todo edit picture (because it can be heavy to upload a picture)
     
     //todo nice to haves:
     //todo get list of usersShort (should be with a max list size, and only reply ith username and picture )
-    //todo get user full detail (should check if you are in a group together before returning info)
 
 
     private readonly UserService _service;

@@ -59,7 +59,6 @@ export class ProfileComponent  implements OnInit {
     this.exitEditMode();
   }
 
-  enterEditPictureMode() {
-
+  enterEditPictureMode() {//todo should edit the picture
   }
 }
