@@ -15,7 +15,6 @@ public class UsersController : ControllerBase
 
 
     private readonly UserService _service;
-
     public UsersController(UserService service)
     {
         _service = service;

@@ -99,7 +99,7 @@ DROP TABLE IF EXISTS groups.group CASCADE;
 DROP SCHEMA IF EXISTS groups CASCADE;
 
 -- Drop the 'users.user' table if it exists
-DROP TABLE IF EXISTS users.user;
+DROP TABLE IF EXISTS users.user CASCADE;
 
 DROP SCHEMA IF EXISTS users;
 

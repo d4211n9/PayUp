@@ -5,7 +5,7 @@ using  NUnit.Framework;
 
 namespace test.integration.UserTest;
 
-public class GetLoggedInUserTest
+public class EditTest
 {
     private HttpClient _httpClient;
 
@@ -36,8 +36,7 @@ public class GetLoggedInUserTest
         };
         
         var token = await Helper.Authorize(email);
-
-   
+        
         
         var editUser = new
         {
@@ -53,7 +52,7 @@ public class GetLoggedInUserTest
         try
         {
             _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-            response = await _httpClient.PutAsJsonAsync(url, user);
+            response = await _httpClient.PutAsJsonAsync(url, editUser);
             TestContext.WriteLine("The full body response: "
                                   + await response.Content.ReadAsStringAsync());
         }
