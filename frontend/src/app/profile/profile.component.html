@@ -31,17 +31,17 @@
           </ion-item>
           <ion-item *ngIf="editMode">
             <ion-label>
-              <ion-input [(ngModel)]="editedUser.email" placeholder="Email"></ion-input>
+              <ion-input [(ngModel)]="editedUser.email" placeholder="Email" formControlName="email"></ion-input>
             </ion-label>
           </ion-item>
           <ion-item *ngIf="editMode">
             <ion-label>
-              <ion-input [(ngModel)]="editedUser.phoneNumber" placeholder="Phone Number"></ion-input>
+              <ion-input [(ngModel)]="editedUser.phoneNumber" placeholder="Phone Number" formControlName="phone"></ion-input>
             </ion-label>
           </ion-item>
           <ion-item lines="none">
             <div id="editInfoBtnGroup" style="display: flex; justify-content: center; align-items: center; height: 30px">
-              <ion-button id="saveBtn" expand="full" *ngIf="editMode" (click)="saveChanges()">Save</ion-button>
+              <ion-button id="saveBtn" expand="full" *ngIf="editMode" (click)="saveChanges()" [disabled]="form.invalid">Save</ion-button>
               <ion-button id="cancelBtn" expand="full" *ngIf="editMode" (click)="exitEditMode()">Cancel</ion-button>
             </div>
           </ion-item>

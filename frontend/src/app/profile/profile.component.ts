@@ -12,7 +12,7 @@ import {ToastController} from "@ionic/angular";
 export class ProfileComponent  implements OnInit {
 
 
-   fullUser$?: Observable<FullUser>;
+   fullUser$!: Observable<FullUser>;
   editMode = false;
   editedUser!: EditUserDto;
   constructor(private readonly service: ProfileService,
@@ -27,7 +27,7 @@ export class ProfileComponent  implements OnInit {
     email: ['', Validators.required],
     fullName: ['', Validators.required],
     phone: ['', Validators.required],
-    imageUrl: ['', Validators.required],
+    imageUrl: [''],
   });
 
 
@@ -35,7 +35,9 @@ export class ProfileComponent  implements OnInit {
   enterEditMode() {
     this.editMode = true;
     // Copy the values to the editedUser object
-    this.fullUser$!.subscribe(user => this.editedUser = { ...user });
+    this.fullUser$!.subscribe(user => {this.editedUser = { ...user}
+      this.form.controls.imageUrl.setValue(user.profileUrl);});
+
   }
 
   exitEditMode() {
@@ -51,7 +53,6 @@ export class ProfileComponent  implements OnInit {
     };
 
     this.fullUser$ = this.service.editCurrentUser(user as EditUserDto);
-
 
     await (await this.toast.create({
       message: "Your profile was updated successfully",
