@@ -1,20 +1,18 @@
+<ion-card class="group-card">
+  <ion-item>
+    <ion-thumbnail slot="start">
+      <ion-img src=".././assets/icon/elefant.png" alt="{{mygroups.image_url}}"></ion-img>
+    </ion-thumbnail>
 
-
-<ion-card id="groupcard">
-  <ion-card-content>
-
-    <div>
-      <ion-thumbnail>
-        <ion-img
-          src="{{mygroups.image_url}}"
-          alt="{{mygroups.image_url}}">
-        </ion-img>
-      </ion-thumbnail>
+    <!-- Group Name -->
+    <div class="group-name">
+      <ion-card-title id="groupcard">{{mygroups.name}}</ion-card-title>
     </div>
 
-    <div>
-      <ion-card-title> {{mygroups.name}} </ion-card-title>
-    </div>
-
-  </ion-card-content>
+    <!-- Owed Information -->
+    <ion-list slot="end">
+      <ion-card-subtitle class="small-text">Owed</ion-card-subtitle>
+      <ion-card-subtitle class="small-text">50 dkk</ion-card-subtitle>
+    </ion-list>
+  </ion-item>
 </ion-card>

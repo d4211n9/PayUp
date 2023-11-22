@@ -1,7 +1,32 @@
-#groupcard{
+.group-card {
+  border-radius: 15px;
+  margin-left: 18%;
+  margin-right: 18%;
+  margin-top: 1.5%;
+}
 
-  width: 1000px;
+.group-name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
 
-  margin-left: 20%;
-  margin-bottom: 2%;
+/* Use responsive utility class for smaller screens */
+@media (max-width: 500px) {
+  .small-text {
+    font-size: 9px; /* Adjust the font size for smaller screens */
+  }
+  .medium-text {
+    font-size: 14px;
+  }
+
+  .small-text {
+    font-size: 14px;
+  }
+
+  .medium-text {
+    font-size: 18px;
+  }
 }
