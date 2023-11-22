@@ -1,45 +1,44 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <!--<ion-progress-bar type=""></ion-progress-bar>-->
+<ion-header>
+<ion-toolbar>
 
-    <!--My Account icon and button-->
-    <ion-button id="btn_myaccount" slot="end" fill="clear">
-      <ion-icon
-        id="icon_myaccount" slot="icon-only" name="person-circle">
-      </ion-icon>
-    </ion-button>
+  <ion-content></ion-content>
+  <!--<ion-progress-bar type=""></ion-progress-bar>-->
 
-    <!--Notifications icon and button-->
-    <ion-button
-      id="btn_notifications" slot="end" fill="clear">
-      <ion-icon
-        id="icon_notifications" slot="icon-only" name="notifications">
-      </ion-icon>
-    </ion-button>
+  <!--My Account icon and button-->
+  <ion-button id="btn_myaccount" slot="end" fill="clear">
+    <ion-icon
+      id="icon_myaccount" slot="icon-only" name="person-circle">
+    </ion-icon>
+  </ion-button>
 
-    <!--Burger menu button-->
-    <ion-buttons
-      id="btn_menu-button" slot="start">
-      <ion-menu-button
-        auto-hide="false">
-      </ion-menu-button>
-    </ion-buttons>
+  <!--Notifications icon and button-->
+  <ion-button
+    id="btn_notifications" slot="end" fill="clear">
+    <ion-icon
+      id="icon_notifications" slot="icon-only" name="notifications">
+    </ion-icon>
+  </ion-button>
 
-    <!--PayUp logo-->
-    <div
-      id="div_logo">
-      <ion-img id="imglogo"
-               src=".././assets/icon/payup_logo.png"
-               alt="...payup toolbar logo"
-      ></ion-img>
-    </div>
-  </ion-toolbar>
+  <!--Burger menu button-->
+  <ion-buttons
+    id="btn_menu-button" slot="start">
+    <ion-menu-button
+      auto-hide="false">
+    </ion-menu-button>
+  </ion-buttons>
 
+  <!--PayUp logo-->
+  <div
+    id="div_logo">
+    <ion-img id="imglogo"
+             src=".././assets/icon/payup_logo.png"
+             alt="...payup toolbar logo"
+    ></ion-img>
+  </div>
+</ion-toolbar>
 </ion-header>
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content style="height: 100vh">
+
+<ion-router-outlet></ion-router-outlet>
 </ion-content>
+

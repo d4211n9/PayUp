@@ -9,12 +9,13 @@ import {ErrorHttpInterceptor} from "../../interceptors/error-http-interceptors";
 import {GroupcardComponent} from "./groupcard/groupcard.component";
 
 
+
 @NgModule({
   declarations: [CreateComponent, GroupcardComponent],
   imports: [
     CommonModule,
     IonicModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   exports: [
     GroupcardComponent
