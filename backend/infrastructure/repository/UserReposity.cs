@@ -115,6 +115,37 @@ SELECT
         }
     }
 
+    public IEnumerable<InvitableUser> GetInvitableUsers(InvitableUserSearch invitableUserSearch)
+    {
+        invitableUserSearch.SearchQuery = invitableUserSearch.SearchQuery.Insert(0, "%");
+        invitableUserSearch.SearchQuery += "%";
+        
+        string sql = @"
+                    SELECT DISTINCT users.user.id, users.user.full_name AS FullName, users.user.profile_url AS ProfileUrl
+                    FROM users.user
+                    INNER JOIN groups.group_members
+                    ON groups.group_members.user_id = users.user.id
+                    WHERE groups.group_members.group_id != @GroupId 
+                    AND users.user.full_name LIKE @SearchQuery
+                    LIMIT @PageSize
+                    OFFSET @CurrentPage;";
+        try
+        {
+            using NpgsqlConnection conn = _dataSource.OpenConnection();
+            return conn.Query<InvitableUser>(sql, new
+            {
+                invitableUserSearch.SearchQuery,
+                invitableUserSearch.GroupId,
+                invitableUserSearch.Pagination.CurrentPage,
+                invitableUserSearch.Pagination.PageSize
+            });
+        }
+        catch (Exception e)
+        {
+            throw new SqlTypeException("Could not retrieve invitable users", e);
+        }
+    }
+
 
     public bool DeleteUser(int userId)
     {

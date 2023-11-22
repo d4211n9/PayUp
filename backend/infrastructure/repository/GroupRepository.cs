@@ -54,4 +54,23 @@ public class GroupRepository
             throw new SqlTypeException("Could not add User to Group", e);
         }
     }
+
+    public int GetGroupOwnerId(int groupId)
+    {
+        string sql = @"
+               SELECT groups.group_members.user_id
+               FROM groups.group_members
+               WHERE groups.group_members.group_id = @groupId
+               AND groups.group_members.owner = true;";
+
+        try
+        {
+            NpgsqlConnection conn = _dataSource.OpenConnection();
+            return conn.QueryFirstOrDefault<int>(sql, new { groupId });
+        }
+        catch (Exception e)
+        {
+            throw new SqlTypeException("Failed to retrieve owner ID of the group");
+        }
+    }
 }

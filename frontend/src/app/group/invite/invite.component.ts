@@ -1,8 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {GroupService, GroupInvite} from "../group.service";
-import {UserService, InvitableUser, Pagination, PaginationResponse} from "../../user/user.service";
+import {UserService, InvitableUser, Pagination} from "../../user/user.service";
 import {ToastController} from "@ionic/angular";
 import {firstValueFrom} from "rxjs";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-invite',
@@ -10,19 +11,20 @@ import {firstValueFrom} from "rxjs";
   styleUrls: ['./invite.component.scss'],
 })
 export class InviteComponent  implements OnInit {
-  @Input()
   group_id: number = -1;
-  search_query: string = "";
+  search_query: string = '';
   displayed_users: InvitableUser[] = [];
-  current_page: number = 1;
+  current_page: number = 0;
   default_page_size: number = 5;
-  total_pages: number = 0;
 
   constructor(private readonly group_service: GroupService,
               private readonly user_service: UserService,
-              private readonly toast: ToastController) {}
+              private readonly toast: ToastController,
+              private route: ActivatedRoute) {}
 
   ngOnInit() {
+    this.group_id = Number(this.route.snapshot.paramMap.get('groupid'));
+
     this.navigate_to();
   }
 
@@ -50,28 +52,14 @@ export class InviteComponent  implements OnInit {
     }
   }
 
-
-
-  page_first() {
-    this.current_page = 1;
-
-    this.navigate_to();
-  }
-
   page_previous() {
-    this.current_page = this.current_page <= 1 ? 1 : this.current_page - 1;
+    this.current_page = this.current_page <= 0 ? 0 : this.current_page - 1;
 
     this.navigate_to();
   }
 
   page_next() {
-    this.current_page = this.current_page >= this.total_pages ? this.total_pages : this.current_page + 1;
-
-    this.navigate_to();
-  }
-
-  async page_last() {
-    this.current_page = this.total_pages;
+    this.current_page++;
 
     this.navigate_to();
   }
@@ -82,10 +70,6 @@ export class InviteComponent  implements OnInit {
       page_size: this.default_page_size
     }
 
-    let pagination_response: PaginationResponse<InvitableUser[]> = await firstValueFrom(this.user_service.get_invitable_users(this.search_query, pagination));
-
-    this.total_pages = pagination_response.total_pages;
-
-    this.displayed_users = pagination_response.values;
+    this.displayed_users = await firstValueFrom(this.user_service.get_invitable_users(this.search_query, pagination, this.group_id));
   }
 }

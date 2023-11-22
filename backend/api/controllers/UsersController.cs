@@ -1,7 +1,9 @@
 ﻿using api.filters;
+using api.models;
 using api.TransferModels;
 using infrastructure.dataModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using service.services;
 
 namespace api.controllers;
@@ -61,4 +63,32 @@ public class UsersController : ControllerBase
             ResponseData = userDeleted
         };
     }
+
+    [RequireAuthentication]
+    [HttpGet]
+    [Route("/api/user")]
+    public IEnumerable<InvitableUser> GetInvitableUsers(
+        [FromQuery] string searchQuery, 
+        [FromQuery] int currentPage,
+        [FromQuery] int pageSize,
+        [FromQuery] int groupId)
+    {
+        SessionData? data = HttpContext.GetSessionData();
+
+        Pagination pagination = new Pagination()
+        {
+            CurrentPage = currentPage,
+            PageSize = pageSize
+        };
+        
+        InvitableUserSearch invitableUserSearch = new InvitableUserSearch()
+        {
+            SearchQuery = searchQuery.IsNullOrEmpty() ? "" : searchQuery,
+            Pagination = pagination,
+            GroupId = groupId
+        };
+        
+        return _service.GetInvitableUsers(data, invitableUserSearch);
+    }
+    
 }

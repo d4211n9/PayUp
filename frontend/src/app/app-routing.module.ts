@@ -24,7 +24,7 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'group/invite',
+    path: 'group/invite/:groupid',
     component: InviteComponent
   },
   {
