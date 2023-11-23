@@ -4,7 +4,6 @@ using Dapper;
 using infrastructure.dataModels;
 using Npgsql;
 
-
 namespace infrastructure.repository;
 
 public class UserRepository
@@ -84,11 +83,11 @@ SELECT
         {
             throw new SqlTypeException("Could not retrieve user", e);
         }
-        
     }
 
-    public User? EditUserInfo(UserInfoDto user)
+    public User? EditUserInfo(UserInfoDto user, int id)
     {
+        user.Id = id;
         var updateSql = @$"
         UPDATE users.user
         SET
@@ -96,14 +95,13 @@ SELECT
             email = @{nameof(user.Email)},
             phone_number = @{nameof(user.PhoneNumber)},
             profile_url = @{nameof(user.ProfileUrl)}
-        WHERE id = @{nameof(user.Id)}
+        WHERE id = @Id
         RETURNING id as {nameof(User.Id)},
                   email as {nameof(User.Email)},
                   full_name as {nameof(User.FullName)},
                   phone_number as {nameof(User.PhoneNumber)},
                   created as Created,
                   profile_url as ProfileUrl;";
-
         try
         {
             using var conn = _dataSource.OpenConnection();
@@ -114,7 +112,6 @@ SELECT
             throw new SqlTypeException("Could not update user", e);
         }
     }
-
 
     public bool DeleteUser(int userId)
     {

@@ -8,6 +8,8 @@ import {HomePageRoutingModule} from './home-routing.module';
 import {MyGroupsComponent} from "../group/my-groups/my-groups.component";
 import {ToolbarComponent} from "../toolbar/toolbar.component";
 import {GroupModule} from "../group/group.module";
+import {ProfileComponent} from "../profile/profile.component";
+import {ProfileModule} from "../profile/profile.module";
 
 
 @NgModule({
@@ -17,7 +19,7 @@ import {GroupModule} from "../group/group.module";
     IonicModule,
     HomePageRoutingModule,
     GroupModule,
-
+    ProfileModule
   ],
   exports: [
     HomePage,

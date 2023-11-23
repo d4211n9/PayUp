@@ -3,7 +3,7 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using HttpResponseMessage = System.Net.Http.HttpResponseMessage;
 
-namespace test.integration;
+namespace test.integration.accountTest;
 
 public class LoginTest
 {
@@ -57,7 +57,7 @@ public class LoginTest
         }
         catch (Exception e)
         {
-            throw new Exception("could not register user");
+            throw new Exception("could not register user", e);
         }
         
         

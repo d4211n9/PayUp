@@ -23,10 +23,7 @@ public class UserService
 
     public User EditProfileInfo(SessionData? data, UserInfoDto user)
     {
-        //checks login user is equal to editUserObject.
-        if (data.UserId != user.Id) throw new SecurityException();
-        
-        var responseUser = _userRepository.EditUserInfo(user);
+        var responseUser = _userRepository.EditUserInfo(user, data.UserId);
         if (ReferenceEquals(responseUser, null)) throw new SqlNullValueException("Edit User");//checks if response user is null before returning it.
         return responseUser; 
     }

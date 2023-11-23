@@ -14,6 +14,7 @@ import {AuthHttpInterceptor} from "../interceptors/auth-http-interceptor";
 import {GroupModule} from "./group/group.module";
 import {HomePageModule} from "./home/home.module";
 
+import {ProfileModule} from "./profile/profile.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +22,9 @@ import {HomePageModule} from "./home/home.module";
     IonicModule.forRoot(),
     AppRoutingModule,
     AuthModule,
-    GroupModule, HomePageModule,
+    GroupModule,
+    ProfileModule,
+    HomePageModule
 
   ],
   providers: [

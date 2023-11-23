@@ -24,16 +24,16 @@ export class GroupService {
 
 
   create(value: Group) {
-    return this.http.post<Group>(environment.apiBaseUrl+'group/create', value)
+    return this.http.post<Group>(environment.apiBaseUrl+'/group/create', value)
   }
 
   async getAllExpenses(groupId: string) {
-    const call = this.http.get<Expense[]>(environment.apiBaseUrl+'group/'+groupId+'/expenses');
+    const call = this.http.get<Expense[]>(environment.apiBaseUrl+'/group/'+groupId+'/expenses');
     return await firstValueFrom<Expense[]>(call);
   }
 
   async getGroup(groupId: string) {
-      const call = this.http.get<Group>(environment.apiBaseUrl+'group/'+groupId);
+      const call = this.http.get<Group>(environment.apiBaseUrl+'/group/'+groupId);
       return await firstValueFrom<Group>(call);
   }
 
