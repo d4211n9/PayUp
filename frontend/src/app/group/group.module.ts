@@ -10,12 +10,13 @@ import {ErrorHttpInterceptor} from "../../interceptors/error-http-interceptors";
 import {ExpenseModule} from "../expense/expense.module";
 import {ActivityComponent} from "./activity/activity.component";
 import {GroupcardComponent} from "./groupcard/groupcard.component";
+import {BalancecardComponent} from "./balancecard/balancecard.component";
 
 
 
 
 @NgModule({
-  declarations: [CreateComponent, ActivityComponent, GroupcardComponent],
+  declarations: [CreateComponent, ActivityComponent, GroupcardComponent, BalancecardComponent],
   imports: [
     CommonModule,
     IonicModule,

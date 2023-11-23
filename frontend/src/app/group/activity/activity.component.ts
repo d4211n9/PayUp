@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Expense, Group, GroupService} from "../group.service";
 import {firstValueFrom} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
@@ -13,6 +13,7 @@ export class ActivityComponent implements OnInit {
   group: Group | undefined;
   id: any;
   subpage = 'activity';
+  members: number[] = []; //TODO skal ændres til users, brugte bare til at populate balances tabben
 
   constructor(
     private route: ActivatedRoute,
@@ -24,6 +25,8 @@ export class ActivityComponent implements OnInit {
     await this.getId()
     this.getAllExpenses()
     this.getGroup()
+
+    this.generateItems() //TODO: skift til get members & balances
   }
 
   async getId() {
@@ -37,5 +40,12 @@ export class ActivityComponent implements OnInit {
 
   async getGroup() {
     this.group = await this.service.getGroup(this.id)
+  }
+
+  private generateItems() {
+    const count = this.members.length + 1;
+    for (let i = 0; i < 50; i++) {
+      this.members.push(count + i);
+    }
   }
 }
