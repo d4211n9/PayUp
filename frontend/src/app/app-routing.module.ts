@@ -3,6 +3,7 @@ import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 import {RegisterComponent} from "./auth/register/register.component";
 import {LoginComponent} from "./auth/login/login.component";
 import {CreateComponent} from "./group/create/create.component";
+import {ActivityComponent} from "./group/activity/activity.component";
 import {MyGroupsComponent} from "./group/my-groups/my-groups.component";
 import {HomePage} from "./home/home.page";
 
@@ -42,6 +43,10 @@ const routes: Routes = [
   {
     path: 'create',
     component: CreateComponent
+  },
+  {
+    path: 'group/:groupId/expenses',
+    component: ActivityComponent
   }
 ];
 

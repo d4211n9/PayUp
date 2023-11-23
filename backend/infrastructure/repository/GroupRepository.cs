@@ -1,4 +1,5 @@
 ﻿using System.Data.SqlTypes;
+using System.Security.Authentication;
 using api.models;
 using Dapper;
 using Npgsql;
@@ -19,7 +20,7 @@ public class GroupRepository
         var sql =
             $@"
             insert into groups.group (name, description, image_url, created_date) 
-            values (@Name, @Description, @Image_Url, @Created_Date) 
+            values (@Name, @Description, @ImageUrl, @CreatedDate) 
             returning *;
             ";
 
@@ -27,13 +28,12 @@ public class GroupRepository
         {
             using var conn = _dataSource.OpenConnection();
             return conn.QueryFirst<Group>(sql,
-                new { group.Name, group.Description, group.Image_Url, group.Created_Date });
+                new { group.Name, group.Description, group.ImageUrl, group.CreatedDate });
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             throw new SqlTypeException("Could not create group", e);
         }
-
     }
 
     public IEnumerable<Group> GetMyGroups(int userId)
@@ -64,9 +64,54 @@ public class GroupRepository
             using var conn = _dataSource.OpenConnection();
             return conn.Execute(sql, new { userId, groupId, isOwner }) == 1;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             throw new SqlTypeException("Could not add User to Group", e);
+        }
+    }
+
+    public bool IsUserInGroup(int userId, int groupId)
+    {
+        var sql =
+            $@"
+            select * from groups.group_members 
+            where user_id = @userId  
+            and group_id = @groupId;
+            ";
+
+        try
+        {
+            using var conn = _dataSource.OpenConnection();
+            return conn.QuerySingleOrDefault(sql, new { userId, groupId }) != null;
+        }
+        catch (Exception e)
+        {
+            throw new AuthenticationException();
+        }
+    }
+
+    public Group GetGroupById(int groupId)
+    {
+        var sql =
+            $@"
+            select 
+                id as {nameof(Group.Id)},
+                name as {nameof(Group.Name)},
+                description as {nameof(Group.Description)},
+                image_url as {nameof(Group.ImageUrl)},
+                created_date as {nameof(Group.CreatedDate)}
+            from groups.group 
+            where id = @groupId;
+            ";
+
+        try
+        {
+            using var conn = _dataSource.OpenConnection();
+            return conn.QueryFirst<Group>(sql, new { groupId });
+        }
+        catch (Exception e)
+        {
+            throw new SqlTypeException("Could not read the group", e);
         }
     }
 }

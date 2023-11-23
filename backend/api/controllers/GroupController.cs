@@ -15,7 +15,7 @@ public class GroupController : ControllerBase
     {
         _service = service;
     }
-    
+
     [RequireAuthentication]
     [HttpPost]
     [Route("/api/group/create")]
@@ -27,6 +27,20 @@ public class GroupController : ControllerBase
 
     [RequireAuthentication]
     [HttpGet]
+    [Route("/api/group/{groupId}/expenses")]
+    public IEnumerable<Expense> GetAllExpenses([FromRoute] int groupId)
+    {
+        return _service.GetAllExpenses(groupId, HttpContext.GetSessionData()!);
+    }
+
+    [RequireAuthentication]
+    [HttpGet]
+    [Route("/api/group/{groupId}")]
+    public Group GetGroupById([FromRoute] int groupId)
+    {
+        return _service.GetGroupById(groupId, HttpContext.GetSessionData()!);
+    }
+
     [Route("/api/mygroups")]
     public IEnumerable<Group> GetMyGroups()
     {
@@ -34,5 +48,4 @@ public class GroupController : ControllerBase
         var userId = sessionData.UserId;
         return _service.GetMyGroups(userId);
     }
-    
 }
