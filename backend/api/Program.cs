@@ -30,6 +30,7 @@ if (builder.Environment.IsProduction())
 builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddSingleton<PasswordHashRepository>();
 builder.Services.AddSingleton<GroupRepository>();
+builder.Services.AddSingleton<ExpenseRepository>();
 
 builder.Services.AddSingleton<AccountService>();
 builder.Services.AddSingleton<UserService>();

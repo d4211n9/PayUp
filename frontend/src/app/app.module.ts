@@ -12,6 +12,8 @@ import {AuthModule} from "./auth/auth.module";
 import {TokenService} from "../services/TokenService";
 import {AuthHttpInterceptor} from "../interceptors/auth-http-interceptor";
 import {GroupModule} from "./group/group.module";
+import {HomePageModule} from "./home/home.module";
+
 import {ProfileModule} from "./profile/profile.module";
 
 @NgModule({
@@ -21,7 +23,9 @@ import {ProfileModule} from "./profile/profile.module";
     AppRoutingModule,
     AuthModule,
     GroupModule,
-    ProfileModule
+    ProfileModule,
+    HomePageModule
+
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true},

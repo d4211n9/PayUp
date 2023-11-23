@@ -1,0 +1,20 @@
+<ion-card class="child" style="border-radius: 15px;" (click)="openExpense()">
+  <ion-item>
+    <ion-list class="ion-text-center" style="width: 10%">
+      <ion-card-subtitle class="ion-text-uppercase small-text">{{expense.createdDate | date: 'MMM'}}</ion-card-subtitle>
+      <ion-card-title class="medium-text">{{expense.createdDate | date: 'd'}}</ion-card-title>
+    </ion-list>
+    <ion-icon name="receipt" color="dark" style="width: 10%"></ion-icon>
+    <ion-list class="ion-padding" style="width: 50%">
+      <!-- TODO: Vi skal hente 'payer' fra user_on_expense for at undgå hardcoding af "you" nedenunder -->
+      <ion-card-subtitle class="small-text">You paid {{expense.amount}} DKK</ion-card-subtitle>
+      <ion-card-title class="medium-text">{{ expense.description}}</ion-card-title>
+    </ion-list>
+    <ion-list class="ion-text-end" style="width: 30%">
+      <!-- TODO: Vi skal hente info fra user_on_expense for at undgå hardcoding det her -->
+      <ion-card-subtitle class="small-text">You lent</ion-card-subtitle>
+      <ion-card-title class="medium-text">30 DKK</ion-card-title>
+    </ion-list>
+  </ion-item>
+</ion-card>
+
