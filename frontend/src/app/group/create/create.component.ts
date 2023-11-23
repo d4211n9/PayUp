@@ -4,6 +4,7 @@ import {firstValueFrom} from "rxjs";
 import {Group, GroupService} from "../group.service";
 import {ToastController} from "@ionic/angular";
 
+
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
@@ -45,7 +46,7 @@ export class CreateComponent  implements OnInit {
     };
 
     const createdGroup = await firstValueFrom(this.service.create(groupInfo as Group));
-    
+
     await (await this.toast.create({
       message: "Your group '" + createdGroup.name + "' was created successfully",
       color: "success",

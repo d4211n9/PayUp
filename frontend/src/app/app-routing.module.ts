@@ -3,27 +3,44 @@ import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 import {RegisterComponent} from "./auth/register/register.component";
 import {LoginComponent} from "./auth/login/login.component";
 import {CreateComponent} from "./group/create/create.component";
+import {MyGroupsComponent} from "./group/my-groups/my-groups.component";
+import {HomePage} from "./home/home.page";
+
 
 const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
+
   {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
   },
+
   {
     path: 'register',
     component: RegisterComponent
   },
+
   {
     path: 'login',
     component: LoginComponent
   },
+
   {
-    path: 'group/create',
+    path: 'mygroups',
+    component: MyGroupsComponent
+  },
+
+  {
+    path: '',
+    component: HomePage,
+  },
+
+  {
+    path: 'create',
     component: CreateComponent
   }
 ];

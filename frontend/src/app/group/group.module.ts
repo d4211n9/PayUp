@@ -6,14 +6,19 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {GroupService} from "./group.service";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {ErrorHttpInterceptor} from "../../interceptors/error-http-interceptors";
+import {GroupcardComponent} from "./groupcard/groupcard.component";
+
 
 
 @NgModule({
-  declarations: [CreateComponent],
+  declarations: [CreateComponent, GroupcardComponent],
   imports: [
     CommonModule,
     IonicModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+  ],
+  exports: [
+    GroupcardComponent
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true},

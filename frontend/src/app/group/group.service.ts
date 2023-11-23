@@ -1,5 +1,7 @@
-import {Injectable} from "@angular/core";
+import {Injectable, Input} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
+import {environment} from "../../environments/environment";
+import {firstValueFrom} from "rxjs";
 
 export interface Group {
   name: string,
@@ -13,8 +15,15 @@ export class GroupService {
   constructor(private readonly http: HttpClient) {
   }
 
+
+
   create(value: Group) {
     return this.http.post<Group>('http://localhost:5100/api/group/create', value)
   }
 
+
 }
+
+
+
+

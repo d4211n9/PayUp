@@ -26,4 +26,9 @@ public class GroupService
         if (!addedToGroup) throw new SqlNullValueException(" add user to the group");
         return responseGroup;
     }
+
+    public IEnumerable<Group> GetMyGroups(int userId)
+    {
+        return _groupRepo.GetMyGroups(userId);
+    }
 }
