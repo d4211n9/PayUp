@@ -19,4 +19,5 @@ public class UserInfoDto
     [Required, EmailAddress] public required string Email { get; set; }
     [Required] public required string FullName { get; set; }
     [Required, Phone] public required string PhoneNumber { get; set; }
+    [Required, Url] public required string ProfileUrl { get; set; }
 }
