@@ -4,17 +4,17 @@ import {AccountService, User} from "../auth/account.service";
 import {Group} from "../group/group.service";
 
 export interface FullUser {
-  id: number;
-  email: String;
-  fullName: string;
+  id: number,
+  email: String,
+  fullName: string,
   phoneNumber: string,
   created: Date,
   profileUrl: string,
 }
 
 export interface EditUserDto {
-  email: String;
-  fullName: string;
+  email: String,
+  fullName: string,
   phoneNumber: string,
   profileUrl: string,
 }
