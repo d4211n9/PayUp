@@ -4,45 +4,46 @@
 
 </ion-header>
 
-  <ion-toolbar>
+<ion-toolbar>
 
-    <ion-content></ion-content>
-    <!--<ion-progress-bar type=""></ion-progress-bar>-->
+  <!-- Content in the toolbar -->
+  <ion-content></ion-content>
 
-    <!--My Account icon and button-->
-    <ion-button id="btn_myaccount" slot="end" fill="clear">
-      <ion-icon
-        id="icon_myaccount" slot="icon-only" name="person-circle">
-      </ion-icon>
-    </ion-button>
+  <!-- My Account icon and button -->
+  <ion-button id="btn_myaccount" slot="end" fill="clear">
+    <ion-icon
+      id="icon_myaccount" slot="icon-only" name="person-circle">
+    </ion-icon>
+  </ion-button>
 
-    <!--Notifications icon and button-->
-    <ion-button
-      id="btn_notifications" slot="end" fill="clear">
-      <ion-icon
-        id="icon_notifications" slot="icon-only" name="notifications">
-      </ion-icon>
-    </ion-button>
+  <!-- Notifications icon and button -->
+  <ion-button
+    id="btn_notifications" slot="end" fill="clear">
+    <ion-icon
+      id="icon_notifications" slot="icon-only" name="notifications">
+    </ion-icon>
+  </ion-button>
 
-    <!--Burger menu button-->
-    <ion-buttons
-      id="btn_menu-button" slot="start">
-      <ion-menu-button
-        auto-hide="false">
-      </ion-menu-button>
-    </ion-buttons>
+  <!-- Burger menu button -->
+  <ion-buttons
+    id="btn_menu-button" slot="start">
+    <ion-menu-button
+      auto-hide="false">
+    </ion-menu-button>
+  </ion-buttons>
 
-    <!--PayUp logo-->
-    <div
-      id="div_logo">
-      <ion-img id="imglogo"
-               src=".././assets/icon/payup_logo.png"
-               alt="...payup toolbar logo"
-      ></ion-img>
-    </div>
-  </ion-toolbar>
+  <!-- PayUp logo -->
+  <div
+    id="div_logo">
+    <ion-img id="imglogo"
+             src=".././assets/icon/payup_logo.png"
+             alt="...payup toolbar logo"
+    ></ion-img>
+  </div>
+</ion-toolbar>
 
 <ng-template #toolbarContent>
 
-</ng-template>
+  <!-- Content for the toolbar template (empty in this case) -->
 
+</ng-template>

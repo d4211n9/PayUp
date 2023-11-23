@@ -1,27 +1,22 @@
 <ion-content>
 
+  <!-- Page title -->
   <h1 id="title" class="ion-text-center">
     My groups
   </h1>
 
-
-
+  <!-- Section for group cards -->
   <section>
     <app-groupcard
       *ngFor="let group of mygroups" [mygroups]="group">
     </app-groupcard>
-
   </section>
+
 </ion-content>
 
-<ion-fab slot="fixed" horizontal="center" vertical="bottom" >
+<!-- Floating action button for adding groups -->
+<ion-fab slot="fixed" horizontal="center" vertical="bottom">
   <ion-fab-button>
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>
 </ion-fab>
-
-
-
-
-
-
