@@ -1,7 +1,5 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {AccountService, User} from "../auth/account.service";
-import {Group} from "../group/group.service";
 
 export interface FullUser {
   id: number,

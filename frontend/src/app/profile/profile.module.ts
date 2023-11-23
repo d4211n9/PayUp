@@ -9,8 +9,6 @@ import {ErrorHttpInterceptor} from "../../interceptors/error-http-interceptors";
 import {GroupService} from "../group/group.service";
 import {AuthHttpInterceptor} from "../../interceptors/auth-http-interceptor";
 
-
-
 @NgModule({
   declarations: [ProfileComponent],
   imports: [
