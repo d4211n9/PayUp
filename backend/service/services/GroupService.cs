@@ -32,8 +32,6 @@ public class GroupService
     {
         int ownerId = _groupRepo.IsUserGroupOwner(groupInvitation.GroupId);
         
-        Console.WriteLine(groupInvitation.GroupId);
-        Console.WriteLine(ownerId + " " + sessionData.UserId);
         if (sessionData.UserId != ownerId)
             throw new SecurityException("You are not allowed to invite users to this group");
 
