@@ -245,9 +245,9 @@ Best regards, Alex
     {
         public string? token { get; set; }
     }
-    
-        public static void RunScript(string script)
-        {
+
+    public static void RunScript(string script)
+    {
         using var conn = DataSource.OpenConnection();
         try
         {
@@ -259,7 +259,7 @@ Best regards, Alex
         }
     }
 
-        public static string ExpensesScript = @"
+    public static string ExpensesScript = @"
 insert into users.user (email, full_name, phone_number, created, profile_url) VALUES ('user2@example.com', 'string', '12341234', '2023-11-21 10:48:24.584797', 'https://cdn-icons-png.flaticon.com/512/615/615075.png');
 
 insert into groups.group (id, name, description, image_url, created_date) VALUES (1, 'Studiegruppen', 'description', 'https://cdn-icons-png.flaticon.com/512/615/615075.png', '2023-11-21 10:48:24.584797');

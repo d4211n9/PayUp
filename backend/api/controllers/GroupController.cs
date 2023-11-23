@@ -41,6 +41,8 @@ public class GroupController : ControllerBase
         return _service.GetGroupById(groupId, HttpContext.GetSessionData()!);
     }
 
+    [RequireAuthentication]
+    [HttpGet]
     [Route("/api/mygroups")]
     public IEnumerable<Group> GetMyGroups()
     {

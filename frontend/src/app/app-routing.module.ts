@@ -20,6 +20,10 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: '',
+    component: HomePage,
+  },
+  {
     path: 'register',
     component: RegisterComponent
   },
@@ -30,10 +34,6 @@ const routes: Routes = [
   {
     path: 'mygroups',
     component: MyGroupsComponent
-  },
-  {
-    path: '',
-    component: HomePage,
   },
   {
     path: 'create',
