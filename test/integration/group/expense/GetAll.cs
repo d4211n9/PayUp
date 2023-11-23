@@ -26,7 +26,7 @@ public class GetAll
 
         var token = await Helper.Authorize(email);
         
-        Helper.AddExpenses();
+        Helper.RunScript(Helper.ExpensesScript);
 
         string url = "http://localhost:5100/api/group/" + groupId + "/expenses";
         HttpResponseMessage response;

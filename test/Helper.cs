@@ -234,16 +234,16 @@ Best regards, Alex
         public string? token { get; set; }
     }
 
-    public static void AddExpenses()
+    public static void RunScript(string script)
     {
         using var conn = DataSource.OpenConnection();
         try
         {
-            conn.Execute(ExpensesScript);
+            conn.Execute(script);
         }
         catch (Exception e)
         {
-            throw new Exception($@"THERE WAS AN ERROR ADDING EXPENSES TO THE DATABASE.", e);
+            throw new Exception($@"THERE WAS AN ERROR RUNNING THE SCRIPT: " + script, e);
         }
     }
     
