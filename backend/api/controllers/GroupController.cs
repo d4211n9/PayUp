@@ -50,4 +50,12 @@ public class GroupController : ControllerBase
         var userId = sessionData.UserId;
         return _service.GetMyGroups(userId);
     }
+    
+    [RequireAuthentication]
+    [HttpGet]
+    [Route("/api/group/{groupId}/users")]
+    public IEnumerable<ShortUserDto> GetUsersInGroup([FromRoute] int groupId)
+    {
+        return _service.GetUsersInGroup(groupId, HttpContext.GetSessionData()!);
+    }
 }

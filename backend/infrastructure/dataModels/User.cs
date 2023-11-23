@@ -21,3 +21,11 @@ public class UserInfoDto
     [Required, Phone] public required string PhoneNumber { get; set; }
     [Required, Url] public required string ProfileUrl { get; set; }
 }
+
+
+public class ShortUserDto
+{
+    public int Id { get; set; }
+    [Required] public required string FullName { get; set; }
+    [Required, Url] public required string ProfileUrl { get; set; }
+}

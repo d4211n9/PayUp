@@ -10,11 +10,12 @@ public class GroupService
 {
     private readonly GroupRepository _groupRepo;
     private readonly ExpenseRepository _expenseRepo;
-
-    public GroupService(GroupRepository groupRepo, ExpenseRepository expenseRepo)
+    private readonly UserRepository _userRepository;
+    public GroupService(GroupRepository groupRepo, ExpenseRepository expenseRepo, UserRepository userRepository)
     {
         _groupRepo = groupRepo;
         _expenseRepo = expenseRepo;
+        _userRepository = userRepository;
     }
 
     public Group CreateGroup(Group group, SessionData sessionData)
@@ -46,5 +47,11 @@ public class GroupService
     {
         return _groupRepo.GetMyGroups(userId);
 
+    }
+
+    public IEnumerable<ShortUserDto> GetUsersInGroup(int groupId, SessionData sessionData)
+    {
+        if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
+        return _userRepository.GetAllMembersOfGroup(groupId);
     }
 }
