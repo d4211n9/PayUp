@@ -5,7 +5,9 @@ import {FormsModule} from '@angular/forms';
 import {HomePage} from './home.page';
 
 import {HomePageRoutingModule} from './home-routing.module';
-import {GroupModule} from '../group/group.module';
+import {MyGroupsComponent} from "../group/my-groups/my-groups.component";
+import {ToolbarComponent} from "../toolbar/toolbar.component";
+import {GroupModule} from "../group/group.module";
 
 
 @NgModule({
@@ -14,9 +16,14 @@ import {GroupModule} from '../group/group.module';
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-    GroupModule
+    GroupModule,
+
   ],
-  declarations: [HomePage]
+  exports: [
+    HomePage,
+    ToolbarComponent
+  ],
+  declarations: [HomePage, MyGroupsComponent, ToolbarComponent]
 })
 export class HomePageModule {
 }

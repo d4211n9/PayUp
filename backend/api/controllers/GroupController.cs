@@ -1,5 +1,6 @@
 ﻿using api.filters;
 using api.models;
+using infrastructure.dataModels;
 using Microsoft.AspNetCore.Mvc;
 using service.services;
 
@@ -38,5 +39,13 @@ public class GroupController : ControllerBase
     public Group GetGroupById([FromRoute] int groupId)
     {
         return _service.GetGroupById(groupId, HttpContext.GetSessionData()!);
+    }
+
+    [Route("/api/mygroups")]
+    public IEnumerable<Group> GetMyGroups()
+    {
+        var sessionData = HttpContext.GetSessionData();
+        var userId = sessionData.UserId;
+        return _service.GetMyGroups(userId);
     }
 }

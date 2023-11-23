@@ -169,6 +169,18 @@ CREATE TABLE expenses.user_on_expense (
     FOREIGN KEY (expense_id) REFERENCES expenses.expense(id),
     PRIMARY KEY (user_id, expense_id)
 );
+
+-- Create the ‘groups.group_invitation’ table
+CREATE TABLE groups.group_invitation (
+	receiver_id INT NOT NULL,
+	group_id INT NOT NULL,
+	sender_id INT NOT NULL,
+	date_received TIMESTAMP NOT NULL,
+	FOREIGN KEY (receiver_id) REFERENCES users.user(id),
+	FOREIGN KEY (group_id) REFERENCES groups.group(id),
+	FOREIGN KEY (sender_id) REFERENCES users.user(id),
+	PRIMARY KEY (receiver_id, group_id)	
+);
  ";
 
     public static string NoResponseMessage = $@"
@@ -234,8 +246,11 @@ Best regards, Alex
         public string? token { get; set; }
     }
 
-    public static void RunScript(string script)
-    {
+
+
+    
+        public static void RunScript(string script)
+        {
         using var conn = DataSource.OpenConnection();
         try
         {
@@ -246,8 +261,8 @@ Best regards, Alex
             throw new Exception($@"THERE WAS AN ERROR RUNNING THE SCRIPT: " + script, e);
         }
     }
-    
-    public static string ExpensesScript = @"
+
+        public static string ExpensesScript = @"
 insert into users.user (email, full_name, phone_number, created, profile_url) VALUES ('user2@example.com', 'string', '12341234', '2023-11-21 10:48:24.584797', 'https://cdn-icons-png.flaticon.com/512/615/615075.png');
 
 insert into groups.group (id, name, description, image_url, created_date) VALUES (1, 'Studiegruppen', 'description', 'https://cdn-icons-png.flaticon.com/512/615/615075.png', '2023-11-21 10:48:24.584797');
@@ -267,7 +282,15 @@ insert into expenses.user_on_expense (user_id, expense_id, payer) values (2, 1, 
 insert into expenses.user_on_expense (user_id, expense_id, payer) values (1, 2, false);
 insert into expenses.user_on_expense (user_id, expense_id, payer) values (2, 2, true);
 insert into expenses.user_on_expense (user_id, expense_id, payer) values (2, 3, true);
-insert into expenses.user_on_expense (user_id, expense_id, payer) values (2, 4, true);
+insert into expenses.user_on_expense (user_id, expense_id, payer) values (2, 4, true);";
 
-";
+    public static string GroupsScript = @"
+insert into groups.group (id, name, description, image_url, created_date) VALUES (1, 'Studiegruppen', 'description', 'https://cdn-icons-png.flaticon.com/512/615/615075.png', '2023-11-21 10:48:24.584797');
+insert into groups.group (id, name, description, image_url, created_date) VALUES (2, 'Rockerborgen', 'description', 'https://cdn-icons-png.flaticon.com/512/615/615075.png', '2023-11-21 10:48:24.584797');
+insert into groups.group (id, name, description, image_url, created_date) VALUES (3, 'Weekend tur', 'description', 'https://cdn-icons-png.flaticon.com/512/615/615075.png', '2023-11-21 10:48:24.584797');
+
+insert into groups.group_members (user_id, group_id, owner) VALUES (1, 1, true);
+insert into groups.group_members (user_id, group_id, owner) VALUES (1, 2, true);
+insert into groups.group_members (user_id, group_id, owner) VALUES (2, 3, true);
+    ";
 }

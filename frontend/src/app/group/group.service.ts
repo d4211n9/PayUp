@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable, Input} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {firstValueFrom} from "rxjs";
@@ -21,6 +21,8 @@ export class GroupService {
   constructor(private readonly http: HttpClient) {
   }
 
+
+
   create(value: Group) {
     return this.http.post<Group>(environment.apiBaseUrl+'group/create', value)
   }
@@ -35,4 +37,9 @@ export class GroupService {
       return await firstValueFrom<Group>(call);
   }
 
+
 }
+
+
+
+

@@ -29,7 +29,7 @@ public class GroupService
         if (!addedToGroup) throw new SqlNullValueException(" add user to the group");
         return responseGroup;
     }
-
+    
     public IEnumerable<Expense> GetAllExpenses(int groupId, SessionData sessionData)
     {
         if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
@@ -40,5 +40,11 @@ public class GroupService
     {
         if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
         return _groupRepo.GetGroupById(groupId);
+    }
+
+    public IEnumerable<Group> GetMyGroups(int userId)
+    {
+        return _groupRepo.GetMyGroups(userId);
+
     }
 }
