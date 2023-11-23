@@ -21,13 +21,6 @@ export class ActivityComponent implements OnInit {
   }
 
   async ngOnInit() {
-    //TODO:
-    // Skal det her optimeres ifht. antal DB kald?
-    // getAllExpenses og getGroup bruger hver to kald:
-    // 1) verificere logged in user er medlem i gruppen
-    // 2) udfør respektiv opgave
-    // Det vil sige der pt. bliver lavet 4 kald så snart man går ind på en gruppe.
-    // Og det bliver nok væsentligt mere i takt med mere info skal hentes (balances/totals/groupmembers)
     await this.getId()
     this.getAllExpenses()
     this.getGroup()
