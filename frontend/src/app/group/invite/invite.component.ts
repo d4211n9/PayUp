@@ -66,6 +66,12 @@ export class InviteComponent  implements OnInit {
     this.navigate_to();
   }
 
+  search() {
+    this.current_page = 0;
+
+    this.navigate_to();
+  }
+
   async navigate_to() {
     let pagination: Pagination = {
       current_page: this.current_page,

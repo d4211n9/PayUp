@@ -1,8 +1,6 @@
 .content-container {
   width: 100vw;
   height: 100vh;
-
-  margin: 50px 0 50px 0;
 }
 
 .flex-container {
@@ -41,6 +39,10 @@ ion-content.flex-container {
 
 .pagination-container {
   justify-content: center;
+}
+
+.content {
+  height: 300px;
 }
 
 @media (min-width: 800px) {
