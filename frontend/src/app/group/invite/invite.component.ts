@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GroupService, GroupInvite} from "../group.service";
+import {GroupService, GroupInvitation} from "../group.service";
 import {UserService, InvitableUser, Pagination} from "../../user/user.service";
 import {ToastController} from "@ionic/angular";
 import {firstValueFrom} from "rxjs";
@@ -29,12 +29,12 @@ export class InviteComponent  implements OnInit {
   }
 
   async invite(user_id: number) {
-    let group_invite: GroupInvite = {
-      group_id: this.group_id,
-      user_id: user_id
+    let group_invite: GroupInvitation = {
+      groupId: this.group_id,
+      receiverId: user_id,
     }
 
-    let success = await firstValueFrom(this.group_service.invite(group_invite));
+    let success: boolean = await firstValueFrom(this.group_service.invite(group_invite));
 
     if (success) {
       await this.toast.create({
@@ -42,6 +42,8 @@ export class InviteComponent  implements OnInit {
         color: 'success',
         duration: 5000
       });
+
+      this.displayed_users = this.displayed_users.filter(value => value.id != user_id);
     }
     else {
       await this.toast.create({

@@ -1,6 +1,8 @@
 .content-container {
   width: 100vw;
   height: 100vh;
+
+  margin: 50px 0 50px 0;
 }
 
 .flex-container {
@@ -22,6 +24,14 @@
 
 .user {
   margin-bottom: 20px;
+}
+
+.user ion-img {
+  height: 75px;
+}
+
+ion-content.flex-container {
+  flex-grow: 1;
 }
 
 .search-bar {

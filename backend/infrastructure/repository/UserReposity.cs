@@ -121,14 +121,13 @@ SELECT
         invitableUserSearch.SearchQuery += "%";
         
         string sql = @"
-                    SELECT DISTINCT users.user.id, users.user.full_name AS FullName, users.user.profile_url AS ProfileUrl
+                    SELECT users.user.id, users.user.full_name AS FullName, users.user.profile_url AS ProfileUrl
                     FROM users.user
-                    INNER JOIN groups.group_members
-                    ON groups.group_members.user_id = users.user.id
-                    WHERE groups.group_members.group_id != @GroupId 
+                    WHERE users.user.id NOT IN (SELECT groups.group_members.user_id FROM groups.group_members WHERE group_members.group_id = @GroupId)
+                    AND users.user.id NOT IN (SELECT groups.group_invitation.receiver_id FROM groups.group_invitation WHERE group_invitation.group_id = @GroupId)
                     AND users.user.full_name LIKE @SearchQuery
                     LIMIT @PageSize
-                    OFFSET @CurrentPage;";
+                    OFFSET @CurrentPage";
         try
         {
             using NpgsqlConnection conn = _dataSource.OpenConnection();
@@ -136,7 +135,7 @@ SELECT
             {
                 invitableUserSearch.SearchQuery,
                 invitableUserSearch.GroupId,
-                invitableUserSearch.Pagination.CurrentPage,
+                CurrentPage = invitableUserSearch.Pagination.CurrentPage * invitableUserSearch.Pagination.PageSize,
                 invitableUserSearch.Pagination.PageSize
             });
         }

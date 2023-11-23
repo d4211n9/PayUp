@@ -1,19 +1,17 @@
 <div class="flex-container content-container">
-  <ion-card class="content">
-    <ion-card-content>
-      <div class="flex-container">
-        <ion-searchbar class="search-bar" [value]="search_query" [debounce]="1000" (ionInput)="navigate_to()"></ion-searchbar>
-        <div class="flex-row user" *ngFor="let user of displayed_users">
-          <ion-img alt="{{user.fullName}}'s profile image" src="{{user.profileUrl}}"></ion-img>
-          <ion-text>{{user.fullName}}</ion-text>
-          <ion-button class="flex-row-button" (click)="invite(user.id)">Invite</ion-button>
-        </div>
-        <div class="flex-row pagination-container">
-          <ion-button (click)="page_previous()"><</ion-button>
-          <ion-button>{{current_page + 1}}</ion-button>
-          <ion-button (click)="page_next()">></ion-button>
-        </div>
+  <div class="content">
+    <ion-searchbar class="search-bar" [(ngModel)]="search_query" [debounce]="1000" (ionInput)="navigate_to()"></ion-searchbar>
+    <ion-content class="flex-container">
+      <div class="flex-row user" *ngFor="let user of displayed_users">
+        <ion-img alt="{{user.fullName}}'s profile image" src="{{user.profileUrl}}"></ion-img>
+        <ion-text>{{user.fullName}}</ion-text>
+        <ion-button class="flex-row-button" (click)="invite(user.id)">Invite</ion-button>
       </div>
-    </ion-card-content>
-  </ion-card>
+    </ion-content>
+    <div class="flex-row pagination-container">
+      <ion-button (click)="page_previous()"><</ion-button>
+      <ion-button>{{current_page + 1}}</ion-button>
+      <ion-button (click)="page_next()">></ion-button>
+    </div>
+  </div>
 </div>

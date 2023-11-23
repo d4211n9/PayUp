@@ -1,5 +1,6 @@
 ﻿using api.filters;
 using api.models;
+using infrastructure.dataModels;
 using Microsoft.AspNetCore.Mvc;
 using service.services;
 
@@ -22,5 +23,14 @@ public class GroupController : ControllerBase
     {
         var sessionData = HttpContext.GetSessionData();
         return _service.CreateGroup(group, sessionData!);
+    }
+
+    [RequireAuthentication]
+    [HttpPost]
+    [Route("/api/group/invite")]
+    public bool InviteUserToGroup([FromBody] GroupInvitation groupInvitation)
+    {
+        SessionData? sessionData = HttpContext.GetSessionData();
+        return _service.InviteUserToGroup(sessionData, groupInvitation);
     }
 }
