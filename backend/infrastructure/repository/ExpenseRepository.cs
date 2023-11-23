@@ -20,6 +20,7 @@ public class ExpenseRepository
             $@"
             select 
                 id as {nameof(Expense.Id)}, 
+                user_id as {nameof(Expense.UserId)}, 
                 group_id as {nameof(Expense.GroupId)},
                 description as {nameof(Expense.Description)},
                 amount as {nameof(Expense.Amount)},
