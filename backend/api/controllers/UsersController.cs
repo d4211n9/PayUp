@@ -10,10 +10,6 @@ namespace api.controllers;
 public class UsersController : ControllerBase
 {
     
-    //todo nice to haves:
-    //todo get list of usersShort (should be with a max list size, and only reply ith username and picture )
-
-
     private readonly UserService _service;
     public UsersController(UserService service)
     {
