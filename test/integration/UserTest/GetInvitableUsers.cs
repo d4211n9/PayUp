@@ -80,7 +80,6 @@ public class GetInvitableUsers
         {
             throw new Exception(Helper.NoResponseMessage, e);
         }
-
         using (new AssertionScope())
         {
             responseMessage.IsSuccessStatusCode.Should().BeTrue();
@@ -89,6 +88,35 @@ public class GetInvitableUsers
             members.Should().NotBeNullOrEmpty();
             invited.Should().NotBeNullOrEmpty();
             invitable.Should().NotBeNullOrEmpty();
+
+            IEnumerable<InvitableUser> inviteMembers =
+                members.Select(user => new InvitableUser()
+                {
+                    FullName = user.FullName,
+                    Id = user.Id,
+                    ProfileUrl = user.ProfileUrl
+                });
+            
+            IEnumerable<InvitableUser> inviteInvited =
+                invited.Select(user => new InvitableUser()
+                {
+                    FullName = user.FullName,
+                    Id = user.Id,
+                    ProfileUrl = user.ProfileUrl
+                });
+            
+            IEnumerable<InvitableUser> inviteInvitable =
+                invitable.Select(user => new InvitableUser()
+                {
+                    FullName = user.FullName,
+                    Id = user.Id,
+                    ProfileUrl = user.ProfileUrl
+                });
+
+
+            responseUsers.Should().NotContain(inviteMembers);
+            responseUsers.Should().NotContain(inviteInvited);
+            responseUsers.Should().Contain(inviteInvitable);
         }
     }
 
