@@ -11,6 +11,7 @@ public class GroupService
     private readonly GroupRepository _groupRepo;
     private readonly ExpenseRepository _expenseRepo;
     private readonly UserRepository _userRepository;
+
     public GroupService(GroupRepository groupRepo, ExpenseRepository expenseRepo, UserRepository userRepository)
     {
         _groupRepo = groupRepo;
@@ -26,11 +27,13 @@ public class GroupService
         if (ReferenceEquals(responseGroup, null)) throw new SqlNullValueException(" create group");
 
         //Add the creator as member(owner) in the group
-        var addedToGroup = _groupRepo.AddUserToGroup(sessionData.UserId, responseGroup.Id, true);
+        UserInGroupDto userInGroupDto = new UserInGroupDto()
+            { UserId = sessionData.UserId, GroupId = responseGroup.Id, IsOwner = true };
+        var addedToGroup = _groupRepo.AddUserToGroup(userInGroupDto);
         if (!addedToGroup) throw new SqlNullValueException(" add user to the group");
         return responseGroup;
     }
-    
+
     public IEnumerable<Expense> GetAllExpenses(int groupId, SessionData sessionData)
     {
         if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
@@ -46,7 +49,6 @@ public class GroupService
     public IEnumerable<Group> GetMyGroups(int userId)
     {
         return _groupRepo.GetMyGroups(userId);
-
     }
 
     public IEnumerable<ShortUserDto> GetUsersInGroup(int groupId, SessionData sessionData)

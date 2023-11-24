@@ -63,13 +63,52 @@ public class ExpenseRepository
                 GroupId = expenseDto.GroupId,
                 Description = expenseDto.Description,
                 Amount = expenseDto.Amount,
-                CreatedDate = DateTime.UtcNow
+                CreatedDate = expenseDto.CreatedDate,
             });
+
             return expense;
         }
         catch (Exception e)
         {
             throw new SqlTypeException("Could not create expense", e);
+        }
+    }
+
+    public IEnumerable<UserOnExpenseDto?> AddUsersToExpense(IEnumerable<UserOnExpenseDto>? userOnExpense)
+    {
+        var sql1 = "";
+        var sql2 = "";
+        var expenseId = 0;
+        if (userOnExpense == null) throw new SqlNullValueException();
+        var userOnExpenseDtos = userOnExpense.ToList();
+        foreach (var uoeDto in userOnExpenseDtos!)
+        {
+            sql1 += $@"
+            INSERT INTO expenses.user_on_expense (user_id, expense_id, amount)
+            VALUES ({uoeDto.UserId}, {uoeDto.ExpenseId}, {uoeDto.Amount}); 
+            ";
+            
+            expenseId = uoeDto.ExpenseId;
+        }
+
+        sql2 = $@"
+        select 
+            user_id as {nameof(UserOnExpenseDto.UserId)}, 
+            expense_id as {nameof(UserOnExpenseDto.ExpenseId)},
+            amount as {nameof(UserOnExpenseDto.Amount)}
+        from expenses.user_on_expense 
+        where expense_id = {expenseId} ;
+        ";
+
+        try
+        {
+            using var conn = _dataSource.OpenConnection();
+            conn.Execute(sql1);
+            return conn.Query<UserOnExpenseDto?>(sql2);
+        }
+        catch (Exception e)
+        {
+            throw new SqlTypeException("Could not add users to expense", e);
         }
     }
 }
