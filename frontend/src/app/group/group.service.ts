@@ -10,10 +10,24 @@ export interface Group {
   createdDate: Date
 }
 
+export interface FullExpense {
+  expense: Expense
+  usersOnExpense: UsersOnExpense[]
+}
+
 export interface Expense {
-  description: string,
-  amount: number,
-  createdDate: Date
+  id: number
+  userId: number
+  groupId: number
+  description: string
+  amount: number
+  createdDate: string
+}
+
+export interface UsersOnExpense {
+  userId: number
+  expenseId: number
+  amount: number
 }
 
 @Injectable()
@@ -28,8 +42,8 @@ export class GroupService {
   }
 
   async getAllExpenses(groupId: string) {
-    const call = this.http.get<Expense[]>(environment.apiBaseUrl+'/group/'+groupId+'/expenses');
-    return await firstValueFrom<Expense[]>(call);
+    const call = this.http.get<FullExpense[]>(environment.apiBaseUrl+'/group/'+groupId+'/expenses');
+    return await firstValueFrom<FullExpense[]>(call);
   }
 
   async getGroup(groupId: string) {

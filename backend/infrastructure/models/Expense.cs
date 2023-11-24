@@ -19,7 +19,7 @@ public class CreateExpenseDto
     public DateTime CreatedDate { get; set; }
 }
 
-public class UserOnExpenseDto
+public class UserOnExpense
 {
     public int UserId { get; set; }
     public int ExpenseId { get; set; }
@@ -29,11 +29,11 @@ public class UserOnExpenseDto
 public class FullExpense
 {
     public required Expense Expense { get; set; }
-    public required IEnumerable<UserOnExpenseDto>? UsersOnExpense { get; set; }
+    public required IEnumerable<UserOnExpense>? UsersOnExpense { get; set; }
 }
 
 public class CreateFullExpense
 {
     public required CreateExpenseDto Expense { get; set; }
-    public required IEnumerable<UserOnExpenseDto> UsersOnExpense { get; set; }
+    public required IEnumerable<UserOnExpense> UsersOnExpense { get; set; }
 }

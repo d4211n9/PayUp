@@ -39,6 +39,30 @@ public class ExpenseRepository
             throw new SqlNullValueException(" read expenses from group", e);
         }
     }
+    
+    public IEnumerable<UserOnExpense> GetUsersOnExpenses(int groupId)
+    {
+        var sql =
+            $@"
+            select 
+                uoe.user_id as {nameof(UserOnExpense.UserId)}, 
+                expense_id as {nameof(UserOnExpense.ExpenseId)}, 
+                uoe.amount as {nameof(UserOnExpense.Amount)}
+            from expenses.expense 
+                join expenses.user_on_expense as uoe on expense.id = uoe.expense_id 
+            where group_id = @groupId;
+            ";
+
+        try
+        {
+            using var conn = _dataSource.OpenConnection();
+            return conn.Query<UserOnExpense>(sql, new { groupId });
+        }
+        catch (Exception e)
+        {
+            throw new SqlNullValueException(" read users on expenses from group", e);
+        }
+    }
 
     public Expense CreateExpense(CreateExpenseDto expenseDto)
     {
@@ -74,14 +98,15 @@ public class ExpenseRepository
         }
     }
 
-    public IEnumerable<UserOnExpenseDto?> AddUsersToExpense(IEnumerable<UserOnExpenseDto>? userOnExpense)
+    public IEnumerable<UserOnExpense?> AddUsersToExpense(IEnumerable<UserOnExpense>? userOnExpense)
     {
         var sql1 = "";
-        var sql2 = "";
         var expenseId = 0;
+        
         if (userOnExpense == null) throw new SqlNullValueException();
-        var userOnExpenseDtos = userOnExpense.ToList();
-        foreach (var uoeDto in userOnExpenseDtos!)
+        
+        var usersOnExpense = userOnExpense.ToList();
+        foreach (var uoeDto in usersOnExpense!)
         {
             sql1 += $@"
             INSERT INTO expenses.user_on_expense (user_id, expense_id, amount)
@@ -91,11 +116,11 @@ public class ExpenseRepository
             expenseId = uoeDto.ExpenseId;
         }
 
-        sql2 = $@"
+        var sql2 = $@"
         select 
-            user_id as {nameof(UserOnExpenseDto.UserId)}, 
-            expense_id as {nameof(UserOnExpenseDto.ExpenseId)},
-            amount as {nameof(UserOnExpenseDto.Amount)}
+            user_id as {nameof(UserOnExpense.UserId)}, 
+            expense_id as {nameof(UserOnExpense.ExpenseId)},
+            amount as {nameof(UserOnExpense.Amount)}
         from expenses.user_on_expense 
         where expense_id = {expenseId} ;
         ";
@@ -104,7 +129,7 @@ public class ExpenseRepository
         {
             using var conn = _dataSource.OpenConnection();
             conn.Execute(sql1);
-            return conn.Query<UserOnExpenseDto?>(sql2);
+            return conn.Query<UserOnExpense?>(sql2);
         }
         catch (Exception e)
         {

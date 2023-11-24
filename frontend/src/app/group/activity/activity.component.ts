@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Expense, Group, GroupService} from "../group.service";
+import {FullExpense, Group, GroupService} from "../group.service";
 import {firstValueFrom} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 
@@ -9,7 +9,7 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./activity.component.scss'],
 })
 export class ActivityComponent implements OnInit {
-  expenses: Expense[] = []
+  expenses: FullExpense[] = []
   group: Group | undefined;
   id: any;
   subpage = 'activity';

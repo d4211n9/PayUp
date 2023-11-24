@@ -34,12 +34,6 @@ public class GroupService
         return responseGroup;
     }
 
-    public IEnumerable<Expense> GetAllExpenses(int groupId, SessionData sessionData)
-    {
-        if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
-        return _expenseRepo.GetAllExpenses(groupId);
-    }
-
     public Group GetGroupById(int groupId, SessionData sessionData)
     {
         if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();

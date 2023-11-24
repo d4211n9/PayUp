@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Expense} from "../../group/group.service";
+import {Expense, FullExpense} from "../../group/group.service";
 import {DatePipe} from "@angular/common";
 
 @Component({
@@ -15,7 +15,7 @@ export class ExpensecardComponent  implements OnInit {
   ngOnInit() {
   }
 
-  @Input() expense!: Expense;
+  @Input() expense!: FullExpense;
 
   openExpense() {
     console.log("TODO HAHahah goteeeem")

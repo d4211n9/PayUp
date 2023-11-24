@@ -1,5 +1,6 @@
 ﻿using System.Security.Authentication;
 using api.models;
+using infrastructure.dataModels;
 using infrastructure.repository;
 
 namespace service.services;
@@ -23,10 +24,47 @@ public class ExpenseService
             throw new AuthenticationException();
         Expense responseExpense = _expenseRepo.CreateExpense(createFullExpense.Expense);
 
-        IEnumerable<UserOnExpenseDto?> userOnExpenseDtos =
+        IEnumerable<UserOnExpense?> usersOnExpense =
             _expenseRepo.AddUsersToExpense(createFullExpense.UsersOnExpense);
 
-        FullExpense fullExpense = new FullExpense() { Expense = responseExpense, UsersOnExpense = userOnExpenseDtos! };
+        FullExpense fullExpense = new FullExpense() { Expense = responseExpense, UsersOnExpense = usersOnExpense! };
         return fullExpense;
+    }
+    
+    public IEnumerable<FullExpense> GetAllExpenses(int groupId, SessionData sessionData)
+    {
+        //Assert logged in user is authorized to access this group (api checked authentication)
+        if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
+        
+        //Query all expenses & users on expenses from db
+        IEnumerable<Expense> expenseDtos = _expenseRepo.GetAllExpenses(groupId).ToList();
+        IEnumerable<UserOnExpense> usersOnExpenses = _expenseRepo.GetUsersOnExpenses(groupId).ToList();
+        
+        List<FullExpense> fullExpenses = new List<FullExpense>();
+        
+        //Loop through each expense
+        foreach (var expense in expenseDtos)
+        {
+            //Create a temp list of users linked to the current expense from outer loop
+            List<UserOnExpense> usersOnExpense = new List<UserOnExpense>();
+            
+            //Loop through each user on expense entry
+            foreach (var uoe in usersOnExpenses)
+            {
+                //Add linked users to the temp list
+                if (expense.Id.Equals(uoe.ExpenseId))
+                {
+                    usersOnExpense.Add(uoe);
+                }
+            }
+            
+            //Combine the expense with the list of linked users to make a full expense
+            FullExpense fullExpense = new FullExpense() { Expense = expense, UsersOnExpense = usersOnExpense! };
+            
+            //Add to the final list of full expenses
+            fullExpenses.Add(fullExpense);
+        }
+        
+        return fullExpenses;
     }
 }

@@ -34,4 +34,12 @@ public class ExpenseController : ControllerBase
     {
         return _service.CreateExpense(expense);
     }
+    
+    [RequireAuthentication]
+    [HttpGet]
+    [Route("/api/group/{groupId}/expenses")]
+    public IEnumerable<FullExpense> GetAllExpenses([FromRoute] int groupId)
+    {
+        return _service.GetAllExpenses(groupId, HttpContext.GetSessionData()!);
+    }
 }
