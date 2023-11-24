@@ -22,6 +22,7 @@ export interface Expense {
   description: string
   amount: number
   createdDate: string
+  fullName: string
 }
 
 export interface UsersOnExpense {

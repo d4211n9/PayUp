@@ -19,13 +19,15 @@ public class ExpenseRepository
         var sql =
             $@"
             select 
-                id as {nameof(Expense.Id)}, 
+                expense.id as {nameof(Expense.Id)}, 
                 user_id as {nameof(Expense.UserId)}, 
                 group_id as {nameof(Expense.GroupId)},
                 description as {nameof(Expense.Description)},
                 amount as {nameof(Expense.Amount)},
-                created_date as {nameof(Expense.CreatedDate)}
+                created_date as {nameof(Expense.CreatedDate)},
+                u.full_name as {nameof(Expense.FullName)}
             from expenses.expense 
+                join users.user as u on expense.user_id = u.id 
             where group_id = @groupId;
             ";
 

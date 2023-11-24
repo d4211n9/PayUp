@@ -7,12 +7,12 @@
     <ion-icon name="receipt" color="dark" style="width: 10%"></ion-icon>
     <ion-list class="ion-padding" style="width: 50%">
       <!-- TODO: Vi skal hente 'payer' fra user_on_expense for at undgå hardcoding af "you" nedenunder -->
-      <ion-card-subtitle class="small-text">{{expense.expense.userId}} paid {{expense.expense.amount}} DKK for {{expense.usersOnExpense.length}} people</ion-card-subtitle>
+      <ion-card-subtitle class="small-text">{{expense.expense.fullName}} paid {{expense.expense.amount}} DKK for {{expense.usersOnExpense.length}} people</ion-card-subtitle>
       <ion-card-title class="medium-text">{{ expense.expense.description}}</ion-card-title>
     </ion-list>
     <ion-list class="ion-text-end" style="width: 30%">
       <!-- TODO: Vi skal hente info fra user_on_expense for at undgå hardcoding det her -->
-      <ion-card-subtitle class="small-text">{{expense.expense.userId}} lent</ion-card-subtitle>
+      <ion-card-subtitle class="small-text">{{expense.expense.fullName}} lent</ion-card-subtitle>
       <ion-card-title class="medium-text">{{(expense.expense.amount / expense.usersOnExpense.length) * (expense.usersOnExpense.length-1)}}</ion-card-title>
     </ion-list>
   </ion-item>
