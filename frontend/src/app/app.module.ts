@@ -12,6 +12,8 @@ import {AuthModule} from "./auth/auth.module";
 import {TokenService} from "../services/TokenService";
 import {AuthHttpInterceptor} from "../interceptors/auth-http-interceptor";
 import {GroupModule} from "./group/group.module";
+import {HomePageModule} from "./home/home.module";
+import {ProfileModule} from "./profile/profile.module";
 import {UserModule} from "./user/user.module";
 
 @NgModule({
@@ -21,6 +23,8 @@ import {UserModule} from "./user/user.module";
     AppRoutingModule,
     AuthModule,
     GroupModule,
+    ProfileModule,
+    HomePageModule,
     UserModule
   ],
   providers: [

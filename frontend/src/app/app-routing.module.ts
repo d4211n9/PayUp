@@ -4,6 +4,11 @@ import {RegisterComponent} from "./auth/register/register.component";
 import {LoginComponent} from "./auth/login/login.component";
 import {InviteComponent} from "./group/invite/invite.component";
 import {CreateComponent} from "./group/create/create.component";
+import {ProfileComponent} from "./profile/profile.component";
+import {ActivityComponent} from "./group/activity/activity.component";
+import {MyGroupsComponent} from "./group/my-groups/my-groups.component";
+import {HomePage} from "./home/home.page";
+
 
 const routes: Routes = [
   {
@@ -14,6 +19,10 @@ const routes: Routes = [
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
+  },
+  {
+    path: '',
+    component: HomePage,
   },
   {
     path: 'register',
@@ -28,8 +37,20 @@ const routes: Routes = [
     component: InviteComponent
   },
   {
-    path: 'group/create',
+    path: 'mygroups',
+    component: MyGroupsComponent
+  },
+  {
+    path: 'create',
     component: CreateComponent
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent
+  },
+  {
+    path: 'group/:groupId/expenses',
+    component: ActivityComponent
   }
 ];
 

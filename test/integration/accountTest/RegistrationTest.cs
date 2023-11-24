@@ -2,7 +2,7 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using FluentAssertions.Execution;
 
-namespace test.integration;
+namespace test;
 
 public class RegistrationTest
 {

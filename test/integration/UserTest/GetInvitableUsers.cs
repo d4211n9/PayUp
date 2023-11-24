@@ -1,10 +1,13 @@
+using System.Collections;
 using System.Net.Http.Json;
-using System.Text.Json;
 using Dapper;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using Microsoft.EntityFrameworkCore.Update;
+using Newtonsoft.Json;
 using Npgsql;
 using test.models;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace test.integration.UserTest;
 
@@ -23,7 +26,7 @@ public class GetInvitableUsers
     public async Task GetInvitableUsersTest()
     {
         string email = "owner@example.com";
-        string searchQuery = "";
+        string searchQuery = "a";
         int currentPage = 0;
         int pageSize = 5;
         
@@ -38,23 +41,18 @@ public class GetInvitableUsers
         try
         {
             // Create group and its owner
-            int group1Id = CreateGroup();
-            User owner = CreateUser(
-                email,
-                "Patrick Darling Andersen",
-                55555555,
-                DateTime.Now,
-                "https://www.google.com");
-            AddUserToGroup(owner.Id, group1Id, true);
+            int group1Id = await CreateGroup();
+            int ownerId = await GetUserId(email);
+            await AddUserToGroup(ownerId, group1Id, true);
 
             // Create group members
-            members = AddMembers(group1Id);
+            members = await AddMembers(group1Id);
 
             // Create invited members
-            invited = AddInvitedUsers(group1Id, owner.Id);
+            invited = await AddInvitedUsers(group1Id, ownerId);
 
             // Create invitable users 
-            invitable = CreateUsers();
+            invitable = await CreateUsers();
 
             _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
@@ -65,13 +63,14 @@ public class GetInvitableUsers
             string url = "http://localhost:5100/api/user?" 
                 + searchParam
                 + currentPageParam
-                + pageSizeParam;
+                + pageSizeParam
+                + groupIdParam;
 
             responseMessage = await _httpClient.GetAsync(url);
 
             string json = await responseMessage.Content.ReadAsStringAsync();
-
-            responseUsers = JsonSerializer.Deserialize<IEnumerable<InvitableUser>>(json);
+            
+            responseUsers = JsonConvert.DeserializeObject<IEnumerable<InvitableUser>>(json);
             
             TestContext.WriteLine("The full body response: "
                                   + json);
@@ -120,45 +119,58 @@ public class GetInvitableUsers
         }
     }
 
-    private IEnumerable<User> CreateUsers()
+    private async Task<int> GetUserId(string email)
     {
-        User user1 = CreateUser(
+        string sql = @"
+                    SELECT users.user.id
+                    FROM users.user
+                    WHERE users.user.email = @email";
+
+        using (NpgsqlConnection conn = Helper.DataSource.OpenConnection())
+        {
+            return await Task.FromResult(conn.QuerySingleOrDefault<int>(sql, new { email }));
+        }
+    }
+
+    private async Task<List<User>> CreateUsers()
+    {
+        User user1 = await CreateUser(
             "userfgoag@example.com", 
             "Patrick Darling Andersen",
             55555555,
             DateTime.Now,
             "https://www.google.com");
-        User user2 = CreateUser(
+        User user2 = await CreateUser(
             "userkosfvdskvdsvps@example.com", 
             "Patrick Darling Andersen",
             55555555,
             DateTime.Now,
             "https://www.google.com");
-        User user3 = CreateUser(
+        User user3 = await CreateUser(
             "uservoskvdakfkaok@example.com", 
             "Patrick Darling Andersen",
             55555555,
             DateTime.Now,
             "https://www.google.com");
 
-        return new[] { user1, user2, user3 };
+        return new List<User>(new[] { user1, user2, user3 });
     }
 
-    private IEnumerable<User> AddInvitedUsers(int groupId, int ownerId)
+    private async Task<List<User>> AddInvitedUsers(int groupId, int ownerId)
     {
-        User invited1 = CreateUser(
+        User invited1 = await CreateUser(
             "userf@example.com", 
             "Patrick Darling Andersen",
             55555555,
             DateTime.Now,
             "https://www.google.com");
-        User invited2 = CreateUser(
+        User invited2 = await CreateUser(
             "userkosfs@example.com", 
             "Patrick Darling Andersen",
             55555555,
             DateTime.Now,
             "https://www.google.com");
-        User invited3 = CreateUser(
+        User invited3 = await CreateUser(
             "uservoskvdak@example.com", 
             "Patrick Darling Andersen",
             55555555,
@@ -168,10 +180,10 @@ public class GetInvitableUsers
         InviteUser(invited2.Id, groupId, ownerId, DateTime.Now);    
         InviteUser(invited3.Id, groupId, ownerId, DateTime.Now);
         
-        return new[] { invited1, invited2, invited3 };
+        return new List<User>(new[] { invited1, invited2, invited3 });
     }
 
-    private User CreateUser(
+    private async Task<User> CreateUser(
         string email,
         string fullName,
         int phoneNumber,
@@ -179,24 +191,24 @@ public class GetInvitableUsers
         string profileUrl)
     {
         string sql = @"
-                  INSERT INTO users.user (email, full_name, phone_number, created, profile_url) "" +
-                  ""VALUES (@email, @fullName, @phoneNumber, @created, @profileUrl) "" +
-                  ""RETURNING *";
+                  INSERT INTO users.user (email, full_name, phone_number, created, profile_url)
+                  VALUES (@email, @fullName, @phoneNumber, @created, @profileUrl)
+                  RETURNING email, full_name AS FullName, phone_number AS PhoneNumber, created, profile_url AS ProfileUrl";
 
         using (NpgsqlConnection conn = Helper.DataSource.OpenConnection())
         {
-            return conn.QueryFirst<User>(sql, new
+            return await Task.FromResult(conn.QueryFirst<User>(sql, new
             {
                 email,
                 fullName,
                 phoneNumber,
                 created,
                 profileUrl
-            });
+            }));
         }
     }
 
-    private bool InviteUser(
+    private async Task<bool> InviteUser(
         int receiverId,
         int groupId,
         int senderId,
@@ -209,31 +221,31 @@ public class GetInvitableUsers
 
         using (NpgsqlConnection conn = Helper.DataSource.OpenConnection())
         {
-            return conn.Execute(sql, new
+            return await Task.FromResult(conn.Execute(sql, new
             {
                 receiverId,
                 groupId,
                 senderId,
                 timeNow
-            }) == 1;
+            }) == 1);
         }
     }
 
-    private IEnumerable<User> AddMembers(int groupId)
+    private async Task<List<User>> AddMembers(int groupId)
     {
-        User member1 = CreateUser(
+        User member1 = await CreateUser(
             "user1@example.com", 
             "Patrick Darling Andersen",
             55555555,
             DateTime.Now,
             "https://www.google.com");
-        User member2 = CreateUser(
-            "user3@example.com", 
+        User member2 = await CreateUser(
+            "user3opgogpsa@example.com", 
             "Patrick Darling Andersen",
             55555555,
             DateTime.Now,
             "https://www.google.com");
-        User member3 = CreateUser(
+        User member3 = await CreateUser(
             "user3@example.com", 
             "Patrick Darling Andersen",
             55555555,
@@ -243,10 +255,10 @@ public class GetInvitableUsers
         AddUserToGroup(member2.Id, groupId, false);
         AddUserToGroup(member3.Id, groupId, false);
 
-        return new[] { member1, member2, member3 };
+        return new List<User>(new[] { member1, member2, member3 });
     }
     
-    private bool AddUserToGroup(int userId, int groupId, bool owner)
+    private async Task<bool> AddUserToGroup(int userId, int groupId, bool owner)
     {
         string sql = @"
                 insert into groups.group_members (user_id, group_id, owner) 
@@ -254,16 +266,16 @@ public class GetInvitableUsers
 
         using (NpgsqlConnection conn = Helper.DataSource.OpenConnection())
         {
-            return conn.Execute(sql, new
+            return await Task.FromResult(conn.Execute(sql, new
             {
                 userId,
                 groupId,
                 owner
-            }) == 1;
+            }) == 1);
         }
     }
 
-    private int CreateGroup()
+    private async Task<int> CreateGroup()
     {
         string name = "Group1";
         string description = "Description1";
@@ -277,13 +289,13 @@ public class GetInvitableUsers
 
         using (NpgsqlConnection conn = Helper.DataSource.OpenConnection())
         {
-            return conn.Execute(sql, new
+            return await Task.FromResult(conn.Execute(sql, new
             {
                 name,
                 description,
                 imageUrl,
                 createdDate
-            });
+            }));
         }
     }
 }

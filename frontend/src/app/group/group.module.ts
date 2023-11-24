@@ -8,14 +8,24 @@ import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {ErrorHttpInterceptor} from "../../interceptors/error-http-interceptors";
 import {InviteComponent} from "./invite/invite.component";
 
+import {ExpenseModule} from "../expense/expense.module";
+import {ActivityComponent} from "./activity/activity.component";
+import {GroupcardComponent} from "./groupcard/groupcard.component";
+
+
+
 
 @NgModule({
-  declarations: [CreateComponent, InviteComponent],
+  declarations: [CreateComponent, ActivityComponent, GroupcardComponent, InviteComponent],
   imports: [
     CommonModule,
     IonicModule,
     ReactiveFormsModule,
+    ExpenseModule,
     FormsModule
+  ],
+  exports: [
+    GroupcardComponent
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true},

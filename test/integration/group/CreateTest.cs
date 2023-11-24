@@ -35,8 +35,8 @@ public class CreateTest
         {
             Name = name,
             Description = description,
-            Image_Url = imageUrl,
-            Created_Date = DateTime.UtcNow,
+            ImageUrl = imageUrl,
+            CreatedDate = DateTime.UtcNow,
         };
 
         string url = "http://localhost:5100/api/group/create";

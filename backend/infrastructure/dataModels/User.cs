@@ -15,7 +15,7 @@ public class User
 
 public class UserInfoDto
 {
-    public required int Id { get; set; }
+    public int Id { get; set; }
     [Required, EmailAddress] public required string Email { get; set; }
     [Required] public required string FullName { get; set; }
     [Required, Phone] public required string PhoneNumber { get; set; }
