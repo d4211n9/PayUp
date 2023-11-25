@@ -12,13 +12,12 @@
       <ion-card-title class="medium-text">{{ expense.expense.description}}</ion-card-title>
     </ion-list>
     <ion-list class="ion-text-end" style="width: 30%">
-      <ion-card-subtitle class="small-text" *ngIf="getOweOrLent(loggedInUser).includes('owe')" color="danger">{{getOweOrLent(loggedInUser)}}</ion-card-subtitle>
-      <ion-card-subtitle class="small-text" *ngIf="getOweOrLent(loggedInUser).includes('lent')" color="success">{{getOweOrLent(loggedInUser)}}</ion-card-subtitle>
-      <ion-card-subtitle class="small-text" *ngIf="getOweOrLent(loggedInUser).includes('Not')">{{getOweOrLent(loggedInUser)}}</ion-card-subtitle>
+      <ion-card-subtitle class="small-text" *ngIf="!isPositive && ownShare != undefined" color="danger">You owe</ion-card-subtitle>
+      <ion-card-subtitle class="small-text" *ngIf="isPositive && ownShare != undefined" color="success">You lent</ion-card-subtitle>
+      <ion-card-subtitle class="small-text" *ngIf="isPositive === undefined">Not involved</ion-card-subtitle>
 
-      <ion-card-title class="medium-text" *ngIf="getOweOrLent(loggedInUser).includes('owe')" color="danger">{{getOwnShare(loggedInUser)}}</ion-card-title>
-      <ion-card-title class="medium-text" *ngIf="getOweOrLent(loggedInUser).includes('lent')" color="success">{{getOwnShare(loggedInUser)}}</ion-card-title>
-      <ion-card-title class="medium-text" *ngIf="getOweOrLent(loggedInUser).includes('Not')">{{getOwnShare(loggedInUser)}}</ion-card-title>
+      <ion-card-title class="medium-text" *ngIf="!isPositive && ownShare != undefined" color="danger">{{-1 * ownShare}}</ion-card-title>
+      <ion-card-title class="medium-text" *ngIf="isPositive && ownShare != undefined" color="success">{{ownShare}}</ion-card-title>
     </ion-list>
   </ion-item>
 </ion-card>

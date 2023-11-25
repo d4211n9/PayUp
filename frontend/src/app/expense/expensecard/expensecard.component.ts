@@ -9,12 +9,16 @@ import {DatePipe} from "@angular/common";
 })
 export class ExpensecardComponent  implements OnInit {
   loggedInUser: number = 0;
+  isPositive: boolean | undefined;
+  ownShare: number | undefined;
 
   constructor() {
   }
 
   ngOnInit() {
     this.loggedInUser = this.expense.loggedInUser;
+    this.isPositive = this.getOweOrLent(this.loggedInUser);
+    this.ownShare = this.getOwnShare(this.loggedInUser);
   }
 
   @Input() expense!: FullExpense;
@@ -24,28 +28,18 @@ export class ExpensecardComponent  implements OnInit {
   }
 
   getOwnShare(id: number) {
-    var share: number | undefined;
     var userOnExpense = this.expense.usersOnExpense.find((u) => u.userId === id);
     if(userOnExpense == undefined) {
-      share = undefined;
-    } else if (userOnExpense.amount > 0) {
-      share = userOnExpense.amount
-    } else {
-      share = -1*userOnExpense.amount
+      return undefined;
     }
-    return share;
+    return userOnExpense.amount;
   }
 
   getOweOrLent(id: number) {
-    var message: string;
     var userOnExpense = this.expense.usersOnExpense.find((u) => u.userId === id);
-    if(userOnExpense == undefined) {
-      message = "Not involved"
-    } else if (userOnExpense.amount > 0) {
-      message = "You lent"
-    } else {
-      message = "You owe"
-    }
-    return message;
+    if(userOnExpense === undefined) {
+      this.isPositive = undefined;
+    } else this.isPositive = userOnExpense.amount >= 0;
+    return this.isPositive;
   }
 }
