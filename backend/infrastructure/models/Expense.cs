@@ -31,6 +31,7 @@ public class FullExpense
 {
     public required Expense Expense { get; set; }
     public required IEnumerable<UserOnExpense>? UsersOnExpense { get; set; }
+    public required int LoggedInUser { get; set; }
 }
 
 public class CreateFullExpense

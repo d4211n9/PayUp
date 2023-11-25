@@ -18,7 +18,7 @@ public class ExpenseService
         _userRepository = userRepo;
     }
 
-    public FullExpense CreateExpense(CreateFullExpense createFullExpense)
+    public FullExpense CreateExpense(CreateFullExpense createFullExpense, SessionData sessionData)
     {
         if (!_groupRepo.IsUserInGroup(createFullExpense.Expense.UserId, createFullExpense.Expense.GroupId))
             throw new AuthenticationException();
@@ -27,7 +27,12 @@ public class ExpenseService
         IEnumerable<UserOnExpense?> usersOnExpense =
             _expenseRepo.AddUsersToExpense(createFullExpense.UsersOnExpense);
 
-        FullExpense fullExpense = new FullExpense() { Expense = responseExpense, UsersOnExpense = usersOnExpense! };
+        FullExpense fullExpense = new FullExpense()
+        {
+            Expense = responseExpense, 
+            UsersOnExpense = usersOnExpense!,
+            LoggedInUser = sessionData.UserId
+        };
         return fullExpense;
     }
     
@@ -40,7 +45,8 @@ public class ExpenseService
         IEnumerable<Expense> expenseDtos = _expenseRepo.GetAllExpenses(groupId).ToList();
         IEnumerable<UserOnExpense> usersOnExpenses = _expenseRepo.GetUsersOnExpenses(groupId).ToList();
         
-        List<FullExpense> fullExpenses = new List<FullExpense>();
+        var fullExpenses = new List<FullExpense>();
+        var userId = sessionData.UserId;
         
         //Loop through each expense
         foreach (var expense in expenseDtos)
@@ -59,7 +65,12 @@ public class ExpenseService
             }
             
             //Combine the expense with the list of linked users to make a full expense
-            FullExpense fullExpense = new FullExpense() { Expense = expense, UsersOnExpense = usersOnExpense! };
+            FullExpense fullExpense = new FullExpense()
+            {
+                Expense = expense, 
+                UsersOnExpense = usersOnExpense!,
+                LoggedInUser = userId
+            };
             
             //Add to the final list of full expenses
             fullExpenses.Add(fullExpense);

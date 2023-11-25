@@ -32,7 +32,7 @@ public class ExpenseController : ControllerBase
     [Route("/api/expense/")]
     public FullExpense CreateExpense(CreateFullExpense expense)
     {
-        return _service.CreateExpense(expense);
+        return _service.CreateExpense(expense, HttpContext.GetSessionData()!);
     }
     
     [RequireAuthentication]

@@ -1,9 +1,17 @@
-import {Injectable, Input} from "@angular/core";
+import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {firstValueFrom} from "rxjs";
 
 export interface Group {
+  id: number,
+  name: string,
+  description: string,
+  imageUrl: string,
+  createdDate: Date
+}
+
+export interface CreateGroup {
   name: string,
   description: string,
   imageUrl: string,
@@ -13,6 +21,7 @@ export interface Group {
 export interface FullExpense {
   expense: Expense
   usersOnExpense: UserOnExpense[]
+  loggedInUser: number
 }
 
 export interface Expense {
@@ -38,7 +47,7 @@ export class GroupService {
 
 
 
-  create(value: Group) {
+  create(value: CreateGroup) {
     return this.http.post<Group>(environment.apiBaseUrl+'/group/create', value)
   }
 

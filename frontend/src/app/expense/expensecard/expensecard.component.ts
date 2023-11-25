@@ -8,11 +8,13 @@ import {DatePipe} from "@angular/common";
   styleUrls: ['./expensecard.component.scss'],
 })
 export class ExpensecardComponent  implements OnInit {
+  loggedInUser: number = 0;
 
   constructor() {
   }
 
   ngOnInit() {
+    this.loggedInUser = this.expense.loggedInUser;
   }
 
   @Input() expense!: FullExpense;

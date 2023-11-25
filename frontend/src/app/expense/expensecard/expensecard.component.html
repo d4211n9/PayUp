@@ -6,13 +6,19 @@
     </ion-list>
     <ion-icon name="receipt" color="dark" style="width: 10%"></ion-icon>
     <ion-list class="ion-padding" style="width: 50%">
-      <ion-card-subtitle class="small-text">{{expense.expense.fullName}} paid {{expense.expense.amount}} DKK for {{expense.usersOnExpense.length}} people</ion-card-subtitle>
+      <ion-card-subtitle class="small-text">
+        {{expense.expense.fullName}} paid {{expense.expense.amount}} DKK for {{expense.usersOnExpense.length}} people
+      </ion-card-subtitle>
       <ion-card-title class="medium-text">{{ expense.expense.description}}</ion-card-title>
     </ion-list>
     <ion-list class="ion-text-end" style="width: 30%">
-      <!-- TODO: Vi skal hente logged in users id for at give det rigtige id med i metoderne -->
-      <ion-card-subtitle class="small-text">{{getOweOrLent(1)}}</ion-card-subtitle>
-      <ion-card-title class="medium-text">{{getOwnShare(1)}}</ion-card-title>
+      <ion-card-subtitle class="small-text" *ngIf="getOweOrLent(loggedInUser).includes('owe')" color="danger">{{getOweOrLent(loggedInUser)}}</ion-card-subtitle>
+      <ion-card-subtitle class="small-text" *ngIf="getOweOrLent(loggedInUser).includes('lent')" color="success">{{getOweOrLent(loggedInUser)}}</ion-card-subtitle>
+      <ion-card-subtitle class="small-text" *ngIf="getOweOrLent(loggedInUser).includes('Not')">{{getOweOrLent(loggedInUser)}}</ion-card-subtitle>
+
+      <ion-card-title class="medium-text" *ngIf="getOweOrLent(loggedInUser).includes('owe')" color="danger">{{getOwnShare(loggedInUser)}}</ion-card-title>
+      <ion-card-title class="medium-text" *ngIf="getOweOrLent(loggedInUser).includes('lent')" color="success">{{getOwnShare(loggedInUser)}}</ion-card-title>
+      <ion-card-title class="medium-text" *ngIf="getOweOrLent(loggedInUser).includes('Not')">{{getOwnShare(loggedInUser)}}</ion-card-title>
     </ion-list>
   </ion-item>
 </ion-card>

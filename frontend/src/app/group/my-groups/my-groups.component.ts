@@ -1,9 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Group, GroupService} from "../group.service";
+import {Component, OnInit} from '@angular/core';
+import {Group} from "../group.service";
 import {environment} from "../../../environments/environment";
 import {firstValueFrom} from "rxjs";
 import {HttpClient} from "@angular/common/http";
-import {group} from "@angular/animations";
 
 @Component({
   selector: 'app-my-groups',
@@ -18,9 +17,6 @@ export class MyGroupsComponent  implements OnInit {
     private readonly http: HttpClient
   ) {}
 
-
-
-
   ngOnInit() {
     this.getMyGroups();
   }
@@ -29,5 +25,4 @@ export class MyGroupsComponent  implements OnInit {
     const call = this.http.get<Group[]>(environment.apiBaseUrl + "/mygroups")
     this.mygroups = await firstValueFrom<Group[]>(call);
   }
-
 }
