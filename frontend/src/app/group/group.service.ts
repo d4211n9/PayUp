@@ -12,7 +12,7 @@ export interface Group {
 
 export interface FullExpense {
   expense: Expense
-  usersOnExpense: UsersOnExpense[]
+  usersOnExpense: UserOnExpense[]
 }
 
 export interface Expense {
@@ -25,7 +25,7 @@ export interface Expense {
   fullName: string
 }
 
-export interface UsersOnExpense {
+export interface UserOnExpense {
   userId: number
   expenseId: number
   amount: number
