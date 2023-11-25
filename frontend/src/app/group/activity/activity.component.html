@@ -31,6 +31,9 @@
 
     <ng-container [ngSwitch]="subpage">
       <ion-content *ngSwitchCase="'activity'" class="child">
+        <div class="parent">
+          <ion-spinner name="crescent" *ngIf="loading" class="child"></ion-spinner>
+        </div>
         <expensecard class="child" *ngFor="let expense of expenses" [expense]="expense"></expensecard>
       </ion-content>
 
