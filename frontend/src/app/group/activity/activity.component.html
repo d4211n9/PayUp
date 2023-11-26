@@ -34,7 +34,7 @@
         <div class="parent">
           <ion-spinner name="crescent" *ngIf="loading" class="child"></ion-spinner>
         </div>
-        <expensecard class="child" *ngFor="let expense of expenses" [expense]="expense"></expensecard>
+        <expensecard class="child" *ngFor="let expense of expenses.reverse()" [expense]="expense"></expensecard>
       </ion-content>
 
       <ion-content *ngSwitchCase="'balances'" class="child">
@@ -50,7 +50,6 @@
         <!-- TODO: ADD TOTALS HTML HERE -->
         <p>Totals works!</p>
       </div>
-
     </ng-container>
 
   </ion-card>
