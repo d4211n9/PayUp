@@ -38,11 +38,13 @@ export interface UserOnExpense {
   userId: number
   expenseId: number
   amount: number
+  imageUrl: string
 }
 
 export interface Balance {
   userId: number,
   fullName: string,
+  imageUrl: string,
   amount: number
 }
 

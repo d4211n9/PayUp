@@ -42,23 +42,25 @@ public class ExpenseRepository
         }
     }
     
-    public IEnumerable<UserOnExpense> GetUsersOnExpenses(int groupId)
+    public IEnumerable<GetUserOnExpense> GetUsersOnExpenses(int groupId)
     {
         var sql =
             $@"
             select 
-                uoe.user_id as {nameof(UserOnExpense.UserId)}, 
-                expense_id as {nameof(UserOnExpense.ExpenseId)}, 
-                uoe.amount as {nameof(UserOnExpense.Amount)}
+                uoe.user_id as {nameof(GetUserOnExpense.UserId)}, 
+                expense_id as {nameof(GetUserOnExpense.ExpenseId)}, 
+                uoe.amount as {nameof(GetUserOnExpense.Amount)}, 
+                u.profile_url as {nameof(GetUserOnExpense.ImageUrl)}
             from expenses.expense 
                 join expenses.user_on_expense as uoe on expense.id = uoe.expense_id 
+                join users.user as u on uoe.user_id = u.id 
             where group_id = @groupId;
             ";
 
         try
         {
             using var conn = _dataSource.OpenConnection();
-            return conn.Query<UserOnExpense>(sql, new { groupId });
+            return conn.Query<GetUserOnExpense>(sql, new { groupId });
         }
         catch (Exception e)
         {
@@ -73,13 +75,14 @@ public class ExpenseRepository
             select 
                 uoe.user_id as {nameof(BalanceDto.UserId)}, 
                 u.full_name as {nameof(BalanceDto.FullName)}, 
+                u.profile_url as {nameof(BalanceDto.ImageUrl)},
                 SUM(uoe.amount) as {nameof(BalanceDto.Amount)}
             from expenses.user_on_expense as uoe
                 join expenses.expense as e on uoe.expense_id = e.id 
                 join users.user as u on uoe.user_id = u.id  
                 join groups.group as g on e.group_id = g.id
             where g.id = @groupId
-            group by uoe.user_id, u.full_name;
+            group by uoe.user_id, u.full_name, u.profile_url;
             ";
 
         try
@@ -126,7 +129,7 @@ public class ExpenseRepository
         }
     }
 
-    public IEnumerable<UserOnExpense?> AddUsersToExpense(IEnumerable<UserOnExpense>? userOnExpense)
+    public IEnumerable<GetUserOnExpense?> AddUsersToExpense(IEnumerable<CreateUserOnExpense>? userOnExpense)
     {
         var sql1 = "";
         var expenseId = 0;
@@ -144,20 +147,24 @@ public class ExpenseRepository
             expenseId = uoeDto.ExpenseId;
         }
 
-        var sql2 = $@"
-        select 
-            user_id as {nameof(UserOnExpense.UserId)}, 
-            expense_id as {nameof(UserOnExpense.ExpenseId)},
-            amount as {nameof(UserOnExpense.Amount)}
-        from expenses.user_on_expense 
-        where expense_id = {expenseId} ;
+        var sql2 = 
+            $@"
+            select 
+                uoe.user_id as {nameof(GetUserOnExpense.UserId)}, 
+                expense_id as {nameof(GetUserOnExpense.ExpenseId)}, 
+                uoe.amount as {nameof(GetUserOnExpense.Amount)}, 
+                u.profile_url as {nameof(GetUserOnExpense.ImageUrl)}
+            from expenses.expense 
+                join expenses.user_on_expense as uoe on expense.id = uoe.expense_id 
+                join users.user as u on uoe.user_id = u.id 
+            where expense_id = {expenseId};
         ";
 
         try
         {
             using var conn = _dataSource.OpenConnection();
             conn.Execute(sql1);
-            return conn.Query<UserOnExpense?>(sql2);
+            return conn.Query<GetUserOnExpense?>(sql2);
         }
         catch (Exception e)
         {

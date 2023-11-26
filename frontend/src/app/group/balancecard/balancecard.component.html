@@ -1,7 +1,12 @@
 <ion-accordion>
   <ion-item class="acc-header" slot="header">
+    <ion-thumbnail class="ion-padding">
+      <ion-img src="{{balance.imageUrl}}"></ion-img>
+    </ion-thumbnail>
+
     <ion-label>{{balance.fullName}}</ion-label>
-    <ion-label slot="end" *ngIf="balance.amount < 0" color="danger">owes {{-1*balance.amount}}</ion-label>
+
+    <ion-label slot="end" *ngIf="balance.amount < 0" color="danger">owes {{-1 * balance.amount}}</ion-label>
     <ion-label slot="end" *ngIf="balance.amount > 0" color="success">lent {{balance.amount}}</ion-label>
     <ion-label slot="end" *ngIf="balance.amount === 0">has paid up</ion-label>
   </ion-item>

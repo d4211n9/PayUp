@@ -24,7 +24,7 @@ public class ExpenseService
             throw new AuthenticationException();
         Expense responseExpense = _expenseRepo.CreateExpense(createFullExpense.Expense);
 
-        IEnumerable<UserOnExpense?> usersOnExpense =
+        IEnumerable<GetUserOnExpense?> usersOnExpense =
             _expenseRepo.AddUsersToExpense(createFullExpense.UsersOnExpense);
 
         FullExpense fullExpense = new FullExpense()
@@ -43,7 +43,7 @@ public class ExpenseService
         
         //Query all expenses & users on expenses from db
         IEnumerable<Expense> expenseDtos = _expenseRepo.GetAllExpenses(groupId).ToList();
-        IEnumerable<UserOnExpense> usersOnExpenses = _expenseRepo.GetUsersOnExpenses(groupId).ToList();
+        IEnumerable<GetUserOnExpense> usersOnExpenses = _expenseRepo.GetUsersOnExpenses(groupId).ToList();
         
         var fullExpenses = new List<FullExpense>();
         var userId = sessionData.UserId;
@@ -52,7 +52,7 @@ public class ExpenseService
         foreach (var expense in expenseDtos)
         {
             //Create a temp list of users linked to the current expense from outer loop
-            List<UserOnExpense> usersOnExpense = new List<UserOnExpense>();
+            List<GetUserOnExpense> usersOnExpense = new List<GetUserOnExpense>();
             
             //Loop through each user on expense entry
             foreach (var uoe in usersOnExpenses)
