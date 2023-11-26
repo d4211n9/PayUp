@@ -30,7 +30,7 @@
     </ion-toolbar>
 
     <ng-container [ngSwitch]="subpage">
-      <ion-content *ngSwitchCase="'activity'" class="child">
+      <ion-content *ngSwitchCase="'activity'" class="child  subpage">
         <div class="parent">
           <ion-spinner name="crescent" *ngIf="loading" class="child"></ion-spinner>
         </div>
@@ -41,12 +41,12 @@
         <div class="parent">
           <ion-spinner name="crescent" *ngIf="loading" class="child"></ion-spinner>
         </div>
-        <ion-accordion-group [multiple]="true">
+        <ion-accordion-group [multiple]="true" class="subpage">
           <balancecard *ngFor="let balance of balances" [balance]="balance"></balancecard>
         </ion-accordion-group>
       </ion-content>
 
-      <div *ngSwitchCase="'totals'" class="child">
+      <div *ngSwitchCase="'totals'" class="child subpage">
         <!-- TODO: ADD TOTALS HTML HERE -->
         <p>Totals works!</p>
       </div>
