@@ -29,3 +29,10 @@ public class ShortUserDto
     [Required] public required string FullName { get; set; }
     [Required, Url] public required string ProfileUrl { get; set; }
 }
+
+public class UserInGroupDto
+{
+    public int UserId { get; set; }
+    public int GroupId { get; set; }
+    public bool IsOwner { get; set; }
+}

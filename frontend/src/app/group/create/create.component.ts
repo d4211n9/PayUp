@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {firstValueFrom} from "rxjs";
-import {Group, GroupService} from "../group.service";
+import {CreateGroup, Group, GroupService} from "../group.service";
 import {ToastController} from "@ionic/angular";
 
 
@@ -38,14 +38,14 @@ export class CreateComponent  implements OnInit {
   async create() {
     if(this.form.invalid) return;
 
-    var groupInfo: Group = {
+    var groupInfo: CreateGroup = {
       name: this.form.controls.name.value!,
       description: this.form.controls.description.value!,
       imageUrl: 'https://cdn-icons-png.flaticon.com/512/615/615075.png', //TODO fix hardcoding when image upload is done (also in html)
       createdDate: new Date(Date.now())
     };
 
-    const createdGroup = await firstValueFrom(this.service.create(groupInfo as Group));
+    const createdGroup = await firstValueFrom(this.service.create(groupInfo as CreateGroup));
 
     await (await this.toast.create({
       message: "Your group '" + createdGroup.name + "' was created successfully",
