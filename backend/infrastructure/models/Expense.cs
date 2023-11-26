@@ -43,5 +43,6 @@ public class CreateFullExpense
 public class BalanceDto
 {
     public required int UserId { get; set; }
+    public required string FullName { get; set; }
     public required decimal Amount { get; set; }
 }

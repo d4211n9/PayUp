@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {Balance} from "../group.service";
 
 @Component({
   selector: 'balancecard',
@@ -11,4 +12,5 @@ export class BalancecardComponent  implements OnInit {
 
   ngOnInit() {}
 
+  @Input() balance!: Balance
 }

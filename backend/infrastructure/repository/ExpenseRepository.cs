@@ -72,12 +72,14 @@ public class ExpenseRepository
             $@"
             select 
                 uoe.user_id as {nameof(BalanceDto.UserId)}, 
+                u.full_name as {nameof(BalanceDto.FullName)}, 
                 SUM(uoe.amount) as {nameof(BalanceDto.Amount)}
             from expenses.user_on_expense as uoe
-                join expenses.expense as e on uoe.expense_id = e.id
+                join expenses.expense as e on uoe.expense_id = e.id 
+                join users.user as u on uoe.user_id = u.id  
                 join groups.group as g on e.group_id = g.id
             where g.id = @groupId
-            group by uoe.user_id;
+            group by uoe.user_id, u.full_name;
             ";
 
         try

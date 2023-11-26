@@ -38,8 +38,11 @@
       </ion-content>
 
       <ion-content *ngSwitchCase="'balances'" class="child">
+        <div class="parent">
+          <ion-spinner name="crescent" *ngIf="loading" class="child"></ion-spinner>
+        </div>
         <ion-accordion-group [multiple]="true">
-          <balancecard *ngFor="let user of members"></balancecard>
+          <balancecard *ngFor="let balance of balances" [balance]="balance"></balancecard>
         </ion-accordion-group>
       </ion-content>
 

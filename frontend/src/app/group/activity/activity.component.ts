@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FullExpense, Group, GroupService} from "../group.service";
+import {Balance, FullExpense, Group, GroupService} from "../group.service";
 import {firstValueFrom} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 
@@ -10,6 +10,7 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class ActivityComponent implements OnInit {
   expenses: FullExpense[] = []
+  balances: Balance[] = []
   group: Group | undefined;
   id: any;
   subpage = 'activity';
@@ -26,9 +27,8 @@ export class ActivityComponent implements OnInit {
     await this.getId()
     this.getGroup()
     await this.getAllExpenses()
-    this.loading = false;
-
-    this.generateItems() //TODO: skift til get members & balances
+    this.getBalances()
+    this.loading = false
   }
 
   async getId() {
@@ -44,10 +44,7 @@ export class ActivityComponent implements OnInit {
     this.group = await this.service.getGroup(this.id)
   }
 
-  private generateItems() {
-    const count = this.members.length + 1;
-    for (let i = 0; i < 50; i++) {
-      this.members.push(count + i);
-    }
+  async getBalances() {
+    this.balances = await this.service.getBalances(this.id)
   }
 }
