@@ -78,4 +78,12 @@ public class ExpenseService
         
         return fullExpenses;
     }
+
+    public IEnumerable<BalanceDto> GetBalances(int groupId, SessionData sessionData)
+    {
+        //Assert logged in user is authorized to access this group (api checked authentication)
+        if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
+
+        return _expenseRepo.GetBalances(groupId);
+    }
 }

@@ -39,3 +39,9 @@ public class CreateFullExpense
     public required CreateExpenseDto Expense { get; set; }
     public required IEnumerable<UserOnExpense> UsersOnExpense { get; set; }
 }
+
+public class BalanceDto
+{
+    public required int UserId { get; set; }
+    public required decimal Amount { get; set; }
+}

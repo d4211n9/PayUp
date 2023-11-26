@@ -66,6 +66,30 @@ public class ExpenseRepository
         }
     }
 
+    public IEnumerable<BalanceDto> GetBalances(int groupId)
+    {
+        var sql = 
+            $@"
+            select 
+                uoe.user_id as {nameof(BalanceDto.UserId)}, 
+                SUM(uoe.amount) as {nameof(BalanceDto.Amount)}
+            from expenses.user_on_expense as uoe
+                join expenses.expense as e on uoe.expense_id = e.id
+                join groups.group as g on e.group_id = g.id
+            where g.id = @groupId
+            group by uoe.user_id;
+            ";
+
+        try
+        {
+            using var conn = _dataSource.OpenConnection();
+            return conn.Query<BalanceDto>(sql, new { groupId });
+        }
+        catch (Exception e)
+        {
+            throw new SqlNullValueException(" read balances from group", e);
+        }
+    }
     public Expense CreateExpense(CreateExpenseDto expenseDto)
     {
         var sql = $@"
