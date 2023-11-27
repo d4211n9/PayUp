@@ -16,7 +16,7 @@
     -->
 
     <ion-toolbar>
-      <ion-segment [(ngModel)]="subpage" scrollable="true">
+      <ion-segment [(ngModel)]="subpage" scrollable="true" (ionChange)="segmentChanged($event)">
         <ion-segment-button value="activity">
           <ion-label>Activity</ion-label>
         </ion-segment-button>

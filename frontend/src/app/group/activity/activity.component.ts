@@ -9,13 +9,13 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./activity.component.scss'],
 })
 export class ActivityComponent implements OnInit {
+  id: any;
+  group: Group | undefined;
   expenses: FullExpense[] = []
   balances: Balance[] = []
-  group: Group | undefined;
-  id: any;
   subpage = 'activity';
-  members: number[] = []; //TODO skal ændres til users, brugte bare til at populate balances tabben
   loading: boolean = true;
+  balancesLoaded: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -25,10 +25,18 @@ export class ActivityComponent implements OnInit {
 
   async ngOnInit() {
     await this.getId()
-    this.getGroup()
+    await this.getGroup()
     await this.getAllExpenses()
-    this.getBalances()
     this.loading = false
+  }
+
+  async segmentChanged(ev: any) {
+    if (ev.detail.value === 'balances' && !this.balancesLoaded) {
+      this.loading = true
+      await this.getBalances()
+      this.balancesLoaded = true
+      this.loading = false
+    }
   }
 
   async getId() {
@@ -36,12 +44,12 @@ export class ActivityComponent implements OnInit {
     this.id = map.get('groupId')
   }
 
-  async getAllExpenses() {
-    this.expenses = await this.service.getAllExpenses(this.id)
-  }
-
   async getGroup() {
     this.group = await this.service.getGroup(this.id)
+  }
+
+  async getAllExpenses() {
+    this.expenses = await this.service.getAllExpenses(this.id)
   }
 
   async getBalances() {
