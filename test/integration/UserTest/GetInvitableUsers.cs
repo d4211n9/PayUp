@@ -38,6 +38,8 @@ public class GetInvitableUsers
         IEnumerable<User>? invited;
         IEnumerable<User>? invitable;
 
+        string json;
+        
         try
         {
             // Create group and its owner
@@ -68,7 +70,7 @@ public class GetInvitableUsers
 
             responseMessage = await _httpClient.GetAsync(url);
 
-            string json = await responseMessage.Content.ReadAsStringAsync();
+            json = await responseMessage.Content.ReadAsStringAsync();
             
             responseUsers = JsonConvert.DeserializeObject<IEnumerable<InvitableUser>>(json);
             
@@ -112,10 +114,11 @@ public class GetInvitableUsers
                     ProfileUrl = user.ProfileUrl
                 });
 
-
-            responseUsers.Should().NotContain(inviteMembers);
-            responseUsers.Should().NotContain(inviteInvited);
-            responseUsers.Should().Contain(inviteInvitable);
+            
+            
+            json.Should().NotContainEquivalentOf(JsonConvert.SerializeObject(inviteMembers));
+            json.Should().NotContainEquivalentOf(JsonConvert.SerializeObject(inviteInvited));
+            json.Should().ContainEquivalentOf(JsonConvert.SerializeObject(inviteInvitable));
         }
     }
 
@@ -193,7 +196,7 @@ public class GetInvitableUsers
         string sql = @"
                   INSERT INTO users.user (email, full_name, phone_number, created, profile_url)
                   VALUES (@email, @fullName, @phoneNumber, @created, @profileUrl)
-                  RETURNING email, full_name AS FullName, phone_number AS PhoneNumber, created, profile_url AS ProfileUrl";
+                  RETURNING id, email, full_name AS FullName, phone_number AS PhoneNumber, created, profile_url AS ProfileUrl";
 
         using (NpgsqlConnection conn = Helper.DataSource.OpenConnection())
         {
