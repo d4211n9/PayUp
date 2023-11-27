@@ -15,6 +15,6 @@ export class GroupcardComponent  implements OnInit {
   @Input() mygroups!: Group;
 
   openGroup() {
-    this.router.navigate(['/group/'+this.mygroups.id+'/expenses'])
+    this.router.navigate(['groups/'+this.mygroups.id])
   }
 }

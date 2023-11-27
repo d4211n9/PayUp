@@ -53,7 +53,10 @@ export class GroupService {
   constructor(private readonly http: HttpClient) {
   }
 
-
+  async getMyGroups() {
+    const call = this.http.get<Group[]>(environment.apiBaseUrl + "/mygroups")
+    return await firstValueFrom<Group[]>(call);
+  }
 
   create(value: CreateGroup) {
     return this.http.post<Group>(environment.apiBaseUrl+'/group/create', value)
