@@ -1,4 +1,5 @@
-﻿using api.filters;
+﻿using System.Net;
+using api.filters;
 using api.models;
 using infrastructure.dataModels;
 using Microsoft.AspNetCore.Mvc;
@@ -57,6 +58,14 @@ public class GroupController : ControllerBase
     public bool InviteUserToGroup([FromBody] GroupInvitation groupInvitation)
     {
         SessionData? sessionData = HttpContext.GetSessionData();
-        return _service.InviteUserToGroup(sessionData, groupInvitation);
+
+        bool success = _service.InviteUserToGroup(sessionData, groupInvitation);
+        
+        if (success)
+        {
+            HttpContext.Response.StatusCode = StatusCodes.Status201Created;
+        }
+
+        return success;
     }
 }

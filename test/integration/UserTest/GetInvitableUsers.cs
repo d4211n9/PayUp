@@ -13,7 +13,7 @@ namespace test.integration.UserTest;
 
 public class GetInvitableUsers
 {
-    private HttpClient _httpClient;
+        private HttpClient _httpClient;
 
     [SetUp]
     public void Setup()
