@@ -129,22 +129,21 @@ public class ExpenseRepository
         }
     }
 
-    public IEnumerable<GetUserOnExpense?> AddUsersToExpense(IEnumerable<CreateUserOnExpense>? userOnExpense)
+    public IEnumerable<GetUserOnExpense?> AddUsersToExpense(IEnumerable<CreateUserOnExpense>? usersOnExpense)
     {
         var sql1 = "";
         var expenseId = 0;
         
-        if (userOnExpense == null) throw new SqlNullValueException();
+        if (usersOnExpense == null) throw new SqlNullValueException();
         
-        var usersOnExpense = userOnExpense.ToList();
-        foreach (var uoeDto in usersOnExpense!)
+        foreach (var u in usersOnExpense!)
         {
             sql1 += $@"
             INSERT INTO expenses.user_on_expense (user_id, expense_id, amount)
-            VALUES ({uoeDto.UserId}, {uoeDto.ExpenseId}, {uoeDto.Amount}); 
+            VALUES ({u.UserId}, {u.ExpenseId}, {u.Amount}); 
             ";
             
-            expenseId = uoeDto.ExpenseId;
+            expenseId = u.ExpenseId;
         }
 
         var sql2 = 

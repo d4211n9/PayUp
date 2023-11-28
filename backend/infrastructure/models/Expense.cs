@@ -45,7 +45,7 @@ public class FullExpense
 public class CreateFullExpense
 {
     public required CreateExpenseDto Expense { get; set; }
-    public required IEnumerable<CreateUserOnExpense> UsersOnExpense { get; set; }
+    public required IEnumerable<int> UserIdsOnExpense { get; set; }
 }
 
 public class BalanceDto

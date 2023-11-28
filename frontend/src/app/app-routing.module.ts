@@ -6,7 +6,6 @@ import {CreateComponent} from "./group/create/create.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {ActivityComponent} from "./group/activity/activity.component";
 import {MyGroupsComponent} from "./group/my-groups/my-groups.component";
-import {HomePage} from "./home/home.page";
 import {CreateexpenseComponent} from "./expense/createexpense/createexpense.component";
 import {AuthGuard} from "../services/AuthGuard";
 
