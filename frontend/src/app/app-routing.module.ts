@@ -49,7 +49,7 @@ const routes: Routes = [
     component: ActivityComponent
   },
   {
-    path: 'expense/create',
+    path: 'groups/:groupId/create',
     component: CreateexpenseComponent
   }
 ];

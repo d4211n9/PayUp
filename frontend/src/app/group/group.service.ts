@@ -11,6 +11,12 @@ export interface Group {
   createdDate: Date
 }
 
+export interface UserInGroup {
+  userId: number,
+  fullName: string,
+  imageUrl: string
+}
+
 export interface CreateGroup {
   name: string,
   description: string,
@@ -59,6 +65,11 @@ export class GroupService {
   async getGroup(groupId: string) {
       const call = this.http.get<Group>(environment.apiBaseUrl+'/group/'+groupId);
       return await firstValueFrom<Group>(call);
+  }
+
+  async getUserInGroup(groupId: string) {
+    const call = this.http.get<UserInGroup[]>(environment.apiBaseUrl +"/group/"+groupId+"/users");
+    return await firstValueFrom<UserInGroup[]>(call);
   }
 
 

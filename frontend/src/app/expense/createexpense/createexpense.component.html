@@ -37,17 +37,12 @@
     <ion-item class="ion-padding" id="dropdow">
         <ion-select multiple="true" aria-label="User" placeholder="Select user" cancelText="Cancel" okText="Select">
 
+
             <!-- Load group users -->
-            <ion-select-option value="1">John Doe</ion-select-option>
-            <ion-select-option value="2">Jane Smith</ion-select-option>
-            <ion-select-option value="3">Alex Johnson</ion-select-option>
-            <ion-select-option value="4">Emma Davis</ion-select-option>
-            <ion-select-option value="5">Chris Wilson</ion-select-option>
-            <ion-select-option value="6">John Doe</ion-select-option>
-            <ion-select-option value="7">Jane Smith</ion-select-option>
-            <ion-select-option value="8">Alex Johnson</ion-select-option>
-            <ion-select-option value="9">Emma Davis</ion-select-option>
-            <ion-select-option value="10">Chris Wilson</ion-select-option>
+            <ion-select-option *ngFor="let useringroup of userInGroup" >{{useringroup.fullName}}</ion-select-option>
+
+
+
 
         </ion-select>
 
