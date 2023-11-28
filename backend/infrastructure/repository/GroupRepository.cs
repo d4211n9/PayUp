@@ -140,25 +140,32 @@ public class GroupRepository
         }
     }
 
-    public IEnumerable<GroupInviteNotification> GetGroupInviteNotifications(int receiverId)
+    public IEnumerable<GroupInviteNotification> GetGroupInviteNotifications(int receiverId, DateTime lastUpdated)
     {
-        string sql = @"
-                SELECT
-                groups.group.id AS GroupId, groups.group.name AS GroupName, groups.group.description AS GroupDescription, groups.group.image_url as GroupImage,
-                users.user.id AS SenderId, users.user.email AS SenderEmail, users.user.full_name AS SenderFullName, users.user.profile_url AS SenderProfileImage,
-                group_invitation.date_received AS InviteReceived
-                FROM groups.group_invitation
-                INNER JOIN groups.group
-                ON group_invitation.group_id = groups.group.id
-                INNER JOIN users.user
-                ON group_invitation.sender_id = users.user.id
-                WHERE group_invitation.receiver_id = @receiverId;";
+
+
+        string sql = $@"
+SELECT
+    groups.group.id AS GroupId,
+    groups.group.name AS GroupName,
+    groups.group.description AS GroupDescription,
+    users.user.id AS SenderId,
+    users.user.email AS SenderEmail,
+    users.user.full_name AS SenderFullName,
+    group_invitation.date_received AS InviteReceived
+FROM groups.group_invitation
+INNER JOIN groups.group
+    ON group_invitation.group_id = groups.group.id
+INNER JOIN users.user
+    ON group_invitation.sender_id = users.user.id
+WHERE group_invitation.receiver_id = @receiverId
+    AND group_invitation.date_received > @lastUpdated";
 
         try
         {
             using (NpgsqlConnection conn = _dataSource.OpenConnection())
             {
-                return conn.Query<GroupInviteNotification>(sql, new { receiverId });
+                return conn.Query<GroupInviteNotification>(sql, new { receiverId, lastUpdated });
             }
         }
         catch (Exception e)

@@ -47,9 +47,4 @@ public class UserService
         if (!wasDeleted) throw new SqlNullValueException(" delete user");//checks if response is true before returning it.
         return wasDeleted; 
     }
-    
-    public IEnumerable<GroupInviteNotification> GetGroupInviteNotifications(SessionData? sessionData)
-    {
-        return _groupRepository.GetGroupInviteNotifications(sessionData.UserId);
-    }
 }

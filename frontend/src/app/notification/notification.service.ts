@@ -2,16 +2,14 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {firstValueFrom} from "rxjs";
+import {EnumValue} from "@angular/compiler-cli/src/ngtsc/partial_evaluator";
 
 export interface GroupInviteNotification {
-  groupId: number,
-  groupName: string,
-  groupDescription: string,
-  groupImage: string,
-  senderId: number,
-  senderEmail: string,
-  senderFullName: string,
-  senderProfileImage: string,
+  category: EnumValue,
+  subject: string,
+  body: string,
+  description: string,
+  footer: string,
   inviteReceived: Date,
 }
 
