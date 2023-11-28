@@ -122,21 +122,15 @@ public class GroupRepository
                FROM groups.group_members
                WHERE groups.group_members.group_id = @groupId
                AND groups.group_members.owner = true;";
-
-        NpgsqlConnection conn = null;
-
+        
         try
         {
-            conn = _dataSource.OpenConnection();
+            using var conn = _dataSource.OpenConnection();
             return conn.QueryFirstOrDefault<int>(sql, new { groupId });
         }
         catch (Exception e)
         {
             throw new SqlTypeException("Failed to retrieve owner ID of the group");
-        }
-        finally
-        {
-            if (conn != null) conn.Close();
         }
     }
     
@@ -146,29 +140,21 @@ public class GroupRepository
                 INSERT INTO groups.group_invitation
                 (receiver_id, group_id, sender_id, date_received) 
                 VALUES (@ReceiverId, @GroupId, @SenderId, @TimeNow);";
-
-        DateTime timeNow = DateTime.Now;
-
-        NpgsqlConnection conn = null;
-
+        
         try
         {
-            conn = _dataSource.OpenConnection();
+            using var conn = _dataSource.OpenConnection();
             return conn.Execute(sql, new
             {
                 groupInvitation.ReceiverId,
                 groupInvitation.GroupId,
                 groupInvitation.SenderId,
-                TimeNow = timeNow
+                TimeNow =  DateTime.Now
             }) == 1;
         }
         catch (Exception e)
         {
             throw new SqlTypeException("Failed to invite user to group", e);
-        }
-        finally
-        {
-            if (conn != null) conn.Close();
         }
     }
 }

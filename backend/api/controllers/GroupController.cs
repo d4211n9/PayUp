@@ -57,15 +57,8 @@ public class GroupController : ControllerBase
     [Route("/api/group/invite")]
     public bool InviteUserToGroup([FromBody] GroupInvitation groupInvitation)
     {
-        SessionData? sessionData = HttpContext.GetSessionData();
-
-        bool success = _service.InviteUserToGroup(sessionData, groupInvitation);
-        
-        if (success)
-        {
-            HttpContext.Response.StatusCode = StatusCodes.Status201Created;
-        }
-
+        bool success = _service.InviteUserToGroup(HttpContext.GetSessionData(), groupInvitation);
+        if (success) HttpContext.Response.StatusCode = StatusCodes.Status201Created;
         return success;
     }
 }

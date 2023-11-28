@@ -51,7 +51,7 @@ public class GroupService
 
     public bool InviteUserToGroup(SessionData? sessionData, GroupInvitation groupInvitation)
     {
-        int ownerId = _groupRepo.IsUserGroupOwner(groupInvitation.GroupId);
+        var ownerId = _groupRepo.IsUserGroupOwner(groupInvitation.GroupId);
         
         if (sessionData.UserId != ownerId)
             throw new SecurityException("You are not allowed to invite users to this group");
@@ -59,7 +59,7 @@ public class GroupService
         if (_groupRepo.IsUserInGroup(groupInvitation.ReceiverId, groupInvitation.GroupId))
             throw new ArgumentException("User is already in group");
 
-        FullGroupInvitation fullGroupInvitation = new FullGroupInvitation()
+        var fullGroupInvitation = new FullGroupInvitation()
         {
             ReceiverId = groupInvitation.ReceiverId,
             GroupId = groupInvitation.GroupId,
