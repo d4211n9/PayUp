@@ -1,23 +1,5 @@
 <ion-toolbar>
 
-  <!-- Content in the toolbar -->
-  <ion-content></ion-content>
-
-  <!-- My Account icon and button -->
-  <ion-button id="btn_myaccount" slot="end" fill="clear" (click)="toProfile()">
-    <ion-icon
-      id="icon_myaccount" slot="icon-only" name="person-circle">
-    </ion-icon>
-  </ion-button>
-
-  <!-- Notifications icon and button -->
-  <ion-button
-    id="btn_notifications" slot="end" fill="clear">
-    <ion-icon
-      id="icon_notifications" slot="icon-only" name="notifications">
-    </ion-icon>
-  </ion-button>
-
   <!-- Burger menu button -->
   <ion-buttons
     id="btn_menu-button" slot="start">
@@ -34,4 +16,54 @@
              alt="PayUp"
     ></ion-img>
   </div>
+
+  <!-- My Account icon and button -->
+  <ion-button id="btn_myaccount" slot="end" fill="clear">
+    <ion-spinner name="crescent" *ngIf="!isUserLoaded" class="child"></ion-spinner>
+    <ion-icon *ngIf="loggedInUser === undefined && isUserLoaded" id="icon_myaccount" slot="icon-only" name="log-in" (click)="toLogin()">
+    </ion-icon>
+    <ion-thumbnail *ngIf="loggedInUser !== undefined && isUserLoaded">
+      <ion-img src="{{loggedInUser!.profileUrl}}"></ion-img>
+    </ion-thumbnail>
+    <ion-badge color="danger">2</ion-badge>
+  </ion-button>
+
+  <ion-popover *ngIf="loggedInUser === undefined" trigger="btn_myaccount" triggerAction="click">
+    <ng-template>
+      <ion-card class="ion-padding">
+        <ion-card-title>Please log in below</ion-card-title>
+      </ion-card>
+    </ng-template>
+  </ion-popover>
+
+  <ion-popover *ngIf="loggedInUser !== undefined" trigger="btn_myaccount" triggerAction="click">
+    <ng-template>
+      <ion-card class="ion-padding">
+        <ion-card-title class="ion-text-left">{{loggedInUser!.fullName}}
+          <ion-thumbnail class="popover-thumbnail">
+            <ion-img src="{{loggedInUser!.profileUrl}}"></ion-img>
+          </ion-thumbnail>
+        </ion-card-title>
+        <ion-card-subtitle>({{loggedInUser!.email}})</ion-card-subtitle>
+        <ion-card-content>
+          <ion-card>
+            Buddy invited you to the group 'Hit med pengene'
+          </ion-card>
+          <ion-card>
+            Buddy added a new expense '10.000 DKK - Pay Up bitch'
+          </ion-card>
+          <ion-button (click)="logout()">Log out</ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+  </ion-popover>
+
+  <!-- Notifications icon and button -->
+  <ion-button
+    id="btn_notifications" slot="end" fill="clear">
+    <ion-icon
+      id="icon_notifications" slot="icon-only" name="notifications">
+    </ion-icon>
+  </ion-button>
+
 </ion-toolbar>

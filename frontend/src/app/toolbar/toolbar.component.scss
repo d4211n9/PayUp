@@ -21,3 +21,18 @@
   width: 40px;
   color: black;
 }
+
+ion-thumbnail {
+  --border-radius: 20px;
+  --size: 40px;
+}
+
+.popover-thumbnail {
+  --border-radius: 20px;
+  --size: 22px;
+  display: inline-block;
+}
+
+ion-badge {
+  margin-bottom: 20px;
+}

@@ -5,10 +5,11 @@ import {FormsModule} from '@angular/forms';
 import {HomePage} from './home.page';
 
 import {HomePageRoutingModule} from './home-routing.module';
-import {MyGroupsComponent} from "../group/my-groups/my-groups.component";
 import {ToolbarComponent} from "../toolbar/toolbar.component";
 import {GroupModule} from "../group/group.module";
 import {ProfileModule} from "../profile/profile.module";
+import {AuthModule} from "../auth/auth.module";
+import {UserModule} from "../user/user.module";
 
 
 @NgModule({
@@ -18,13 +19,18 @@ import {ProfileModule} from "../profile/profile.module";
     IonicModule,
     HomePageRoutingModule,
     GroupModule,
-    ProfileModule
+    ProfileModule,
+    AuthModule,
+    UserModule
   ],
   exports: [
     HomePage,
     ToolbarComponent
   ],
-  declarations: [HomePage, MyGroupsComponent, ToolbarComponent]
+  declarations: [
+    HomePage,
+    ToolbarComponent
+  ]
 })
 export class HomePageModule {
 }

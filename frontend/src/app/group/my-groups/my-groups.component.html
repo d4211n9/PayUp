@@ -2,7 +2,7 @@
 
   <!-- Page title -->
   <h1 id="title" class="ion-text-center">
-    My groups
+    My Groups
   </h1>
 
   <!-- Section for group cards -->
@@ -10,6 +10,26 @@
     <app-groupcard
       *ngFor="let group of mygroups" [mygroups]="group">
     </app-groupcard>
+
+    <ion-card class="ion-padding" id="noGroups" *ngIf="noGroups">
+        <ion-card-title>
+          This looks empty 😞<br>
+          <br>
+          Click the button below to get started with PayUp!
+          <br>
+          <br>
+          1. <a href="/groups/create">Create a group</a>
+          <br>
+          2. Invite friends
+          <br>
+          3. Add expenses
+          <br>
+          <br>
+          And we'll tell you what everyone owes or lent
+          <br>
+          🧙‍♂️
+        </ion-card-title>
+    </ion-card>
   </section>
 
 </ion-content>
