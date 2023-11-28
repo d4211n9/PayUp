@@ -8,6 +8,7 @@ import {ProfileComponent} from "./profile/profile.component";
 import {ActivityComponent} from "./group/activity/activity.component";
 import {MyGroupsComponent} from "./group/my-groups/my-groups.component";
 import {HomePage} from "./home/home.page";
+import {NotificationComponent} from "./notification/notification.component";
 
 
 const routes: Routes = [
@@ -51,6 +52,10 @@ const routes: Routes = [
   {
     path: 'group/:groupId/expenses',
     component: ActivityComponent
+  },
+  {
+    path: 'user/notifications',
+    component: NotificationComponent
   }
 ];
 

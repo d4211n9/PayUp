@@ -15,6 +15,7 @@ import {GroupModule} from "./group/group.module";
 import {HomePageModule} from "./home/home.module";
 import {ProfileModule} from "./profile/profile.module";
 import {UserModule} from "./user/user.module";
+import {NotificationModule} from "./notification/notification.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,7 +26,8 @@ import {UserModule} from "./user/user.module";
     GroupModule,
     ProfileModule,
     HomePageModule,
-    UserModule
+    UserModule,
+    NotificationModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true},

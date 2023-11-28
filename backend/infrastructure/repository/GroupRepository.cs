@@ -139,6 +139,33 @@ public class GroupRepository
             if (conn != null) conn.Close();
         }
     }
+
+    public IEnumerable<GroupInviteNotification> GetGroupInviteNotifications(int receiverId)
+    {
+        string sql = @"
+                SELECT
+                groups.group.id AS GroupId, groups.group.name AS GroupName, groups.group.description AS GroupDescription, groups.group.image_url as GroupImage,
+                users.user.id AS SenderId, users.user.email AS SenderEmail, users.user.full_name AS SenderFullName, users.user.profile_url AS SenderProfileImage,
+                group_invitation.date_received AS InviteReceived
+                FROM groups.group_invitation
+                INNER JOIN groups.group
+                ON group_invitation.group_id = groups.group.id
+                INNER JOIN users.user
+                ON group_invitation.sender_id = users.user.id
+                WHERE group_invitation.receiver_id = @receiverId;";
+
+        try
+        {
+            using (NpgsqlConnection conn = _dataSource.OpenConnection())
+            {
+                return conn.Query<GroupInviteNotification>(sql, new { receiverId });
+            }
+        }
+        catch (Exception e)
+        {
+            throw new SqlTypeException("Failed to retrieve group invitations", e);
+        }
+    }
     
     public bool InviteUserToGroup(FullGroupInvitation groupInvitation)
     {
