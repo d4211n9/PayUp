@@ -1,5 +1,6 @@
 ﻿using api.filters;
 using api.models;
+using infrastructure.dataModels;
 using Microsoft.AspNetCore.Mvc;
 using service.services;
 
@@ -22,14 +23,6 @@ public class GroupController : ControllerBase
     {
         var sessionData = HttpContext.GetSessionData();
         return _service.CreateGroup(group, sessionData!);
-    }
-
-    [RequireAuthentication]
-    [HttpGet]
-    [Route("/api/group/{groupId}/expenses")]
-    public IEnumerable<Expense> GetAllExpenses([FromRoute] int groupId)
-    {
-        return _service.GetAllExpenses(groupId, HttpContext.GetSessionData()!);
     }
 
     [RequireAuthentication]
