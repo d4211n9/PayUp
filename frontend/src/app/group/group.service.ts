@@ -44,6 +44,14 @@ export interface UserOnExpense {
   userId: number
   expenseId: number
   amount: number
+  imageUrl: string
+}
+
+export interface Balance {
+  userId: number,
+  fullName: string,
+  imageUrl: string,
+  amount: number
 }
 
 @Injectable()
@@ -51,18 +59,21 @@ export class GroupService {
   constructor(private readonly http: HttpClient) {
   }
 
-
+  async getMyGroups() {
+    const call = this.http.get<Group[]>(environment.apiBaseUrl + "/mygroups")
+    return await firstValueFrom<Group[]>(call);
+  }
 
   create(value: CreateGroup) {
     return this.http.post<Group>(environment.apiBaseUrl+'/group/create', value)
   }
 
-  async getAllExpenses(groupId: string) {
+  async getAllExpenses(groupId: number) {
     const call = this.http.get<FullExpense[]>(environment.apiBaseUrl+'/group/'+groupId+'/expenses');
     return await firstValueFrom<FullExpense[]>(call);
   }
 
-  async getGroup(groupId: string) {
+  async getGroup(groupId: number) {
       const call = this.http.get<Group>(environment.apiBaseUrl+'/group/'+groupId);
       return await firstValueFrom<Group>(call);
   }
@@ -73,6 +84,10 @@ export class GroupService {
   }
 
 
+  async getBalances(groupId: number) {
+    const call = this.http.get<Balance[]>(environment.apiBaseUrl+'/group/'+groupId+'/balances')
+    return await firstValueFrom<Balance[]>(call);
+  }
 }
 
 

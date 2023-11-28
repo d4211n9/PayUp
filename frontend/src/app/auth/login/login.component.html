@@ -1,8 +1,5 @@
-<ion-content class="ion-padding" color="light" style="height: 80vh;">
-  <div style="display: block; justify-content: center; align-items: center; margin-top: 60px">
-    <div style="display: flex; justify-content: center;">
-      <ion-icon name="logo-angular" size="large"></ion-icon>
-    </div>
+<ion-content class="ion-padding" color="light">
+  <div style="display: block; justify-content: center; align-items: center;">
     <ion-card-header class="ion-text-center">
       <h1>Sign in to PayUp</h1>
     </ion-card-header>
@@ -33,8 +30,8 @@
           <ion-checkbox class="ion-padding" labelPlacement="end">Remember me</ion-checkbox>
 
           <div class="ion-padding" style="display: flex; justify-content: center;">
-            <ion-button (click)="submit()" [disabled]="form.invalid"  id="btn-submit" size="large">Sign
-              in
+            <ion-button (click)="submit()" [disabled]="form.invalid"  id="btn-submit" size="large" color="warning">
+              Sign in
             </ion-button>
           </div>
 

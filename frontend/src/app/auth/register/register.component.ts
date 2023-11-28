@@ -4,6 +4,7 @@ import {firstValueFrom} from "rxjs";
 import {AccountService, Credentials, Registration} from "../account.service";
 import {TokenService} from "../../../services/TokenService";
 import {ToastController} from "@ionic/angular";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -26,6 +27,7 @@ export class RegisterComponent implements OnInit {
     private readonly token: TokenService,
     private readonly toast: ToastController,
     private readonly service: AccountService,
+    private readonly router: Router
   ) {
   }
 
@@ -77,6 +79,8 @@ export class RegisterComponent implements OnInit {
       color: "success",
       duration: 5000
     })).present();
+
+    await this.router.navigate(['/groups'])
   }
 
   isPasswordSame(control: AbstractControl): ValidationErrors | null {

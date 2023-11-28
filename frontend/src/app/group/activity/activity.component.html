@@ -16,7 +16,7 @@
     -->
 
     <ion-toolbar>
-      <ion-segment [(ngModel)]="subpage" scrollable="true">
+      <ion-segment [(ngModel)]="subpage" scrollable="true" (ionChange)="segmentChanged($event)">
         <ion-segment-button value="activity">
           <ion-label>Activity</ion-label>
         </ion-segment-button>
@@ -30,24 +30,26 @@
     </ion-toolbar>
 
     <ng-container [ngSwitch]="subpage">
-      <ion-content *ngSwitchCase="'activity'" class="child">
+      <ion-content *ngSwitchCase="'activity'" class="child  subpage">
         <div class="parent">
           <ion-spinner name="crescent" *ngIf="loading" class="child"></ion-spinner>
         </div>
-        <expensecard class="child" *ngFor="let expense of expenses" [expense]="expense"></expensecard>
+        <expensecard class="child" *ngFor="let expense of expenses.reverse()" [expense]="expense"></expensecard>
       </ion-content>
 
       <ion-content *ngSwitchCase="'balances'" class="child">
-        <ion-accordion-group [multiple]="true">
-          <balancecard *ngFor="let user of members"></balancecard>
+        <div class="parent">
+          <ion-spinner name="crescent" *ngIf="loading" class="child"></ion-spinner>
+        </div>
+        <ion-accordion-group [multiple]="true" class="subpage">
+          <balancecard *ngFor="let balance of balances" [balance]="balance"></balancecard>
         </ion-accordion-group>
       </ion-content>
 
-      <div *ngSwitchCase="'totals'" class="child">
+      <div *ngSwitchCase="'totals'" class="child subpage">
         <!-- TODO: ADD TOTALS HTML HERE -->
         <p>Totals works!</p>
       </div>
-
     </ng-container>
 
   </ion-card>

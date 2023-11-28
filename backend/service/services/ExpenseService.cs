@@ -22,38 +22,66 @@ public class ExpenseService
     {
         if (!_groupRepo.IsUserInGroup(createFullExpense.Expense.UserId, createFullExpense.Expense.GroupId))
             throw new AuthenticationException();
-        Expense responseExpense = _expenseRepo.CreateExpense(createFullExpense.Expense);
+        var responseExpense = _expenseRepo.CreateExpense(createFullExpense.Expense);
 
-        IEnumerable<UserOnExpense?> usersOnExpense =
-            _expenseRepo.AddUsersToExpense(createFullExpense.UsersOnExpense);
+        // Fordeling af expense amount ud på antal brugere
+        var numberOfUsers = createFullExpense.UserIdsOnExpense.Count();
+        var share = createFullExpense.Expense.Amount / numberOfUsers;
 
-        FullExpense fullExpense = new FullExpense()
+        var userList = new List<CreateUserOnExpense>();
+        foreach (var u in createFullExpense.UserIdsOnExpense)
         {
-            Expense = responseExpense, 
+            if (createFullExpense.Expense.UserId == u)
+            {
+                var user = new CreateUserOnExpense()
+                {
+                    Amount = (share * numberOfUsers) - share,
+                    ExpenseId = responseExpense.Id,
+                    UserId = u
+                };
+                userList.Add(user);
+            }
+            else
+            {
+                var user = new CreateUserOnExpense()
+                {
+                    Amount = share * -1,
+                    ExpenseId = responseExpense.Id,
+                    UserId = u
+                };
+                userList.Add(user);
+            }
+        }
+
+        var usersOnExpense = _expenseRepo.AddUsersToExpense(userList);
+
+        var fullExpense = new FullExpense()
+        {
+            Expense = responseExpense,
             UsersOnExpense = usersOnExpense!,
             LoggedInUser = sessionData.UserId
         };
         return fullExpense;
     }
-    
+
     public IEnumerable<FullExpense> GetAllExpenses(int groupId, SessionData sessionData)
     {
         //Assert logged in user is authorized to access this group (api checked authentication)
         if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
-        
+
         //Query all expenses & users on expenses from db
         IEnumerable<Expense> expenseDtos = _expenseRepo.GetAllExpenses(groupId).ToList();
-        IEnumerable<UserOnExpense> usersOnExpenses = _expenseRepo.GetUsersOnExpenses(groupId).ToList();
-        
+        IEnumerable<GetUserOnExpense> usersOnExpenses = _expenseRepo.GetUsersOnExpenses(groupId).ToList();
+
         var fullExpenses = new List<FullExpense>();
         var userId = sessionData.UserId;
-        
+
         //Loop through each expense
         foreach (var expense in expenseDtos)
         {
             //Create a temp list of users linked to the current expense from outer loop
-            List<UserOnExpense> usersOnExpense = new List<UserOnExpense>();
-            
+            List<GetUserOnExpense> usersOnExpense = new List<GetUserOnExpense>();
+
             //Loop through each user on expense entry
             foreach (var uoe in usersOnExpenses)
             {
@@ -63,19 +91,27 @@ public class ExpenseService
                     usersOnExpense.Add(uoe);
                 }
             }
-            
+
             //Combine the expense with the list of linked users to make a full expense
             FullExpense fullExpense = new FullExpense()
             {
-                Expense = expense, 
+                Expense = expense,
                 UsersOnExpense = usersOnExpense!,
                 LoggedInUser = userId
             };
-            
+
             //Add to the final list of full expenses
             fullExpenses.Add(fullExpense);
         }
-        
+
         return fullExpenses;
+    }
+
+    public IEnumerable<BalanceDto> GetBalances(int groupId, SessionData sessionData)
+    {
+        //Assert logged in user is authorized to access this group (api checked authentication)
+        if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
+
+        return _expenseRepo.GetBalances(groupId);
     }
 }

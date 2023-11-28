@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FullExpense, Group, GroupService} from "../group.service";
+import {Balance, FullExpense, Group, GroupService} from "../group.service";
 import {firstValueFrom} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 
@@ -9,12 +9,13 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./activity.component.scss'],
 })
 export class ActivityComponent implements OnInit {
-  expenses: FullExpense[] = []
-  group: Group | undefined;
   id: any;
+  group: Group | undefined;
+  expenses: FullExpense[] = []
+  balances: Balance[] = []
   subpage = 'activity';
-  members: number[] = []; //TODO skal ændres til users, brugte bare til at populate balances tabben
   loading: boolean = true;
+  balancesLoaded: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,11 +25,18 @@ export class ActivityComponent implements OnInit {
 
   async ngOnInit() {
     await this.getId()
-    this.getGroup()
+    await this.getGroup()
     await this.getAllExpenses()
-    this.loading = false;
+    this.loading = false
+  }
 
-    this.generateItems() //TODO: skift til get members & balances
+  async segmentChanged(ev: any) {
+    if (ev.detail.value === 'balances' && !this.balancesLoaded) {
+      this.loading = true
+      await this.getBalances()
+      this.balancesLoaded = true
+      this.loading = false
+    }
   }
 
   async getId() {
@@ -36,18 +44,15 @@ export class ActivityComponent implements OnInit {
     this.id = map.get('groupId')
   }
 
-  async getAllExpenses() {
-    this.expenses = await this.service.getAllExpenses(this.id)
-  }
-
   async getGroup() {
     this.group = await this.service.getGroup(this.id)
   }
 
-  private generateItems() {
-    const count = this.members.length + 1;
-    for (let i = 0; i < 50; i++) {
-      this.members.push(count + i);
-    }
+  async getAllExpenses() {
+    this.expenses = await this.service.getAllExpenses(this.id)
+  }
+
+  async getBalances() {
+    this.balances = await this.service.getBalances(this.id)
   }
 }
