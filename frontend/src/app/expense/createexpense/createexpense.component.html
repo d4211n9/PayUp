@@ -1,26 +1,22 @@
-<ion-content>
+<ion-content class="parent ion-padding">
+
+<ion-card class="child ion-padding"
+          style="overflow: hidden; border-radius: 15px; max-width: 700px; width: 90%; min-height: 300px; height: 100%;">
 
     <!-- Logo Section -->
-    <div>
-        <ion-thumbnail>
-            <ion-img id="image" src=".././assets/icon/payup_logo.png"></ion-img>
+    <div class="parent ion-padding">
+        <ion-thumbnail class="child">
+            <ion-img id="expenseicon" src=".././assets/icon/expenseicon.png"></ion-img>
         </ion-thumbnail>
     </div>
 
-    <!-- Create Button Section -->
-    <div>
-        <ion-button>
-            Create
-        </ion-button>
-    </div>
-
     <!-- Expense Name Input Section -->
-    <ion-item>
+    <ion-item class="ion-padding" id="expensenameinput">
         <ion-input label="Expense name" labelPlacement="floating" placeholder="Enter text"></ion-input>
     </ion-item>
 
     <!-- Date and Time Section -->
-    <div>
+    <div class="ion-padding" >
         <ion-datetime-button datetime="datetime"></ion-datetime-button>
 
         <!-- Modal for Date and Time -->
@@ -32,41 +28,34 @@
     </div>
 
     <!-- Amount Input Section -->
-    <div>
-        <ion-item>
-            <ion-input label="You paid" placeholder="Enter amount"></ion-input>
-        </ion-item>
-    </div>
+    <ion-item class="ion-padding" id="paidinput">
+        <ion-input label="You paid" placeholder="Enter amount" labelPlacement="floating"></ion-input>
+    </ion-item>
 
-    <!-- Checkbox Section -->
-    <ion-list>
-        <ion-item>
-            <ion-label>label name</ion-label>
-            <ion-checkbox> check</ion-checkbox>
-        </ion-item>
-    </ion-list>
 
     <!-- Add users to expense -->
-    <div>
-        <ion-item>
-            <ion-label>Select Users</ion-label>
-            <ion-select multiple="true" cancelText="Cancel" okText="Select">
+    <ion-item class="ion-padding" id="dropdow">
+        <ion-select multiple="true" aria-label="User" placeholder="Select user" cancelText="Cancel" okText="Select">
 
-                <!-- Load group users -->
-                <ion-select-option value="1">John Doe</ion-select-option>
-                <ion-select-option value="2">Jane Smith</ion-select-option>
-                <ion-select-option value="3">Alex Johnson</ion-select-option>
-                <ion-select-option value="4">Emma Davis</ion-select-option>
-                <ion-select-option value="5">Chris Wilson</ion-select-option>
-                <ion-select-option value="6">John Doe</ion-select-option>
-                <ion-select-option value="7">Jane Smith</ion-select-option>
-                <ion-select-option value="8">Alex Johnson</ion-select-option>
-                <ion-select-option value="9">Emma Davis</ion-select-option>
-                <ion-select-option value="10">Chris Wilson</ion-select-option>
 
-            </ion-select>
-        </ion-item>
+            <!-- Load group users -->
+            <ion-select-option *ngFor="let useringroup of userInGroup" >{{useringroup.fullName}}</ion-select-option>
 
+
+
+
+        </ion-select>
+
+    </ion-item>
+    <!-- Create Button Section -->
+    <div class="parent ion-padding">
+        <ion-button class="child" color="warning">
+            Create
+        </ion-button>
     </div>
+
+
+
+</ion-card>
 
 </ion-content>
