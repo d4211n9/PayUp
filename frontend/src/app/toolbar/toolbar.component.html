@@ -1,16 +1,10 @@
-<ng-container *ngTemplateOutlet="toolbarContent"></ng-container>
-
-<ion-header collapse="condense">
-
-</ion-header>
-
 <ion-toolbar>
 
   <!-- Content in the toolbar -->
   <ion-content></ion-content>
 
   <!-- My Account icon and button -->
-  <ion-button id="btn_myaccount" slot="end" fill="clear">
+  <ion-button id="btn_myaccount" slot="end" fill="clear" (click)="toProfile()">
     <ion-icon
       id="icon_myaccount" slot="icon-only" name="person-circle">
     </ion-icon>
@@ -34,16 +28,10 @@
 
   <!-- PayUp logo -->
   <div
-    id="div_logo">
+    id="div_logo" (click)="toHome()">
     <ion-img id="imglogo"
              src=".././assets/icon/payup_logo.png"
-             alt="...payup toolbar logo"
+             alt="PayUp"
     ></ion-img>
   </div>
 </ion-toolbar>
-
-<ng-template #toolbarContent>
-
-  <!-- Content for the toolbar template (empty in this case) -->
-
-</ng-template>

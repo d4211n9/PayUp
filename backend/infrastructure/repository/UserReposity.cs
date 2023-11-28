@@ -149,4 +149,25 @@ SELECT
         throw new NotImplementedException("not implemented in repo");
         //todo should soft delete the user object
     }
+
+    public IEnumerable<ShortUserDto> GetAllMembersOfGroup(int groupId)
+    {
+        var sql = @$" 
+    SELECT
+    user_id as Id,
+    full_name as FullName,
+    profile_url as ProfileUrl
+FROM users.user
+JOIN groups.group_members ON users.user.id = groups.group_members.user_id
+WHERE groups.group_members.group_id = @groupId;";
+        try
+        {
+            using var conn = _dataSource.OpenConnection();
+            return conn.Query<ShortUserDto>(sql, new {groupId});
+        }
+        catch(Exception e)
+        {
+            throw new SqlTypeException("Could not retrieve users", e);
+        }
+    }
 }

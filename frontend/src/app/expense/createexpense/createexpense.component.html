@@ -1,0 +1,61 @@
+<ion-content class="parent ion-padding">
+
+<ion-card class="child ion-padding"
+          style="overflow: hidden; border-radius: 15px; max-width: 700px; width: 90%; min-height: 300px; height: 100%;">
+
+    <!-- Logo Section -->
+    <div class="parent ion-padding">
+        <ion-thumbnail class="child">
+            <ion-img id="expenseicon" src=".././assets/icon/expenseicon.png"></ion-img>
+        </ion-thumbnail>
+    </div>
+
+    <!-- Expense Name Input Section -->
+    <ion-item class="ion-padding" id="expensenameinput">
+        <ion-input label="Expense name" labelPlacement="floating" placeholder="Enter text"></ion-input>
+    </ion-item>
+
+    <!-- Date and Time Section -->
+    <div class="ion-padding" >
+        <ion-datetime-button datetime="datetime"></ion-datetime-button>
+
+        <!-- Modal for Date and Time -->
+        <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+                <ion-datetime id="datetime"></ion-datetime>
+            </ng-template>
+        </ion-modal>
+    </div>
+
+    <!-- Amount Input Section -->
+    <ion-item class="ion-padding" id="paidinput">
+        <ion-input label="You paid" placeholder="Enter amount" labelPlacement="floating"></ion-input>
+    </ion-item>
+
+
+    <!-- Add users to expense -->
+    <ion-item class="ion-padding" id="dropdow">
+        <ion-select multiple="true" aria-label="User" placeholder="Select user" cancelText="Cancel" okText="Select">
+
+
+            <!-- Load group users -->
+            <ion-select-option *ngFor="let useringroup of userInGroup" >{{useringroup.fullName}}</ion-select-option>
+
+
+
+
+        </ion-select>
+
+    </ion-item>
+    <!-- Create Button Section -->
+    <div class="parent ion-padding">
+        <ion-button class="child" color="warning">
+            Create
+        </ion-button>
+    </div>
+
+
+
+</ion-card>
+
+</ion-content>

@@ -1,9 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Group, GroupService} from "../group.service";
-import {environment} from "../../../environments/environment";
-import {firstValueFrom} from "rxjs";
-import {HttpClient} from "@angular/common/http";
-import {group} from "@angular/animations";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-my-groups',
@@ -14,20 +11,19 @@ export class MyGroupsComponent  implements OnInit {
   mygroups: Group[] = [];
 
   constructor(
-    //private readonly service: GroupService,
-    private readonly http: HttpClient
+    private readonly service: GroupService,
+    private router: Router
   ) {}
-
-
-
 
   ngOnInit() {
     this.getMyGroups();
   }
 
   async getMyGroups() {
-    const call = this.http.get<Group[]>(environment.apiBaseUrl + "/mygroups")
-    this.mygroups = await firstValueFrom<Group[]>(call);
+    this.mygroups = await this.service.getMyGroups()
   }
 
+  toCreate() {
+    this.router.navigate(['groups/create'])
+  }
 }

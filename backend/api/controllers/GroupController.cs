@@ -1,5 +1,4 @@
-﻿using System.Net;
-using api.filters;
+﻿using api.filters;
 using api.models;
 using infrastructure.dataModels;
 using Microsoft.AspNetCore.Mvc;
@@ -28,14 +27,6 @@ public class GroupController : ControllerBase
 
     [RequireAuthentication]
     [HttpGet]
-    [Route("/api/group/{groupId}/expenses")]
-    public IEnumerable<Expense> GetAllExpenses([FromRoute] int groupId)
-    {
-        return _service.GetAllExpenses(groupId, HttpContext.GetSessionData()!);
-    }
-
-    [RequireAuthentication]
-    [HttpGet]
     [Route("/api/group/{groupId}")]
     public Group GetGroupById([FromRoute] int groupId)
     {
@@ -57,15 +48,16 @@ public class GroupController : ControllerBase
     [Route("/api/group/invite")]
     public bool InviteUserToGroup([FromBody] GroupInvitation groupInvitation)
     {
-        SessionData? sessionData = HttpContext.GetSessionData();
-
-        bool success = _service.InviteUserToGroup(sessionData, groupInvitation);
-        
-        if (success)
-        {
-            HttpContext.Response.StatusCode = StatusCodes.Status201Created;
-        }
-
+        bool success = _service.InviteUserToGroup(HttpContext.GetSessionData(), groupInvitation);
+        if (success) HttpContext.Response.StatusCode = StatusCodes.Status201Created;
         return success;
+    }
+    
+    [RequireAuthentication]
+    [HttpGet]
+    [Route("/api/group/{groupId}/users")]
+    public IEnumerable<ShortUserDto> GetUsersInGroup([FromRoute] int groupId)
+    {
+        return _service.GetUsersInGroup(groupId, HttpContext.GetSessionData()!);
     }
 }
