@@ -1,12 +1,11 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {IonicModule} from "@ionic/angular";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ProfileComponent} from "./profile.component";
 import {ProfileService} from "./profile.service";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {ErrorHttpInterceptor} from "../../interceptors/error-http-interceptors";
-import {GroupService} from "../group/group.service";
 import {AuthHttpInterceptor} from "../../interceptors/auth-http-interceptor";
 
 @NgModule({

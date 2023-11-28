@@ -1,10 +1,7 @@
-<ion-content class="ion-align-items-center ion-justify-content-center ion-no-margin ion-text-center"
+<ion-content class="ion-align-items-center ion-justify-content-center ion-padding ion-text-center"
              color="light"
              style="display: grid">
-  <div style="display: block; justify-content: center; align-items: center; margin-top: 60px">
-    <div style="display: flex; justify-content: center;">
-      <ion-icon name="logo-angular" size="large"></ion-icon>
-    </div>
+  <div style="display: block; justify-content: center; align-items: center;">
     <ion-card-header class="ion-text-center">
       <h1>Sign up to PayUp</h1>
     </ion-card-header>
@@ -58,12 +55,12 @@
 
 
             </ion-list>
-            <div class="ion-text-center">
-              <ion-button (click)="register()" [disabled]="form.invalid" color="warning">
+            <div class="ion-text-center ion-padding">
+              <ion-button (click)="register()" [disabled]="form.invalid" size="large" color="warning">
                 Create account
               </ion-button>
             </div>
-            <ion-text>Already have an account?<a href="/login">Log in</a></ion-text>
+            <ion-text>Already have an account? <a href="/login">Log in</a></ion-text>
           </form>
 
         </ion-card-content>

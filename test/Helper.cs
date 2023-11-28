@@ -113,7 +113,7 @@ CREATE TABLE users.user (
     full_name VARCHAR(50) NOT NULL,
     phone_number VARCHAR(15) NOT NULL,
     created TIMESTAMP NOT NULL,
-    profile_url VARCHAR(100) NOT NULL
+    profile_url VARCHAR(200) NOT NULL
 );
 
 -- Create the 'password_hash' table with a foreign key reference to 'Email'
@@ -133,7 +133,7 @@ CREATE TABLE groups.group (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     description VARCHAR(200) NOT NULL,
-    image_url VARCHAR(100) NOT NULL,
+    image_url VARCHAR(200) NOT NULL,
     created_date TIMESTAMP NOT NULL
 );
 
@@ -155,7 +155,7 @@ CREATE TABLE expenses.expense (
     id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     group_id INT NOT NULL,
-    description VARCHAR(200) NOT NULL,
+    description VARCHAR(100) NOT NULL,
     amount MONEY NOT NULL,
     created_date TIMESTAMP NOT NULL,
     FOREIGN KEY (group_id) REFERENCES groups.group(id),
@@ -188,7 +188,7 @@ Best regards, Alex
         var registration = new
         {
             Email = email,
-            FullName = "fullName",
+            FullName = "Test User",
             Password = "password",
             PhoneNumber = "12345678",
             Created = DateTime.Now,
@@ -266,8 +266,6 @@ insert into expenses.expense (id, user_id, group_id, description, amount, create
 
 insert into expenses.user_on_expense (user_id, expense_id, amount) values (1, 1, 20);
 insert into expenses.user_on_expense (user_id, expense_id, amount) values (1, 2, 20);
-insert into expenses.user_on_expense (user_id, expense_id, amount) values (1, 3, 20);
-insert into expenses.user_on_expense (user_id, expense_id, amount) values (1, 4, 20);
 insert into expenses.user_on_expense (user_id, expense_id, amount) values (2, 1, -20);
 insert into expenses.user_on_expense (user_id, expense_id, amount) values (2, 2, -20);
 ";
@@ -280,5 +278,35 @@ insert into groups.group (id, name, description, image_url, created_date) VALUES
 insert into groups.group_members (user_id, group_id, owner) VALUES (1, 1, true);
 insert into groups.group_members (user_id, group_id, owner) VALUES (1, 2, true);
 insert into groups.group_members (user_id, group_id, owner) VALUES (2, 3, true);
+    ";
+
+    public static string BalanceScript = @"
+insert into users.user (email, full_name, phone_number, created, profile_url) VALUES ('user2@example.com', 'Homie', '12341234', '2023-11-21 10:48:24.584797', 'https://cdn-icons-png.flaticon.com/512/615/615075.png');
+insert into users.user (email, full_name, phone_number, created, profile_url) VALUES ('user3@example.com', 'Buddy', '12341234', '2023-11-21 10:48:24.584797', 'https://cdn-icons-png.flaticon.com/512/615/615075.png');
+
+insert into groups.group (id, name, description, image_url, created_date) VALUES (1, 'Studiegruppen', 'description', 'https://cdn-icons-png.flaticon.com/512/615/615075.png', '2023-11-21 10:48:24.584797');
+
+insert into groups.group_members (user_id, group_id, owner) VALUES (1, 1, true);
+insert into groups.group_members (user_id, group_id, owner) VALUES (2, 1, false);
+insert into groups.group_members (user_id, group_id, owner) VALUES (3, 1, false);
+
+INSERT INTO expenses.expense (user_id, group_id, description, amount, created_date) VALUES (1, 1, 'Bajere 🍺', 150, '2023-11-24T15:58:41.045Z');
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (1, 1, 100);
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (2, 1, -50);
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (3, 1, -50);
+
+INSERT INTO expenses.expense (user_id, group_id, description, amount, created_date) VALUES (2, 1, 'Pizza 🍕', 240, '2023-11-24T16:58:41.045Z');
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (1, 2, -80);
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (2, 2, 160);
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (3, 2, -80);
+
+INSERT INTO expenses.expense (user_id, group_id, description, amount, created_date) VALUES (3, 1, 'Taxa 🚕', 90, '2023-11-24T22:58:41.045Z');
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (1, 3, -30);
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (2, 3, -30);
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (3, 3, 60);
+
+INSERT INTO expenses.expense (user_id, group_id, description, amount, created_date) VALUES (3, 1, 'Gave 🎁', 200, '2023-11-25T12:58:41.045Z');
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (2, 4, -100);
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (3, 4, 100);
     ";
 }

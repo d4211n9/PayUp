@@ -4,6 +4,7 @@ import {ToastController} from "@ionic/angular";
 import {firstValueFrom} from "rxjs";
 import {AccountService, Credentials} from "../account.service";
 import {TokenService} from "../../../services/TokenService";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ export class LoginComponent implements OnInit {
     private readonly fb: FormBuilder,
     private readonly toast: ToastController,
     private readonly service: AccountService,
-    private readonly token: TokenService
+    private readonly token: TokenService,
+    private readonly router: Router
   ) {
   }
 
@@ -46,5 +48,7 @@ export class LoginComponent implements OnInit {
       color: "success",
       duration: 5000
     })).present();
+
+    await this.router.navigate(['/groups'])
   }
 }
