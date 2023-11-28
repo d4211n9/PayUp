@@ -18,7 +18,8 @@ export class UserService {
   constructor(private readonly http: HttpClient) { }
 
   get_invitable_users(search_query: string, pagination: Pagination, group_id: number) {
-    let param_search = search_query == '' ? '' : 'searchquery=' + search_query + '&';
+
+    let param_search = search_query == '' ? 'searchquery='+'' : 'searchquery=' + search_query + '&';
 
     return this.http.get<InvitableUser[]>('http://localhost:5100/api/user/?'
       + param_search
