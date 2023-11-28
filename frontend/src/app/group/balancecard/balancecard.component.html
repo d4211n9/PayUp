@@ -1,0 +1,25 @@
+<ion-accordion>
+  <ion-item class="acc-header" slot="header">
+    <ion-thumbnail class="ion-padding">
+      <ion-img src="{{balance.imageUrl}}"></ion-img>
+    </ion-thumbnail>
+
+    <ion-label>{{balance.fullName}}</ion-label>
+
+    <ion-label slot="end" *ngIf="balance.amount < 0" color="danger">owes {{-1 * balance.amount}}</ion-label>
+    <ion-label slot="end" *ngIf="balance.amount > 0" color="success">lent {{balance.amount}}</ion-label>
+    <ion-label slot="end" *ngIf="balance.amount === 0">has paid up</ion-label>
+  </ion-item>
+  <div slot="content">
+    <ion-list [inset]="true">
+      <ion-item>
+        <ion-label>{{user1.fullName} {{owes/lent} {{user2.fullName}</ion-label>
+        <ion-label color="success" slot="end">{{amount}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{user1.fullName} {{owes/lent} {{user3.fullName}</ion-label>
+        <ion-label color="danger" slot="end">{{amount}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-accordion>

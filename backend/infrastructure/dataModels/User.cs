@@ -22,6 +22,21 @@ public class UserInfoDto
     [Required, Url] public required string ProfileUrl { get; set; }
 }
 
+
+public class ShortUserDto
+{
+    public int Id { get; set; }
+    [Required] public required string FullName { get; set; }
+    [Required, Url] public required string ProfileUrl { get; set; }
+}
+
+public class UserInGroupDto
+{
+    public int UserId { get; set; }
+    public int GroupId { get; set; }
+    public bool IsOwner { get; set; }
+}
+
 public class InvitableUser
 {
     [Required]

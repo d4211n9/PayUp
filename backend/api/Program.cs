@@ -35,6 +35,7 @@ builder.Services.AddSingleton<ExpenseRepository>();
 builder.Services.AddSingleton<AccountService>();
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<GroupService>();
+builder.Services.AddSingleton<ExpenseService>();
 
 builder.Services.AddJwtService();
 builder.Services.AddSwaggerGenWithBearerJWT();
@@ -52,7 +53,7 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseAuthentication();
-app.UseAuthorization(); // Add it here
+app.UseAuthorization(); 
 
 app.MapControllers();
 

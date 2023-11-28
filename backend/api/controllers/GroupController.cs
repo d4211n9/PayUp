@@ -1,7 +1,5 @@
-﻿using System.Net;
-using api.filters;
+﻿using api.filters;
 using api.models;
-using infrastructure.dataModels;
 using Microsoft.AspNetCore.Mvc;
 using service.services;
 
@@ -60,5 +58,13 @@ public class GroupController : ControllerBase
         bool success = _service.InviteUserToGroup(HttpContext.GetSessionData(), groupInvitation);
         if (success) HttpContext.Response.StatusCode = StatusCodes.Status201Created;
         return success;
+    }
+    
+    [RequireAuthentication]
+    [HttpGet]
+    [Route("/api/group/{groupId}/users")]
+    public IEnumerable<ShortUserDto> GetUsersInGroup([FromRoute] int groupId)
+    {
+        return _service.GetUsersInGroup(groupId, HttpContext.GetSessionData()!);
     }
 }

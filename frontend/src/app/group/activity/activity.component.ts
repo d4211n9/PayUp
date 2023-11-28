@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Expense, Group, GroupService} from "../group.service";
+import {Component, OnInit} from '@angular/core';
+import {Balance, FullExpense, Group, GroupService} from "../group.service";
 import {firstValueFrom} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 
@@ -9,10 +9,13 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./activity.component.scss'],
 })
 export class ActivityComponent implements OnInit {
-  expenses: Expense[] = []
-  group: Group | undefined;
   id: any;
+  group: Group | undefined;
+  expenses: FullExpense[] = []
+  balances: Balance[] = []
   subpage = 'activity';
+  loading: boolean = true;
+  balancesLoaded: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -22,8 +25,18 @@ export class ActivityComponent implements OnInit {
 
   async ngOnInit() {
     await this.getId()
-    this.getAllExpenses()
-    this.getGroup()
+    await this.getGroup()
+    await this.getAllExpenses()
+    this.loading = false
+  }
+
+  async segmentChanged(ev: any) {
+    if (ev.detail.value === 'balances' && !this.balancesLoaded) {
+      this.loading = true
+      await this.getBalances()
+      this.balancesLoaded = true
+      this.loading = false
+    }
   }
 
   async getId() {
@@ -31,11 +44,15 @@ export class ActivityComponent implements OnInit {
     this.id = map.get('groupId')
   }
 
+  async getGroup() {
+    this.group = await this.service.getGroup(this.id)
+  }
+
   async getAllExpenses() {
     this.expenses = await this.service.getAllExpenses(this.id)
   }
 
-  async getGroup() {
-    this.group = await this.service.getGroup(this.id)
+  async getBalances() {
+    this.balances = await this.service.getBalances(this.id)
   }
 }
