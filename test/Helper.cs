@@ -167,7 +167,6 @@ CREATE TABLE expenses.user_on_expense (
     user_id INT NOT NULL,
     expense_id INT NOT NULL,
     amount MONEY NOT NULL,
-    created_date TIMESTAMP NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users.user(id),
     FOREIGN KEY (expense_id) REFERENCES expenses.expense(id),
     PRIMARY KEY (user_id, expense_id)

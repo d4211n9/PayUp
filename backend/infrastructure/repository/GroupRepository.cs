@@ -2,6 +2,7 @@
 using System.Security.Authentication;
 using api.models;
 using Dapper;
+using infrastructure.dataModels;
 using Npgsql;
 
 namespace infrastructure.repository;
@@ -46,23 +47,28 @@ public class GroupRepository
 
         using (var conn = _dataSource.OpenConnection())
         {
-            return conn.Query<Group>(sql, new {userId});
+            return conn.Query<Group>(sql, new { userId });
         }
     }
-    
-    
-    public bool AddUserToGroup(int userId, int groupId, bool isOwner)
+
+
+    public bool AddUserToGroup(UserInGroupDto userInGroupDto)
     {
         var sql =
             $@"
             insert into groups.group_members (user_id, group_id, owner) 
-            values (@userId, @groupId, @isOwner);
+            values (@UserId, @GroupId, @IsOwner);
             ";
 
         try
         {
             using var conn = _dataSource.OpenConnection();
-            return conn.Execute(sql, new { userId, groupId, isOwner }) == 1;
+            return conn.Execute(sql, new
+            {
+                UserId = userInGroupDto.UserId,
+                GroupId = userInGroupDto.GroupId,
+                IsOwner = userInGroupDto.IsOwner
+            }) == 1;
         }
         catch (Exception e)
         {
