@@ -23,8 +23,7 @@ export interface GroupInvitation {
 
 @Injectable()
 export class GroupService {
-  constructor(private readonly http: HttpClient) {
-  }
+  constructor(private readonly http: HttpClient) {}
 
   create(value: Group) {
     return this.http.post<Group>(environment.apiBaseUrl+'/group/create', value)
@@ -39,7 +38,7 @@ export class GroupService {
       const call = this.http.get<Group>(environment.apiBaseUrl+'/group/'+groupId);
       return await firstValueFrom<Group>(call);
   }
-  
+
   invite(group_invite: GroupInvitation) {
     return this.http.post<boolean>('http://localhost:5100/api/group/invite', group_invite);
   }

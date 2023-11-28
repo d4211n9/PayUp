@@ -4,8 +4,8 @@ namespace api.models;
 
 public class InvitableUserSearch
 {
-    [Required] 
-    public string SearchQuery { get; set; }
+
+    public string? SearchQuery { get; set; }
     [Required]
     public Pagination Pagination { get; set; }
     [Required]

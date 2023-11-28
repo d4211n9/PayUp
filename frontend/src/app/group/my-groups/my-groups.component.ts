@@ -18,9 +18,6 @@ export class MyGroupsComponent  implements OnInit {
     private readonly http: HttpClient
   ) {}
 
-
-
-
   ngOnInit() {
     this.getMyGroups();
   }

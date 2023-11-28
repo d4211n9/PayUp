@@ -24,7 +24,6 @@ export class InviteComponent  implements OnInit {
 
   ngOnInit() {
     this.group_id = Number(this.route.snapshot.paramMap.get('groupid'));
-
     this.navigate_to();
   }
 
@@ -45,30 +44,20 @@ export class InviteComponent  implements OnInit {
 
       this.displayed_users = this.displayed_users.filter(value => value.id != user_id);
     }
-    else {
-      await this.toast.create({
-        message: 'Failed to invite',
-        color: 'danger',
-        duration: 5000
-      });
-    }
   }
 
   page_previous() {
     this.current_page = this.current_page <= 0 ? 0 : this.current_page - 1;
-
     this.navigate_to();
   }
 
   page_next() {
     this.current_page++;
-
     this.navigate_to();
   }
 
   search() {
     this.current_page = 0;
-
     this.navigate_to();
   }
 
@@ -77,7 +66,6 @@ export class InviteComponent  implements OnInit {
       current_page: this.current_page,
       page_size: this.default_page_size
     }
-
     this.displayed_users = await firstValueFrom(this.user_service.get_invitable_users(this.search_query, pagination, this.group_id));
   }
 }
