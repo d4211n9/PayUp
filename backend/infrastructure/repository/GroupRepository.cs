@@ -120,4 +120,47 @@ public class GroupRepository
             throw new SqlTypeException("Could not read the group", e);
         }
     }
+
+    public int IsUserGroupOwner(int groupId)
+    {
+        string sql = @"
+               SELECT groups.group_members.user_id
+               FROM groups.group_members
+               WHERE groups.group_members.group_id = @groupId
+               AND groups.group_members.owner = true;";
+        
+        try
+        {
+            using var conn = _dataSource.OpenConnection();
+            return conn.QueryFirstOrDefault<int>(sql, new { groupId });
+        }
+        catch (Exception e)
+        {
+            throw new SqlTypeException("Failed to retrieve owner ID of the group");
+        }
+    }
+    
+    public bool InviteUserToGroup(FullGroupInvitation groupInvitation)
+    {
+        string sql = @"
+                INSERT INTO groups.group_invitation
+                (receiver_id, group_id, sender_id, date_received) 
+                VALUES (@ReceiverId, @GroupId, @SenderId, @TimeNow);";
+        
+        try
+        {
+            using var conn = _dataSource.OpenConnection();
+            return conn.Execute(sql, new
+            {
+                groupInvitation.ReceiverId,
+                groupInvitation.GroupId,
+                groupInvitation.SenderId,
+                TimeNow =  DateTime.Now
+            }) == 1;
+        }
+        catch (Exception e)
+        {
+            throw new SqlTypeException("Failed to invite user to group", e);
+        }
+    }
 }

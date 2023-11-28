@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 import {RegisterComponent} from "./auth/register/register.component";
 import {LoginComponent} from "./auth/login/login.component";
+import {InviteComponent} from "./group/invite/invite.component";
 import {CreateComponent} from "./group/create/create.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {ActivityComponent} from "./group/activity/activity.component";
@@ -28,6 +29,10 @@ const routes: Routes = [
     path: 'groups',
     component: MyGroupsComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'groups/invite/:groupid',
+    component: InviteComponent
   },
   {
     path: 'groups/create',

@@ -6,6 +6,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {GroupService} from "./group.service";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {ErrorHttpInterceptor} from "../../interceptors/error-http-interceptors";
+import {InviteComponent} from "./invite/invite.component";
 
 import {ExpenseModule} from "../expense/expense.module";
 import {ActivityComponent} from "./activity/activity.component";
@@ -16,7 +17,7 @@ import {BalancecardComponent} from "./balancecard/balancecard.component";
 
 
 @NgModule({
-  declarations: [CreateComponent, ActivityComponent, GroupcardComponent, BalancecardComponent],
+  declarations: [CreateComponent, ActivityComponent, GroupcardComponent, InviteComponent, BalancecardComponent],
   imports: [
     CommonModule,
     IonicModule,

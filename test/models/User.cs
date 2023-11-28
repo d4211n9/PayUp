@@ -1,0 +1,23 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace test.models;
+
+public class User
+{
+    public required int Id { get; set; }
+    [Required, EmailAddress] public required string Email { get; set; }
+    [Required] public required string FullName { get; set; }
+    [Required, Phone] public required string PhoneNumber { get; set; }
+    [Required, Timestamp] public required DateTime Created { get; set; }
+    [Required, Url] public required string ProfileUrl { get; set; }
+}
+
+public class InvitableUser
+{
+    [Required]
+    public int Id { get; set; }
+    [Required]
+    public string FullName { get; set; }
+    [Required, Url]
+    public string ProfileUrl { get; set; }
+}

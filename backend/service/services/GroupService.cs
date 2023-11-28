@@ -1,5 +1,6 @@
 ﻿using System.Data.SqlTypes;
 using System.Security.Authentication;
+using System.Security;
 using api.models;
 using infrastructure.dataModels;
 using infrastructure.repository;
@@ -49,5 +50,25 @@ public class GroupService
     {
         if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
         return _userRepository.GetAllMembersOfGroup(groupId);
+    }
+
+    public bool InviteUserToGroup(SessionData? sessionData, GroupInvitation groupInvitation)
+    {
+        var ownerId = _groupRepo.IsUserGroupOwner(groupInvitation.GroupId);
+        
+        if (sessionData.UserId != ownerId)
+            throw new SecurityException("You are not allowed to invite users to this group");
+
+        if (_groupRepo.IsUserInGroup(groupInvitation.ReceiverId, groupInvitation.GroupId))
+            throw new ArgumentException("User is already in group");
+
+        var fullGroupInvitation = new FullGroupInvitation()
+        {
+            ReceiverId = groupInvitation.ReceiverId,
+            GroupId = groupInvitation.GroupId,
+            SenderId = ownerId
+        };
+        
+        return _groupRepo.InviteUserToGroup(fullGroupInvitation);
     }
 }

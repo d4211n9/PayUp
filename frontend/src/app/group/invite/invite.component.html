@@ -1,0 +1,25 @@
+<div class="flex-container content-container">
+  <div class="content">
+    <ion-title class="ion-text-center ion-padding-bottom">Add Member</ion-title>
+    <ion-searchbar class="search-bar" [(ngModel)]="search_query" [debounce]="1000"
+                   (ionInput)="search()"></ion-searchbar>
+      <ion-content class="flex-container">
+        <div class="flex-row user" *ngFor="let user of displayed_users">
+          <ion-img alt="{{user.fullName}}'s profile image" src="{{user.profileUrl}}"></ion-img>
+          <ion-text>{{user.fullName}}</ion-text>
+          <ion-button class="flex-row-button" color="warning" (click)="invite(user.id)">Invite</ion-button>
+        </div>
+      </ion-content>
+    <div class="flex-row pagination-container">
+      <ion-button (click)="page_previous()" fill="clear">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+        Prev page
+      </ion-button>
+      <ion-button color="warning">Finish</ion-button>
+      <ion-button (click)="page_next()" fill="clear">
+        Next page
+        <ion-icon name="arrow-forward-outline"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+</div>

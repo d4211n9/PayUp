@@ -93,6 +93,7 @@ DROP TABLE IF EXISTS expenses.user_on_expense CASCADE;
 DROP TABLE IF EXISTS expenses.expense CASCADE;
 DROP SCHEMA IF EXISTS expenses CASCADE;
 
+DROP TABLE IF EXISTS groups.group_invitation;
 DROP TABLE IF EXISTS groups.group_members;
 DROP TABLE IF EXISTS groups.group CASCADE;
 DROP SCHEMA IF EXISTS groups CASCADE;
@@ -100,7 +101,7 @@ DROP SCHEMA IF EXISTS groups CASCADE;
 -- Drop the 'users.password_hash' table if it exists
 DROP TABLE IF EXISTS users.password_hash;
 -- Drop the 'users.user' table if it exists
-DROP TABLE IF EXISTS users.user CASCADE;
+DROP TABLE IF EXISTS users.user;
 DROP SCHEMA IF EXISTS users;
 
 -- Create the 'users' schema
@@ -171,6 +172,19 @@ CREATE TABLE expenses.user_on_expense (
     FOREIGN KEY (expense_id) REFERENCES expenses.expense(id),
     PRIMARY KEY (user_id, expense_id)
 );
+
+-- Create the ‘groups.group_invitation’ table
+CREATE TABLE groups.group_invitation (
+	receiver_id INT NOT NULL,
+	group_id INT NOT NULL,
+	sender_id INT NOT NULL,
+	date_received TIMESTAMP NOT NULL,
+	FOREIGN KEY (receiver_id) REFERENCES users.user(id),
+	FOREIGN KEY (group_id) REFERENCES groups.group(id),
+	FOREIGN KEY (sender_id) REFERENCES users.user(id),
+	PRIMARY KEY (receiver_id, group_id)	
+);
+
  ";
 
     public static string NoResponseMessage = $@"

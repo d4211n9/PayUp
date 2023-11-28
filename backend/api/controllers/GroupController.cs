@@ -42,6 +42,16 @@ public class GroupController : ControllerBase
         var userId = sessionData.UserId;
         return _service.GetMyGroups(userId);
     }
+
+    [RequireAuthentication]
+    [HttpPost]
+    [Route("/api/group/invite")]
+    public bool InviteUserToGroup([FromBody] GroupInvitation groupInvitation)
+    {
+        bool success = _service.InviteUserToGroup(HttpContext.GetSessionData(), groupInvitation);
+        if (success) HttpContext.Response.StatusCode = StatusCodes.Status201Created;
+        return success;
+    }
     
     [RequireAuthentication]
     [HttpGet]

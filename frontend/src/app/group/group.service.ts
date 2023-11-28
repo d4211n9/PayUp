@@ -54,6 +54,11 @@ export interface Balance {
   amount: number
 }
 
+export interface GroupInvitation {
+  groupId: number
+  receiverId: number
+}
+
 @Injectable()
 export class GroupService {
   constructor(private readonly http: HttpClient) {
@@ -88,8 +93,7 @@ export class GroupService {
     const call = this.http.get<Balance[]>(environment.apiBaseUrl+'/group/'+groupId+'/balances')
     return await firstValueFrom<Balance[]>(call);
   }
+  invite(group_invite: GroupInvitation) {
+    return this.http.post<boolean>('http://localhost:5100/api/group/invite', group_invite);
+  }
 }
-
-
-
-

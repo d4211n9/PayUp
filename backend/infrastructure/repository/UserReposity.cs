@@ -113,6 +113,37 @@ SELECT
         }
     }
 
+    public IEnumerable<InvitableUser> GetInvitableUsers(InvitableUserSearch invitableUserSearch)
+    {
+        invitableUserSearch.SearchQuery = invitableUserSearch.SearchQuery.Insert(0, "%");
+        invitableUserSearch.SearchQuery += "%";
+        
+        string sql = @"
+                    SELECT users.user.id, users.user.full_name AS FullName, users.user.profile_url AS ProfileUrl
+                    FROM users.user
+                    WHERE users.user.id NOT IN (SELECT groups.group_members.user_id FROM groups.group_members WHERE group_members.group_id = @GroupId)
+                    AND users.user.id NOT IN (SELECT groups.group_invitation.receiver_id FROM groups.group_invitation WHERE group_invitation.group_id = @GroupId)
+                    AND users.user.full_name LIKE @SearchQuery
+                    LIMIT @PageSize
+                    OFFSET @CurrentPage";
+        try
+        {
+            using NpgsqlConnection conn = _dataSource.OpenConnection();
+            return conn.Query<InvitableUser>(sql, new
+            {
+                invitableUserSearch.SearchQuery,
+                invitableUserSearch.GroupId,
+                CurrentPage = invitableUserSearch.Pagination.CurrentPage * invitableUserSearch.Pagination.PageSize,
+                invitableUserSearch.Pagination.PageSize
+            });
+        }
+        catch (Exception e)
+        {
+            throw new SqlTypeException("Could not retrieve invitable users", e);
+        }
+    }
+
+
     public bool DeleteUser(int userId)
     {
         throw new NotImplementedException("not implemented in repo");

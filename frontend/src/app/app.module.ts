@@ -13,8 +13,8 @@ import {TokenService} from "../services/TokenService";
 import {AuthHttpInterceptor} from "../interceptors/auth-http-interceptor";
 import {GroupModule} from "./group/group.module";
 import {HomePageModule} from "./home/home.module";
-
 import {ProfileModule} from "./profile/profile.module";
+import {UserModule} from "./user/user.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,8 +24,8 @@ import {ProfileModule} from "./profile/profile.module";
     AuthModule,
     GroupModule,
     ProfileModule,
-    HomePageModule
-
+    HomePageModule,
+    UserModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true},

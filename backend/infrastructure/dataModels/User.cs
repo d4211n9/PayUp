@@ -36,3 +36,13 @@ public class UserInGroupDto
     public int GroupId { get; set; }
     public bool IsOwner { get; set; }
 }
+
+public class InvitableUser
+{
+    [Required]
+    public int Id { get; set; }
+    [Required]
+    public string FullName { get; set; }
+    [Required, Url]
+    public string ProfileUrl { get; set; }
+}
