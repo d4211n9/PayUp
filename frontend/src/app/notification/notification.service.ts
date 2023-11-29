@@ -5,7 +5,6 @@ import {firstValueFrom} from "rxjs";
 import {EnumValue} from "@angular/compiler-cli/src/ngtsc/partial_evaluator";
 
 export interface GroupInviteNotification {
-  category: EnumValue,
   subject: string,
   body: string,
   description: string,

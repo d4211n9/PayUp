@@ -1,37 +1,41 @@
 <ion-toolbar>
-
   <!-- Content in the toolbar -->
   <ion-content></ion-content>
 
-  <!-- My Account icon and button -->
+  <!-- Burger menu button -->
+  <ion-buttons id="btn_menu-button" slot="start">
+    <ion-menu-button auto-hide="false"></ion-menu-button>
+  </ion-buttons>
+
+  <!-- Your Account icon and button -->
   <ion-button id="btn_myaccount" slot="end" fill="clear" (click)="toProfile()">
-    <ion-icon
-      id="icon_myaccount" slot="icon-only" name="person-circle">
-    </ion-icon>
+    <ion-icon id="icon_myaccount" slot="icon-only" name="person-circle"></ion-icon>
   </ion-button>
 
   <!-- Notifications icon and button -->
-  <ion-button
-    id="btn_notifications" slot="end" fill="clear">
-    <ion-icon
-      id="icon_notifications" slot="icon-only" name="notifications">
-    </ion-icon>
+  <ion-button id="btn_notifications" slot="end" fill="clear" (click)="openSelect()">
+    <ion-icon id="icon_notifications" slot="icon-only" name="notifications"></ion-icon>
   </ion-button>
 
-  <!-- Burger menu button -->
-  <ion-buttons
-    id="btn_menu-button" slot="start">
-    <ion-menu-button
-      auto-hide="false">
-    </ion-menu-button>
-  </ion-buttons>
+  <!-- Your ion-select dropdown -->
+  <ion-select
+    #mySelect
+    aria-label="Fruit"
+    interface="popover"
+    placeholder=""
+    [popoverOptions]="popoverOptions"
+  >
+    <ion-select-option value="apples">Apples</ion-select-option>
+    <ion-select-option value="oranges">Oranges</ion-select-option>
+    <ion-select-option value="bananas">Bananas</ion-select-option>
+  </ion-select>
 
   <!-- PayUp logo -->
-  <div
-    id="div_logo" (click)="toHome()">
-    <ion-img id="imglogo"
-             src=".././assets/icon/payup_logo.png"
-             alt="PayUp"
+  <div id="div_logo" (click)="toHome()">
+    <ion-img
+      id="imglogo"
+      src=".././assets/icon/payup_logo.png"
+      alt="PayUp"
     ></ion-img>
   </div>
 </ion-toolbar>
