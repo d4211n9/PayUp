@@ -25,15 +25,7 @@ export class ToolbarComponent implements OnInit {
 
   async ngOnInit() {
     this.getCurrentUser()
-    setInterval(async () => {
-      // Update lastUpdate to the current time before fetching notifications
-     // await this.getNotificationsAmount();
-      this.lastUpdate = new Date();//todo skal hente en int over antal noti i database eller måske bare om der er nogle
-    }, 3000);
-  }
 
-  async getNotifications() {
-   // this.notificationAmount = await this.notificationService.getNotificationsAmount(this.lastUpdate);
   }
 
   async getCurrentUser() {
