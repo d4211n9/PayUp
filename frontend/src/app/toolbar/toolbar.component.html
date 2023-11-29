@@ -12,23 +12,13 @@
     <ion-icon id="icon_myaccount" slot="icon-only" name="person-circle"></ion-icon>
   </ion-button>
 
-  <!-- Notifications icon and button -->
-  <ion-button id="btn_notifications" slot="end" fill="clear" (click)="openSelect()">
+  <ion-button id="btn_notifications" slot="end" fill="clear" (click)="openSelect($event)">
     <ion-icon id="icon_notifications" slot="icon-only" name="notifications"></ion-icon>
   </ion-button>
+  
 
-  <!-- Your ion-select dropdown -->
-  <ion-select
-    #mySelect
-    aria-label="Fruit"
-    interface="popover"
-    placeholder=""
-    [popoverOptions]="popoverOptions"
-  >
-    <ion-select-option value="apples">Apples</ion-select-option>
-    <ion-select-option value="oranges">Oranges</ion-select-option>
-    <ion-select-option value="bananas">Bananas</ion-select-option>
-  </ion-select>
+
+
 
   <!-- PayUp logo -->
   <div id="div_logo" (click)="toHome()">

@@ -22,7 +22,8 @@ import {ProfileModule} from "../profile/profile.module";
   ],
   exports: [
     HomePage,
-    ToolbarComponent
+    ToolbarComponent,
+
   ],
   declarations: [HomePage, MyGroupsComponent, ToolbarComponent]
 })
