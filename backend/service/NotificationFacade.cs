@@ -1,5 +1,6 @@
 ﻿using api.models;
 using infrastructure.repository;
+using MimeKit;
 
 namespace service;
 
@@ -30,10 +31,25 @@ public class NotificationFacade
                                 invitation.Name +
                                 "\n \n with this description:\n" +
                                 invitation.Description + 
-                                "\nhttp://localhost:4200/";
+                                "\n http://localhost:4200/";
 
+        var message = new MimeMessage();
+        message.Body = new TextPart("html")
+        {
+            Text = @"
+            <body>
+            <h1>You have been invited to</h1>
+            <h1>" + invitation.Name + @"</h1>
+            <h3>" +invitation.Description+ @"</p>
+            <a> " + "http://localhost:4200/" + @"
+            </body>
+            </html>"
+        };//todo should replace local link with our baseurl before deploying
+        
         string invite = "invite";
-        _mailRepository.SendInviteEmail(invitationMessage,invite , email);
+        _mailRepository.SendInviteEmail(message,invite , email);
+        
+
         return true;
 
     }

@@ -59,7 +59,10 @@ public class GroupService
     public bool InviteUserToGroup(SessionData? sessionData, GroupInvitation groupInvitation)
     {
         var group = _groupRepo.GetGroupById(groupInvitation.GroupId);
-        _notificationFacade.SendInviteEmail(group, "kenmad01@easv365.dk");
+        
+        var user = _userRepository.GetById(sessionData.UserId);//todo make better
+        _notificationFacade.SendInviteEmail(group, user.Email);
+        
         var ownerId = _groupRepo.IsUserGroupOwner(groupInvitation.GroupId);
 
         if (sessionData.UserId != ownerId)
