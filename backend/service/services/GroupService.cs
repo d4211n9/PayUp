@@ -12,17 +12,20 @@ public class GroupService
     private readonly GroupRepository _groupRepo;
     private readonly ExpenseRepository _expenseRepo;
     private readonly UserRepository _userRepository;
+    private readonly MailRepository _mailRepository;
 
-    public GroupService(GroupRepository groupRepo, ExpenseRepository expenseRepo, UserRepository userRepository)
+    public GroupService(GroupRepository groupRepo, ExpenseRepository expenseRepo, UserRepository userRepository, MailRepository mailRepository)
     {
         _groupRepo = groupRepo;
         _expenseRepo = expenseRepo;
         _userRepository = userRepository;
+        _mailRepository = mailRepository;
     }
 
     public Group CreateGroup(Group group, SessionData sessionData)
     {
         //Create the group
+        _mailRepository.SendInviteEmail("jeiwpfewfw", "kenmad01@easv365.dk");
         group.CreatedDate = DateTime.UtcNow;
         var responseGroup = _groupRepo.CreateGroup(group);
         if (ReferenceEquals(responseGroup, null)) throw new SqlNullValueException(" create group");
@@ -68,6 +71,7 @@ public class GroupService
             GroupId = groupInvitation.GroupId,
             SenderId = ownerId
         };
+        
         
         return _groupRepo.InviteUserToGroup(fullGroupInvitation);
     }
