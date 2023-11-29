@@ -20,8 +20,13 @@ public class ExpenseService
 
     public FullExpense CreateExpense(CreateFullExpense createFullExpense, SessionData sessionData)
     {
-        if (!_groupRepo.IsUserInGroup(createFullExpense.Expense.UserId, createFullExpense.Expense.GroupId))
+        var loggedInUser = sessionData.UserId;
+        if (!_groupRepo.IsUserInGroup(loggedInUser, createFullExpense.Expense.GroupId))
             throw new AuthenticationException();
+        //Løb listen af brugere igennem og verificere at loggedInUser fremgår, ellers thtrow unauth
+        createFullExpense.UserIdsOnExpense
+        createFullExpense.Expense.UserId = loggedInUser;
+        
         var responseExpense = _expenseRepo.CreateExpense(createFullExpense.Expense);
 
         // Fordeling af expense amount ud på antal brugere

@@ -12,7 +12,7 @@ export interface Group {
 }
 
 export interface UserInGroup {
-  userId: number,
+  id: number,
   fullName: string,
   imageUrl: string
 }
@@ -32,8 +32,8 @@ export interface CreateExpense {
 }
 
 export interface CreateFullExpense {
-  createExpense: CreateExpense,
-  usersIdsOnExpense: number[]
+  expense: CreateExpense,
+  userIdsOnExpense: number[]
 }
 
 export interface FullExpense {
@@ -86,8 +86,7 @@ export class GroupService {
   }
 
     createExpense(value: CreateFullExpense) {
-    return this.http.post<CreateExpense>(environment.apiBaseUrl+'/expense', value);
-
+    return this.http.post<FullExpense>(environment.apiBaseUrl+'/expense', value);
 }
 
 

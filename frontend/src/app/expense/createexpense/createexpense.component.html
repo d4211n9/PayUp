@@ -12,9 +12,9 @@
 
     <!-- Expense Name Input Section -->
     <ion-item class="ion-padding" id="expensenameinput">
-      <ion-input label="Expense name" labelPlacement="floating" placeholder="Enter text"></ion-input>
+      <ion-input formControlName="description" label="Expense name" labelPlacement="floating" placeholder="Enter text"></ion-input>
     </ion-item>
-    <div formControlName="name" *ngIf="description.touched && description.invalid">
+    <div *ngIf="description.touched && description.invalid">
       <ion-text color="danger">Valid description is required</ion-text>
     </div>
 
@@ -25,19 +25,19 @@
       <!-- Modal for Date and Time -->
       <ion-modal [keepContentsMounted]="true">
         <ng-template>
-          <ion-datetime id="datetime"></ion-datetime>
+          <ion-datetime formControlName="createdDate" id="datetime"></ion-datetime>
         </ng-template>
       </ion-modal>
     </div>
-    <div formControlName="name" *ngIf="createdDate.touched && createdDate.invalid">
+    <div *ngIf="createdDate.touched && createdDate.invalid">
       <ion-text color="danger">Valid date is required</ion-text>
     </div>
 
     <!-- Amount Input Section -->
     <ion-item class="ion-padding" id="paidinput">
-      <ion-input label="You paid" placeholder="Enter amount" labelPlacement="floating"></ion-input>
+      <ion-input formControlName="amount" label="You paid" placeholder="Enter amount" labelPlacement="floating"></ion-input>
     </ion-item>
-    <div formControlName="name" *ngIf="amount.touched && amount.invalid">
+    <div *ngIf="amount.touched && amount.invalid">
       <ion-text color="danger">Valid amount is required</ion-text>
     </div>
 
@@ -47,7 +47,7 @@
       <ion-select (ionChange)="handleUserSelection($event)" multiple="true" aria-label="User" placeholder="Select user" cancelText="Cancel" okText="Select">
 
         <!-- Load group users -->
-        <ion-select-option *ngFor="let useringroup of userInGroup">{{useringroup.fullName}}</ion-select-option>
+        <ion-select-option *ngFor="let useringroup of userInGroup" [value]="useringroup.id">{{useringroup.fullName}}</ion-select-option>
       </ion-select>
 
     </ion-item>

@@ -30,12 +30,7 @@ export class CreateexpenseComponent  implements OnInit {
     this.getUsersInGroup(this.id);
   }
 
-  form = this.fb.group({
 
-    description: ['', Validators.required],
-    amount: [undefined, Validators.required],
-    createdDate: [undefined, Validators.required]
-  });
 
   get description() {
     return this.form.controls.description;
@@ -58,20 +53,20 @@ export class CreateexpenseComponent  implements OnInit {
     this.userInGroup = await this.service.getUserInGroup(groupId)
   }
 
-
-  userIdsOnExpense: number[] = [];
+  usersOnExpense: number[] = [];
 
   handleUserSelection(event: CustomEvent) {
-    this.userIdsOnExpense = [];
-
-    if (event.detail.value) {
-      event.detail.value.forEach((userId: number) => {
-        this.userIdsOnExpense.push(userId);
-      });
+    if (event.detail.value !== undefined) {
+      this.usersOnExpense = event.detail.value
     }
-
-    console.log('Selected User IDs:', this.userIdsOnExpense);
   }
+
+  form = this.fb.group({
+
+    description: ['', Validators.required],
+    amount: [undefined, Validators.required],
+    createdDate: [undefined, Validators.required]
+  });
 
   async createExpense() {
 
@@ -84,15 +79,17 @@ export class CreateexpenseComponent  implements OnInit {
 
     };
 
+
+
     var fullExpenseInfo: CreateFullExpense = {
-      createExpense: expenseInfo,
-      usersIdsOnExpense: this.userIdsOnExpense
+      expense: expenseInfo,
+      userIdsOnExpense: this.usersOnExpense
     }
 
-    const createdExpense = await firstValueFrom(this.service.createExpense(fullExpenseInfo as CreateFullExpense));
+    const createdExpense = await firstValueFrom(this.service.createExpense(fullExpenseInfo));
 
     await (await this.toast.create({
-      message: "Your expense '" + createdExpense.description + "' was created successfully",
+      message: "Your expense '" + createdExpense.expense.description + "' was created successfully",
       color: "success",
       duration: 5000
     })).present();
