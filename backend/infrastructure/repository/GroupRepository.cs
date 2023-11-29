@@ -197,4 +197,26 @@ WHERE group_invitation.receiver_id = @receiverId
             throw new SqlTypeException("Failed to invite user to group", e);
         }
     }
+
+    public bool DeleteInvite(UserInGroupDto user)
+    {
+        string sql = $@"
+                DELETE FROM groups.group_invitation
+                WHERE group_invitation.receiver_id = @UserId
+                AND group_invitation.group_id = @GroupId;";
+        
+        try
+        {
+            using var conn = _dataSource.OpenConnection();
+            return conn.Execute(sql, new
+            {
+                user.UserId,
+                user.GroupId
+            }) == 1;
+        }
+        catch (Exception e)
+        {
+            throw new SqlTypeException("Failed to invite user to group", e);
+        }
+    }
 }

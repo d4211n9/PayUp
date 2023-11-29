@@ -12,7 +12,7 @@ public class NotificationFacade
             Body = invitation.GroupDescription,
             Footer = invitation.GroupId.ToString(),
             InviteReceived = invitation.InviteReceived,
-            Category = NotificationType.GroupInvite
+            Category = NotificationCategory.GroupInvite
         };
         return result;
     }

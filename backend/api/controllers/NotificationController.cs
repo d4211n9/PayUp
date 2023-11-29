@@ -22,7 +22,6 @@ public class NotificationController: ControllerBase
     public IEnumerable<NotificationDto> GetNotifications([FromHeader] DateTime lastUpdated)
     {
         SessionData? sessionData = HttpContext.GetSessionData();
-
         return _service.GetNotifications(sessionData, lastUpdated);
     }
 }

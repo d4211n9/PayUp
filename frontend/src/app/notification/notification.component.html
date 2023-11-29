@@ -1,8 +1,9 @@
 <ion-list>
-  <ion-card color="light" class="parent" *ngFor="let noti of groupInviteNotifications">
+  <ion-card color="light" class="parent" *ngFor="let noti of notifications">
+    <div>
     <ion-card-header>
       <ion-card-title>
-        {{noti.subject}}
+        {{noti.subject }}
       </ion-card-title>
       <ion-card-subtitle>
         {{noti.inviteReceived | date: 'medium'}}
@@ -11,7 +12,8 @@
     <ion-content color="light" class="ion-padding">
       {{noti.body}}
     </ion-content>
-    <ion-button color="success">Accept</ion-button>
-    <ion-button color="danger">Decline</ion-button>
+    <ion-button color="success" (click)=" acceptInvite(noti.footer)">Accept</ion-button>
+    <ion-button color="danger" (click)=" declineInvite(noti.footer)">Decline</ion-button>
+    </div>
   </ion-card>
 </ion-list>

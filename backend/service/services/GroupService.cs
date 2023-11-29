@@ -71,4 +71,22 @@ public class GroupService
         
         return _groupRepo.InviteUserToGroup(fullGroupInvitation);
     }
+
+    public bool AcceptInvite(SessionData getSessionData, bool isAccepted, int groupId)
+    {
+        var user = new UserInGroupDto();
+        user.UserId = getSessionData.UserId;
+        user.GroupId = groupId;
+        user.IsOwner = false;
+        
+        if (isAccepted)
+        {
+            bool isCreated = _groupRepo.AddUserToGroup(user);
+            if (isCreated) { _groupRepo.DeleteInvite(user); }
+            else { throw new SqlTypeException(); }
+            return isCreated;
+        }
+        return _groupRepo.DeleteInvite(user);
+    }
+
 }

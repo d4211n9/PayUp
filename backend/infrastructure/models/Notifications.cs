@@ -1,11 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+
 
 namespace api.models;
 
-public enum NotificationType 
+public enum NotificationCategory
 {
-    GroupInvite,
- 
+    GroupInvite = 1
 }
 
 public class NotificationDto
@@ -35,4 +36,13 @@ public class GroupInviteNotification
     public string SenderFullName { get; set; }
     [Required]
     public DateTime InviteReceived { get; set; }
+}
+
+public class GroupInviteDto
+{
+    [Required]
+    public bool Accepted  { get; set; }
+    [Required]
+    public int GroupId{ get; set; }
+    
 }
