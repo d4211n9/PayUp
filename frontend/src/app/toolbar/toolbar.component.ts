@@ -36,11 +36,5 @@ export class ToolbarComponent  implements OnInit {
 
 
 
-  openSelect(event: any) {
-    // Set the event property for positioning
-    this.popoverOptions.event = event;
 
-    // Open the ion-select popover
-    this.mySelect.open(event);
-  }
 }
