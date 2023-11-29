@@ -24,6 +24,18 @@ export interface CreateGroup {
   createdDate: Date
 }
 
+export interface CreateExpense {
+  groupId: number,
+  description: string,
+  amount: number,
+  createdDate: Date
+}
+
+export interface CreateFullExpense {
+  createExpense: CreateExpense,
+  usersIdsOnExpense: number[]
+}
+
 export interface FullExpense {
   expense: Expense
   usersOnExpense: UserOnExpense[]
@@ -72,6 +84,12 @@ export class GroupService {
   create(value: CreateGroup) {
     return this.http.post<Group>(environment.apiBaseUrl+'/group/create', value)
   }
+
+    createExpense(value: CreateFullExpense) {
+    return this.http.post<CreateExpense>(environment.apiBaseUrl+'/expense', value);
+
+}
+
 
   async getAllExpenses(groupId: number) {
     const call = this.http.get<FullExpense[]>(environment.apiBaseUrl+'/group/'+groupId+'/expenses');
