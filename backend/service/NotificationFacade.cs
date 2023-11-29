@@ -1,9 +1,16 @@
 ﻿using api.models;
+using infrastructure.repository;
 
 namespace service;
 
 public class NotificationFacade
 {
+    private MailRepository _mailRepository;
+    public NotificationFacade(MailRepository mailRepository)
+    {
+        _mailRepository = mailRepository;
+    }
+    
     public static NotificationDto CreateInviteNotification(GroupInviteNotification invitation)
     {
         NotificationDto result = new()
@@ -15,5 +22,19 @@ public class NotificationFacade
             Category = NotificationCategory.GroupInvite
         };
         return result;
+    }
+
+    public bool SendInviteEmail(Group invitation, string email)
+    {
+        var invitationMessage = "Yuu Have been invited to: \n" + 
+                                invitation.Name +
+                                "\n \n with this description:\n" +
+                                invitation.Description + 
+                                "\nhttp://localhost:4200/";
+
+        string invite = "invite";
+        _mailRepository.SendInviteEmail(invitationMessage,invite , email);
+        return true;
+
     }
 }

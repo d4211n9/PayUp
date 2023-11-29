@@ -4,16 +4,16 @@ namespace infrastructure.repository;
 
 public class MailRepository
 {
-    public void SendInviteEmail(string message1, string reciever)
+    public void SendInviteEmail(string body, string subject, string reciever)
     {
         var message = new MimeMessage();
-        message.From.Add(new MailboxAddress("The Webshop Inc.", Environment.GetEnvironmentVariable("fromemail")));
+        message.From.Add(new MailboxAddress("payUp", "PayUpNotifications"));
         message.To.Add(new MailboxAddress("Customer", reciever));
-        message.Subject = "Your order confirmation";
+        message.Subject = subject;
 
         message.Body = new TextPart("plain")
         {
-            Text = @"Total order price: "+ " det virker" 
+            Text = @body
         };
 
         using (var client = new MailKit.Net.Smtp.SmtpClient())

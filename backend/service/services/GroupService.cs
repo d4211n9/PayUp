@@ -12,20 +12,21 @@ public class GroupService
     private readonly GroupRepository _groupRepo;
     private readonly ExpenseRepository _expenseRepo;
     private readonly UserRepository _userRepository;
-    private readonly MailRepository _mailRepository;
+    private readonly NotificationFacade _notificationFacade;
 
-    public GroupService(GroupRepository groupRepo, ExpenseRepository expenseRepo, UserRepository userRepository, MailRepository mailRepository)
+
+    public GroupService(GroupRepository groupRepo, ExpenseRepository expenseRepo, UserRepository userRepository, NotificationFacade notificationFacade)
     {
         _groupRepo = groupRepo;
         _expenseRepo = expenseRepo;
         _userRepository = userRepository;
-        _mailRepository = mailRepository;
+        _notificationFacade = notificationFacade;
+
     }
 
     public Group CreateGroup(Group group, SessionData sessionData)
     {
         //Create the group
-        _mailRepository.SendInviteEmail("jeiwpfewfw", "kenmad01@easv365.dk");
         group.CreatedDate = DateTime.UtcNow;
         var responseGroup = _groupRepo.CreateGroup(group);
         if (ReferenceEquals(responseGroup, null)) throw new SqlNullValueException(" create group");
@@ -57,8 +58,10 @@ public class GroupService
 
     public bool InviteUserToGroup(SessionData? sessionData, GroupInvitation groupInvitation)
     {
+        var group = _groupRepo.GetGroupById(groupInvitation.GroupId);
+        _notificationFacade.SendInviteEmail(group, "kenmad01@easv365.dk");
         var ownerId = _groupRepo.IsUserGroupOwner(groupInvitation.GroupId);
-        
+
         if (sessionData.UserId != ownerId)
             throw new SecurityException("You are not allowed to invite users to this group");
 
@@ -71,7 +74,6 @@ public class GroupService
             GroupId = groupInvitation.GroupId,
             SenderId = ownerId
         };
-        
         
         return _groupRepo.InviteUserToGroup(fullGroupInvitation);
     }
