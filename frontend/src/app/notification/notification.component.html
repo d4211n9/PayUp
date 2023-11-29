@@ -1,6 +1,17 @@
-<p>
-  notification works!
-</p>
-<ion-header *ngFor="let notification of groupInviteNotifications">
-  {{notification.body}}
-</ion-header>
+<ion-list>
+  <ion-card color="light" class="parent" *ngFor="let noti of groupInviteNotifications">
+    <ion-card-header>
+      <ion-card-title>
+        {{noti.subject}}
+      </ion-card-title>
+      <ion-card-subtitle>
+        {{noti.inviteReceived | date: 'medium'}}
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-content color="light" class="ion-padding">
+      {{noti.body}}
+    </ion-content>
+    <ion-button color="success">Accept</ion-button>
+    <ion-button color="danger">Decline</ion-button>
+  </ion-card>
+</ion-list>

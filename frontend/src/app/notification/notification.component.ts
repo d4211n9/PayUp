@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {GroupInviteNotification, NotificationService} from "./notification.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-notification',
@@ -9,7 +10,10 @@ import {GroupInviteNotification, NotificationService} from "./notification.servi
 export class NotificationComponent  implements OnInit {
   groupInviteNotifications: GroupInviteNotification[] = [];
 
-  constructor(private readonly notificationService: NotificationService) { }
+  constructor(
+    private readonly notificationService: NotificationService,
+    private readonly router: Router
+  ) { }
 
   ngOnInit() {
     this.getNotifications();
@@ -21,5 +25,9 @@ export class NotificationComponent  implements OnInit {
 
   async getGroupInviteNotifications() {
     this.groupInviteNotifications = await this.notificationService.getGroupInviteNotifications();
+  }
+
+  toGroup(groupId: string) {
+    this.router.navigateByUrl('/groups/'+groupId)
   }
 }

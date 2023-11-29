@@ -7,7 +7,6 @@ import {EnumValue} from "@angular/compiler-cli/src/ngtsc/partial_evaluator";
 export interface GroupInviteNotification {
   subject: string,
   body: string,
-  description: string,
   footer: string,
   inviteReceived: Date,
 }
@@ -18,7 +17,7 @@ export class NotificationService {
   constructor(private readonly http: HttpClient) { }
 
   async getGroupInviteNotifications() {
-    let call = this.http.get<GroupInviteNotification[]>(environment.apiBaseUrl + "/user/groupinvitations");
+    let call = this.http.get<GroupInviteNotification[]>(environment.apiBaseUrl + "/user/notifications");
     return await firstValueFrom<GroupInviteNotification[]>(call);
   }
 }

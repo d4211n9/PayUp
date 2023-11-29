@@ -10,6 +10,7 @@ import {GroupModule} from "../group/group.module";
 import {ProfileModule} from "../profile/profile.module";
 import {AuthModule} from "../auth/auth.module";
 import {UserModule} from "../user/user.module";
+import {NotificationModule} from "../notification/notification.module";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {UserModule} from "../user/user.module";
     GroupModule,
     ProfileModule,
     AuthModule,
-    UserModule
+    UserModule,
+    NotificationModule
   ],
   exports: [
     HomePage,
