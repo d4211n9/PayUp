@@ -1,28 +1,37 @@
+import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
-import {Component, ComponentRef, OnInit, ViewChild} from '@angular/core';
-import {PopoverOptions, IonSelect, PopoverController} from '@ionic/angular';
-
+import {AccountService, User} from "../auth/account.service";
+import {AuthGuard} from "../../services/AuthGuard";
+import {PopoverController} from "@ionic/angular";
 
 @Component({
   selector: 'toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss'],
 })
-export class ToolbarComponent  implements OnInit {
+export class ToolbarComponent implements OnInit {
+  loggedInUser: User | undefined
+  isUserLoaded: boolean = false
 
-  @ViewChild('mySelect') mySelect!: IonSelect;
+  constructor(
+    private router: Router,
+    private service: AccountService,
+    private authGuard: AuthGuard,
+    private popoverController: PopoverController
+  ) {}
 
-  // Define popover options
-  popoverOptions: PopoverOptions<any> = {
-    cssClass: 'my-custom-class',
-    component: this.mySelect, // Provide the IonSelect component as the popover content
-    event: undefined,
-  };
+  async ngOnInit() {
+    this.getCurrentUser()
+  }
 
-
-  constructor(private router: Router, private popoverController: PopoverController) { }
-
-  ngOnInit() {}
+  async getCurrentUser() {
+    if(this.authGuard.isLoggedIn()) {
+      this.loggedInUser = await this.service.getCurrentUser()
+    } else {
+      this.loggedInUser = undefined
+    }
+    this.isUserLoaded = true
+  }
 
   toHome() {
     this.router.navigate(['/groups'])
@@ -30,17 +39,15 @@ export class ToolbarComponent  implements OnInit {
 
   toProfile() {
     this.router.navigate(['/profile'])
+    this.popoverController.dismiss()
   }
 
-    protected readonly onclick = onclick;
+  toLogin() {
+    this.router.navigate(['/login'])
+  }
 
-
-
-  openSelect(event: any) {
-    // Set the event property for positioning
-    this.popoverOptions.event = event;
-
-    // Open the ion-select popover
-    this.mySelect.open(event);
+  async logout() {
+    this.service.logout()
+    this.popoverController.dismiss()
   }
 }

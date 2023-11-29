@@ -17,8 +17,9 @@ import {ErrorHttpInterceptor} from "../../interceptors/error-http-interceptors";
     IonicModule,
     RouterLink,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
+  exports: [],
   providers: [
 
     {provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true},

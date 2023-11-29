@@ -1,31 +1,74 @@
 <ion-toolbar>
-  <!-- Content in the toolbar -->
-  <ion-content></ion-content>
 
   <!-- Burger menu button -->
-  <ion-buttons id="btn_menu-button" slot="start">
-    <ion-menu-button auto-hide="false"></ion-menu-button>
+  <ion-buttons
+    id="btn_menu-button" slot="start">
+    <ion-menu-button
+      auto-hide="false">
+    </ion-menu-button>
   </ion-buttons>
 
-  <!-- Your Account icon and button -->
-  <ion-button id="btn_myaccount" slot="end" fill="clear" (click)="toProfile()">
-    <ion-icon id="icon_myaccount" slot="icon-only" name="person-circle"></ion-icon>
-  </ion-button>
-
-  <ion-button id="btn_notifications" slot="end" fill="clear" (click)="openSelect($event)">
-    <ion-icon id="icon_notifications" slot="icon-only" name="notifications"></ion-icon>
-  </ion-button>
-  
-
-
-
-
   <!-- PayUp logo -->
-  <div id="div_logo" (click)="toHome()">
-    <ion-img
-      id="imglogo"
-      src=".././assets/icon/payup_logo.png"
-      alt="PayUp"
+  <div
+    id="div_logo" (click)="toHome()">
+    <ion-img id="imglogo"
+             src=".././assets/icon/payup_logo.png"
+             alt="PayUp"
     ></ion-img>
   </div>
+
+  <!-- My Account icon and button -->
+  <ion-button id="btn_myaccount" slot="end" fill="clear">
+    <ion-spinner name="crescent" *ngIf="!isUserLoaded" class="child"></ion-spinner>
+    <ion-icon *ngIf="loggedInUser === undefined && isUserLoaded" id="icon_myaccount" slot="icon-only" name="log-in"
+              (click)="toLogin()">
+    </ion-icon>
+    <ion-thumbnail *ngIf="loggedInUser !== undefined && isUserLoaded">
+      <ion-img src="{{loggedInUser!.profileUrl}}"></ion-img>
+    </ion-thumbnail>
+  </ion-button>
+
+  <ion-popover *ngIf="loggedInUser === undefined" trigger="btn_myaccount" triggerAction="click">
+    <ng-template>
+      <ion-card class="ion-padding parent">
+        <ion-card-title class="child">Please log in below</ion-card-title>
+      </ion-card>
+    </ng-template>
+  </ion-popover>
+
+  <ion-popover *ngIf="loggedInUser !== undefined" trigger="btn_myaccount" triggerAction="click">
+    <ng-template>
+      <ion-card class="ion-padding parent">
+        <ion-thumbnail class="child popover-thumbnail">
+          <img src="{{loggedInUser!.profileUrl}}}"/>
+        </ion-thumbnail>
+        <ion-card-header>
+          <ion-card-title class="inline-block child">
+            {{loggedInUser!.fullName}}
+          </ion-card-title>
+
+          <ion-card-subtitle class="child">({{loggedInUser!.email}})</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content class="parent">
+          <ion-button class="child ion-padding" (click)="toProfile()">
+            <ion-icon slot="start" name="person-circle"></ion-icon>
+            Profile
+          </ion-button>
+          <ion-button class="child ion-padding" (click)="logout()">
+            <ion-icon slot="start" name="log-out"></ion-icon>
+            Log out
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+  </ion-popover>
+
+  <!-- Notifications icon and button -->
+  <ion-button
+    id="btn_notifications" slot="end" fill="clear">
+    <ion-icon
+      id="icon_notifications" slot="icon-only" name="notifications">
+    </ion-icon>
+  </ion-button>
+
 </ion-toolbar>

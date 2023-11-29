@@ -9,18 +9,21 @@ import {Router} from "@angular/router";
 })
 export class MyGroupsComponent  implements OnInit {
   mygroups: Group[] = [];
+  noGroups: boolean = false;
 
   constructor(
     private readonly service: GroupService,
     private router: Router
   ) {}
 
-  ngOnInit() {
-    this.getMyGroups();
+  async ngOnInit() {
+    await this.getMyGroups();
   }
 
   async getMyGroups() {
     this.mygroups = await this.service.getMyGroups()
+    if(this.mygroups.length === 0)
+      this.noGroups = true
   }
 
   toCreate() {

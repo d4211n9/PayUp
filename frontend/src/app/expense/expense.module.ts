@@ -7,10 +7,12 @@ import {CreateexpenseComponent} from "./createexpense/createexpense.component";
 
 
 @NgModule({
-  declarations: [ExpensecardComponent, CreateexpenseComponent],
+  declarations: [
+    ExpensecardComponent,
+    CreateexpenseComponent
+  ],
   exports: [
     ExpensecardComponent,
-      CreateexpenseComponent
   ],
   imports: [
     CommonModule,
