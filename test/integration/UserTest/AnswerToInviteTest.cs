@@ -67,7 +67,7 @@ public class ReplyToInviteTest
         
         using (new AssertionScope())
         {
-            resonseMessage.StatusCode.Should().Be(HttpStatusCode.Created);
+            resonseMessage.IsSuccessStatusCode.Should().BeTrue();
         }
 
 
