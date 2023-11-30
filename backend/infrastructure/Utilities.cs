@@ -10,7 +10,7 @@ public static class Utilities
     static Utilities()
     {
         string rawConnectionString;
-        string envVarKeyName = "pgconn";
+        string envVarKeyName = "pgconntest";
 
         rawConnectionString = Environment.GetEnvironmentVariable(envVarKeyName)!;
         if (rawConnectionString == null)
