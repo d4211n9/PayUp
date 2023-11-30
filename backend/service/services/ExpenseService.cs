@@ -112,12 +112,21 @@ public class ExpenseService
     {
         //Assert logged in user is authorized to access this group (api checked authentication)
         if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
+        return _expenseRepo.GetBalances(groupId);
+    }
+
+    public IEnumerable<Transaction> GetTotalTransactions(int groupId, SessionData sessionData)
+    {
+        //Assert logged in user is authorized to access this group (api checked authentication)
+        if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
 
         var balances = _expenseRepo.GetBalances(groupId);
-        
+                
         var payers = new Dictionary<int, decimal>();
         var payees = new Dictionary<int, decimal>();
-        
+        var transactionList = new List<Transaction>(); 
+
+        //filters users by amount into payers and payees
         foreach (var b in balances)
         {
             if (b.Amount < 0) {
@@ -126,21 +135,52 @@ public class ExpenseService
                 payees.Add(b.UserId, b.Amount);
             } 
         }
-
-        while (payees.Count < 0 && payers.Count < 0)
+        
+        //loops through the payers and payees until all users are square
+        while (payers.Count > 0 && payees.Count > 0)
         {
-            //Først find min i payer, og max i payee
-            //Så skal de modregnes og der skal laves et transaction dto
-            //Repeat loop
+            var lowestPayerKey = payers.OrderBy(pair => pair.Value).FirstOrDefault().Key;
+            var highestPayeeKey = payees.OrderByDescending(pair => pair.Value).FirstOrDefault().Key;
 
-            var lowest = payers.Values.Min();
-            foreach (var payer in payers)
+            if (lowestPayerKey == 0 || highestPayeeKey == 0)
             {
-                
+                // Handle cases where a key is not found (e.g., dictionaries are empty).
+                break;
+            }
+            //gets the amounts for both payer and payee
+            decimal payerAmount = payers[lowestPayerKey];
+            decimal payeeAmount = payees[highestPayeeKey];
+            //gets the amount that has to payed before one part is square
+            decimal settledAmount = Math.Min(Math.Abs(payerAmount), payeeAmount);
+
+            // Perform the settlement
+            // Update payer's amount
+            payers[lowestPayerKey] += settledAmount;
+
+            // Update payee's amount
+            payees[highestPayeeKey] -= settledAmount;
+
+            //creates a transAction Object, to keep track of transactions
+            var transAction = new Transaction
+            {
+                PayeeId = highestPayeeKey,
+                PayerId = lowestPayerKey,
+                Amount = settledAmount
+            };
+            transactionList.Add(transAction);
+
+            // Remove payer or payee if the amount becomes zero
+            if (payers[lowestPayerKey] == 0)
+            {
+                payers.Remove(lowestPayerKey);
+            }
+
+            if (payees[highestPayeeKey] == 0)
+            {
+                payees.Remove(highestPayeeKey);
             }
         }
-
-        //TODO Husk at tjek både payee og payer er i nul
-        return balances;
+        return transactionList;
+        //todo how should we pack and send the list?? 
     }
 }

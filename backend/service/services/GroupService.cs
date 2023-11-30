@@ -68,7 +68,6 @@ public class GroupService
             GroupId = groupInvitation.GroupId,
             SenderId = ownerId
         };
-        
         return _groupRepo.InviteUserToGroup(fullGroupInvitation);
     }
 }

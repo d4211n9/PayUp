@@ -65,7 +65,7 @@ public class TransactionMemberDto
 
 public class Transaction
 {
-    public TransactionMemberDto Payer { get; set; }
+    public int PayerId { get; set; }
     public decimal Amount { get; set; }
-    public TransactionMemberDto Payee { get; set; }
+    public int PayeeId { get; set; }
 }
