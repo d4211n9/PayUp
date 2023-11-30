@@ -58,7 +58,7 @@ public class GroupService
 
     public bool InviteUserToGroup(SessionData? sessionData, GroupInvitation groupInvitation)
     {
-        SendEmail(groupInvitation.GroupId, sessionData.UserId);
+        SendEmailInvite(groupInvitation.GroupId, sessionData.UserId);
         
         var ownerId = _groupRepo.IsUserGroupOwner(groupInvitation.GroupId);
 
@@ -78,7 +78,7 @@ public class GroupService
         return _groupRepo.InviteUserToGroup(fullGroupInvitation);
     }
 
-    private void SendEmail(int groupId, int userId)
+    private void SendEmailInvite(int groupId, int userId)
     {
         var group = _groupRepo.GetGroupById(groupId);
         var user = _userRepository.GetById(userId);//todo pact into an if statement that chechs if user 
