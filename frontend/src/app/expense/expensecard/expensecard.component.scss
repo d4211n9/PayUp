@@ -1,3 +1,7 @@
+ion-card {
+  border-radius: 15px;
+}
+
 .small-text {
   font-size: 14px;
 }
@@ -6,12 +10,37 @@
   font-size: 18px;
 }
 
-/* Use responsive utility class for smaller screens */
+ion-thumbnail {
+  --border-radius: 15px;
+  --size: 15px;
+}
+
+ion-icon {
+  font-size: 32px;
+}
+
 @media (max-width: 500px) {
   .small-text {
-    font-size: 9px; /* Adjust the font size for smaller screens */
+    font-size: 9px;
   }
   .medium-text {
     font-size: 14px;
+  }
+  ion-thumbnail {
+    --border-radius: 15px;
+    --size: 1.5vh;
+  }
+}
+
+@media (max-width: 400px) {
+  .small-text {
+    font-size: 7px;
+  }
+  .medium-text {
+    font-size: 11px;
+  }
+  ion-thumbnail {
+    --border-radius: 15px;
+    --size: 1vh;
   }
 }

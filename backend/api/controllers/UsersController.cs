@@ -77,14 +77,4 @@ public class UsersController : ControllerBase
         
         return _service.GetInvitableUsers(data, invitableUserSearch);
     }
-
-    [RequireAuthentication]
-    [HttpGet]
-    [Route("/api/user/groupinvitations")]
-    public IEnumerable<GroupInviteNotification> GetGroupInviteNotifications()
-    {
-        SessionData? sessionData = HttpContext.GetSessionData();
-
-        return _service.GetGroupInviteNotifications(sessionData);
-    }
 }

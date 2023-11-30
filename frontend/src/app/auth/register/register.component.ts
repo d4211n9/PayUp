@@ -4,6 +4,8 @@ import {firstValueFrom} from "rxjs";
 import {AccountService, Credentials, Registration} from "../account.service";
 import {TokenService} from "../../../services/TokenService";
 import {ToastController} from "@ionic/angular";
+import {Router} from "@angular/router";
+import {ToolbarComponent} from "../../toolbar/toolbar.component";
 
 
 @Component({
@@ -26,6 +28,8 @@ export class RegisterComponent implements OnInit {
     private readonly token: TokenService,
     private readonly toast: ToastController,
     private readonly service: AccountService,
+    private readonly router: Router,
+    private readonly tb: ToolbarComponent
   ) {
   }
 
@@ -77,6 +81,12 @@ export class RegisterComponent implements OnInit {
       color: "success",
       duration: 5000
     })).present();
+
+    await this.router.navigate(['/groups'])
+
+    //Refresh toolbar to show logged-in user
+    this.tb.loggedInUser = await this.service.getCurrentUser()
+    location.reload()
   }
 
   isPasswordSame(control: AbstractControl): ValidationErrors | null {

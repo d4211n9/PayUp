@@ -14,6 +14,9 @@ import {IonicModule} from "@ionic/angular";
     CommonModule,
     IonicModule
   ],
+  exports: [
+    NotificationComponent
+  ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true},
     NotificationService

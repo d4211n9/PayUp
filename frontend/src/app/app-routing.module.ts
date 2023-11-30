@@ -9,21 +9,15 @@ import {ActivityComponent} from "./group/activity/activity.component";
 import {MyGroupsComponent} from "./group/my-groups/my-groups.component";
 import {HomePage} from "./home/home.page";
 import {NotificationComponent} from "./notification/notification.component";
+import {CreateexpenseComponent} from "./expense/createexpense/createexpense.component";
+import {AuthGuard} from "../services/AuthGuard";
 
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
-  },
-  {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'groups',
     pathMatch: 'full'
-  },
-  {
-    path: '',
-    component: HomePage,
   },
   {
     path: 'register',
@@ -34,28 +28,39 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'group/invite/:groupid',
-    component: InviteComponent
+    path: 'groups',
+    component: MyGroupsComponent,
+    canActivate: [AuthGuard]
   },
   {
-    path: 'mygroups',
-    component: MyGroupsComponent
+    path: 'groups/:groupid/invite',
+    component: InviteComponent,
+    canActivate: [AuthGuard]
   },
   {
-    path: 'create',
-    component: CreateComponent
+    path: 'groups/create',
+    component: CreateComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'profile',
-    component: ProfileComponent
-  },
-  {
-    path: 'group/:groupId/expenses',
-    component: ActivityComponent
+    component: ProfileComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'user/notifications',
-    component: NotificationComponent
+    component: NotificationComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'groups/:groupId',
+    component: ActivityComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'groups/:groupId/create',
+    component: CreateexpenseComponent,
+    canActivate: [AuthGuard]
   }
 ];
 

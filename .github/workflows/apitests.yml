@@ -6,7 +6,7 @@ jobs:
   apitests:
     runs-on: ubuntu-latest
 
-    environment: pgconn
+    environment: environment
     env:
           pgconn: ${{secrets.pgconn}}
     

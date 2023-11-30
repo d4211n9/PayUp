@@ -4,6 +4,9 @@ import {ToastController} from "@ionic/angular";
 import {firstValueFrom} from "rxjs";
 import {AccountService, Credentials} from "../account.service";
 import {TokenService} from "../../../services/TokenService";
+import {Router} from "@angular/router";
+import {ToolbarComponent} from "../../toolbar/toolbar.component";
+import {HomePageModule} from "../../home/home.module";
 
 @Component({
   selector: 'app-login',
@@ -21,7 +24,9 @@ export class LoginComponent implements OnInit {
     private readonly fb: FormBuilder,
     private readonly toast: ToastController,
     private readonly service: AccountService,
-    private readonly token: TokenService
+    private readonly token: TokenService,
+    private readonly router: Router,
+    private readonly tb: ToolbarComponent
   ) {
   }
 
@@ -46,5 +51,11 @@ export class LoginComponent implements OnInit {
       color: "success",
       duration: 5000
     })).present();
+
+    await this.router.navigate(['/groups'])
+
+    //Refresh toolbar to show logged-in user
+    this.tb.loggedInUser = await this.service.getCurrentUser()
+    location.reload()
   }
 }
