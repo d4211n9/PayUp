@@ -25,4 +25,13 @@ public class Models
         public int GroupId{ get; set; }
     
     }
+    
+    public class NotificationSettingsDto
+    {
+        public int UserId { get; set; }
+        public bool InviteNotification { get; set; }
+        public bool InviteNotificationEmail { get; set; }
+        public bool ExpenseNotification { get; set; }
+        public bool ExpenseNotificationEmail { get; set; }
+    }
 }

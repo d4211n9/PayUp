@@ -49,9 +49,14 @@ public class GroupInviteDto
 
 public class NotificationSettingsDto
 {
+    [Required]
     public int UserId { get; set; }
+    [Required]
     public bool InviteNotification { get; set; }
+    [Required]
     public bool InviteNotificationEmail { get; set; }
+    [Required]
     public bool ExpenseNotification { get; set; }
+    [Required]
     public bool ExpenseNotificationEmail { get; set; }
 }

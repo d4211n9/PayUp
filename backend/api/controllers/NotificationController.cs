@@ -39,8 +39,9 @@ public class NotificationController: ControllerBase
     [RequireAuthentication]
     [HttpPut]
     [Route("/api/user/profileinfo/settings")]
-    public IActionResult EditNotificationSettings(NotificationSettingsDto settingsDto)
+    public IActionResult EditNotificationSettings([FromBody] NotificationSettingsDto settingsDto)
     {
+        Console.Write(settingsDto.ExpenseNotification + "fnwefnweofewfewfewfwee");
         SessionData? sessionData = HttpContext.GetSessionData(); 
         settingsDto.UserId = sessionData.UserId; // Set the user ID from the session data
         _service.EditUserNotificationSettings(settingsDto);

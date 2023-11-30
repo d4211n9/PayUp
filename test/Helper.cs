@@ -89,6 +89,8 @@ Best regards, Alex.
     }
 
     public static string RebuildScript = @"
+DROP TABLE IF EXISTS users.expense_notifications;
+
 DROP TABLE IF EXISTS expenses.user_on_expense CASCADE;
 DROP TABLE IF EXISTS expenses.expense CASCADE;
 DROP SCHEMA IF EXISTS expenses CASCADE;
@@ -100,6 +102,7 @@ DROP SCHEMA IF EXISTS groups CASCADE;
 
 -- Drop the 'users.password_hash' table if it exists
 DROP TABLE IF EXISTS users.password_hash;
+DROP TABLE IF EXISTS users.user_notification_settings;
 -- Drop the 'users.user' table if it exists
 DROP TABLE IF EXISTS users.user;
 DROP SCHEMA IF EXISTS users;
@@ -191,6 +194,16 @@ CREATE TABLE groups.group_invitation (
 	FOREIGN KEY (group_id) REFERENCES groups.group(id),
 	FOREIGN KEY (sender_id) REFERENCES users.user(id),
 	PRIMARY KEY (receiver_id, group_id)	
+);
+
+CREATE TABLE IF NOT EXISTS users.expense_notifications (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    member_on_expense_id INT NOT NULL,
+    is_read BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users.user(id),
+    FOREIGN KEY (member_on_expense_id) REFERENCES users.user(id)
 );
 
  ";

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {firstValueFrom, Observable} from "rxjs";
-import {EnumValue} from "@angular/compiler-cli/src/ngtsc/partial_evaluator";
-import {FullUser} from "../profile/profile.service";
-import {GroupInvitation} from "../group/group.service";
+import {catchError, firstValueFrom, Observable, tap} from "rxjs";
+
+
 
 export interface Notification {
   subject: string,
@@ -12,6 +11,14 @@ export interface Notification {
   footer: string,
   inviteReceived: Date,
   category: NotificationCategory
+}
+
+export interface NotificationSettingsDto {
+  userId: number;
+  inviteNotification: boolean;
+  inviteNotificationEmail: boolean;
+  expenseNotification: boolean;
+  expenseNotificationEmail: boolean;
 }
 
 export enum NotificationCategory {
@@ -49,4 +56,15 @@ export class NotificationService {
     }
       return this.http.post<boolean>('http://localhost:5100/api/user/accept-invite', group_invite);
     }
+
+  async getNotificationSettings(): Promise<NotificationSettingsDto> {
+    const call = this.http.get<NotificationSettingsDto>(`${environment.apiBaseUrl}/user/profileinfo/settings`);
+    return await firstValueFrom(call);
+  }
+
+  updateUserNotificationSettings(settings: NotificationSettingsDto): Observable<boolean> {
+    console.log(settings.expenseNotificationEmail);
+    return this.http.put<boolean>(`http://localhost:5100/api/user/profileinfo/settings`, settings)
+
+  }
 }

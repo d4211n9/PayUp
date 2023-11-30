@@ -11,10 +11,8 @@ import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {TokenService} from "../services/TokenService";
 import {AuthHttpInterceptor} from "../interceptors/auth-http-interceptor";
 import {HomePageModule} from "./home/home.module";
-import {ProfileModule} from "./profile/profile.module";
-import {UserModule} from "./user/user.module";
-import {NotificationModule} from "./notification/notification.module";
 import {ToolbarComponent} from "./toolbar/toolbar.component";
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,7 +26,7 @@ import {ToolbarComponent} from "./toolbar/toolbar.component";
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     {provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true},
     TokenService,
-    ToolbarComponent
+    ToolbarComponent,
   ],
   bootstrap: [AppComponent],
 

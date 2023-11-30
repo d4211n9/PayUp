@@ -36,6 +36,8 @@
     </ng-template>
   </ion-popover>
 
+
+  <!-- logged in user menu under-->
   <ion-popover *ngIf="loggedInUser !== undefined" trigger="btn_myaccount" triggerAction="click">
     <ng-template>
       <ion-card class="ion-padding parent">
@@ -58,25 +60,46 @@
             <ion-icon slot="start" name="log-out"></ion-icon>
             Log out
           </ion-button>
-          <ion-button size="small" type="secondary" color="light" class="child ion-padding" id="open-modal" expand="block">
+
+
+          <!-- Settings modal box and button -->
+          <ion-button size="small" type="secondary" color="light" class="child ion-padding" id="open-modal" expand="block" (click)="getSettings()">
             Settings
           </ion-button>
-          <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+          <ion-modal trigger="open-modal" class="custom-modal">
             <ng-template>
               <ion-header>
-                <ion-title class="ion-text-center" style="padding: 5px">Settings</ion-title>
+                <ion-title class="ion-text-center" style="padding: 20px">Settings</ion-title>
               </ion-header>
               <ion-content class="ion-padding">
-                <ion-item >
-                 <p >settings down here</p>
-                </ion-item>
+                <ion-grid class="ion-text-center">
+                  <ion-row>
+                    <ion-col size="12">
+                      <ion-card-title>Notification settings</ion-card-title>
+                      <ion-list>
+                        <ion-item>
+                          <ion-toggle [(ngModel)]="InviteAppToggle" id="InviteAppToggle">Group invites in App</ion-toggle>
+                        </ion-item>
+                        <ion-item>
+                          <ion-toggle [(ngModel)]="InviteEmailToggle" id="InviteEmailToggle">Group invites on Email</ion-toggle>
+                        </ion-item>
+                        <ion-item>
+                          <ion-toggle [(ngModel)]="ExpenseAppToggle" id="ExpenseAppToggle">Group expense in App</ion-toggle>
+                        </ion-item>
+                        <ion-item>
+                          <ion-toggle [(ngModel)]="ExpenseEmailToggle" id="ExpenseEmailToggle">Group expense on Email</ion-toggle>
+                        </ion-item>
+                      </ion-list>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
               </ion-content>
               <ion-toolbar>
                 <ion-buttons slot="start">
                   <ion-button (click)="cancel()">Cancel</ion-button>
                 </ion-buttons>
                 <ion-buttons slot="end">
-                  <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+                  <ion-button (click)="confirm()">Confirm</ion-button>
                 </ion-buttons>
               </ion-toolbar>
             </ng-template>
@@ -85,6 +108,8 @@
       </ion-card>
     </ng-template>
   </ion-popover>
+
+
   <!-- Notifications icon and button -->
   <ion-button
     id="btn_notifications" slot="end" fill="clear">
@@ -98,5 +123,4 @@
       <app-notification></app-notification>
     </ng-template>
   </ion-popover>
-
 </ion-toolbar>

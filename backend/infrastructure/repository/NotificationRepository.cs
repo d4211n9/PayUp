@@ -59,7 +59,7 @@ public class NotificationRepository
         }
     }
     
-    
+      
     public void EditUserNotificationSettings(NotificationSettingsDto settingsDto)
     {
         var sql = @"
@@ -72,7 +72,6 @@ public class NotificationRepository
         WHERE
             user_id = @UserId;
     ";
-
         try
         {
             using var conn = _dataSource.OpenConnection();
