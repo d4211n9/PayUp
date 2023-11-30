@@ -9,6 +9,8 @@ jobs:
     environment: environment
     env:
           pgconn: ${{secrets.pgconn}}
+          fromemail: ${{secrets.fromemail}}
+          frompass: ${{secrets.frompass}}
     
     steps:
       - uses: actions/checkout@v3
