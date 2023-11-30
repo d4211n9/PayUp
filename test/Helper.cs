@@ -126,6 +126,14 @@ CREATE TABLE users.password_hash (
     FOREIGN KEY(user_id) REFERENCES users.user(id)
 );
 
+CREATE TABLE users.user_notification_settings (
+    user_id INT PRIMARY KEY REFERENCES users.user(id),
+    invite_notification BOOLEAN NOT NULL,
+    invite_notification_email BOOLEAN NOT NULL,
+    expense_notification BOOLEAN NOT NULL,
+    expense_notification_email BOOLEAN NOT NULL
+);
+
 -- Create the groups schema
 CREATE SCHEMA groups;
 

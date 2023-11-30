@@ -34,6 +34,7 @@ builder.Services.AddSingleton<PasswordHashRepository>();
 builder.Services.AddSingleton<GroupRepository>();
 builder.Services.AddSingleton<ExpenseRepository>();
 builder.Services.AddSingleton<MailRepository>();
+builder.Services.AddSingleton<NotificationRepository>();
 
 builder.Services.AddSingleton<NotificationService>();
 builder.Services.AddSingleton<AccountService>();

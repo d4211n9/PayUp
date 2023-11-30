@@ -14,14 +14,17 @@ public class AccountService
 
     private readonly PasswordHashRepository _passwordHashRepository;
     private readonly UserRepository _userRepository;
+    private readonly NotificationRepository _notificationRepository;
 
     public AccountService(UserRepository userRepository,
         ILogger<AccountService> logger,
-        PasswordHashRepository passwordHashRepository)
+        PasswordHashRepository passwordHashRepository,
+        NotificationRepository notificationRepository)
     {
         _userRepository = userRepository;
         _logger = logger;
         _passwordHashRepository = passwordHashRepository;
+        _notificationRepository = notificationRepository;
     }
 
     public User Authenticate(LoginModel model)
@@ -59,7 +62,27 @@ public class AccountService
 
         var isCreated = _passwordHashRepository.Create(password); //stores the password
         if (isCreated == false) throw new SqlTypeException(" Create user");
+
+        if (!SetNotificationSettings(user))
+        {
+            throw new SqlTypeException();
+        }
         return user; 
     }
-    
+
+    private bool SetNotificationSettings(User user)
+    {
+        var userSettings = new NotificationSettingsDto
+        {
+            UserId = user.Id,
+            InviteNotification = false,
+            InviteNotificationEmail = false,
+            ExpenseNotification = false,
+            ExpenseNotificationEmail = true
+        };
+
+        bool createdSuccessfully = _notificationRepository.CreateUserNotificationSettings(userSettings);
+        Console.Write("you have created:" + createdSuccessfully);
+        return createdSuccessfully;
+    }
 }

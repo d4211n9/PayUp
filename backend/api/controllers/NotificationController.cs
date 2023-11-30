@@ -24,4 +24,26 @@ public class NotificationController: ControllerBase
         SessionData? sessionData = HttpContext.GetSessionData();
         return _service.GetNotifications(sessionData, lastUpdated);
     }
+    
+    [RequireAuthentication]
+    [HttpGet]
+    [Route("/api/user/profileinfo/settings")]
+    public NotificationSettingsDto GetNotificationSettings()
+    {
+        SessionData? sessionData = HttpContext.GetSessionData();
+        var settings = _service.GetNotificationsSettings(sessionData.UserId);
+        return settings;
+    }
+    
+    
+    [RequireAuthentication]
+    [HttpPut]
+    [Route("/api/user/profileinfo/settings")]
+    public IActionResult EditNotificationSettings(NotificationSettingsDto settingsDto)
+    {
+        SessionData? sessionData = HttpContext.GetSessionData(); 
+        settingsDto.UserId = sessionData.UserId; // Set the user ID from the session data
+        _service.EditUserNotificationSettings(settingsDto);
+        return Ok(new { Message = "Notification settings updated successfully" });
+    }
 }
