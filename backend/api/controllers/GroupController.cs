@@ -52,7 +52,7 @@ public class GroupController : ControllerBase
         if (success) HttpContext.Response.StatusCode = StatusCodes.Status201Created;
         return success;
     }
-    
+
     [RequireAuthentication]
     [HttpGet]
     [Route("/api/group/{groupId}/users")]
@@ -60,15 +60,14 @@ public class GroupController : ControllerBase
     {
         return _service.GetUsersInGroup(groupId, HttpContext.GetSessionData()!);
     }
-    
-        [RequireAuthentication]
-        [HttpPost]
-        [Route("/api/user/accept-invite")]
-        public bool AcceptInvite([FromBody] GroupInviteDto inviteAnswer)
-        {
-            bool success = _service.AcceptInvite(HttpContext.GetSessionData(), inviteAnswer.Accepted, inviteAnswer.GroupId);
-            if (success) HttpContext.Response.StatusCode = StatusCodes.Status201Created;
-            return success;
-        }
-    }
 
+    [RequireAuthentication]
+    [HttpPost]
+    [Route("/api/user/accept-invite")]
+    public bool AcceptInvite([FromBody] GroupInviteDto inviteAnswer)
+    {
+        bool success = _service.AcceptInvite(HttpContext.GetSessionData(), inviteAnswer.Accepted, inviteAnswer.GroupId);
+        if (success) HttpContext.Response.StatusCode = StatusCodes.Status201Created;
+        return success;
+    }
+}

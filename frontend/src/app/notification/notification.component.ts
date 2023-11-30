@@ -25,7 +25,7 @@ export class NotificationComponent  implements OnInit {
       // Update lastUpdate to the current time before fetching notifications
       await this.getNotifications();
       this.lastUpdate = new Date();
-    }, 3000);
+    }, 30000);
   }
 
   async getNotifications() {

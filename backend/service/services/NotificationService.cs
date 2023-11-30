@@ -7,12 +7,10 @@ namespace service.services;
 public class NotificationService
 {
     private GroupRepository _groupRepository;
-    private NotificationFacade _notificationFacade;
     
-    public NotificationService(GroupRepository groupRepository, NotificationFacade notificationFacade)
+    public NotificationService(GroupRepository groupRepository)
     {
         _groupRepository = groupRepository;
-        _notificationFacade = notificationFacade;
     }
 
     public IEnumerable<NotificationDto> GetNotifications(SessionData? sessionData, DateTime lastUpdated)
@@ -22,7 +20,7 @@ public class NotificationService
         var inviteNotifications = _groupRepository.GetGroupInviteNotifications(sessionData.UserId, lastUpdated);
         foreach (var notification in inviteNotifications)
         {
-            var result =NotificationFacade.CreateInviteNotification(notification);
+            var result = NotificationFacade.CreateInviteNotification(notification);
             notifications.Add(result);
         }
         return notifications;

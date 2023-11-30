@@ -33,8 +33,9 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'groups/invite/:groupid',
-    component: InviteComponent
+    path: 'groups/:groupid/invite',
+    component: InviteComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'groups/create',
@@ -47,13 +48,9 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-
-    path: 'group/:groupId/expenses',
-    component: ActivityComponent
-  },
-  {
     path: 'user/notifications',
-    component: NotificationComponent
+    component: NotificationComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'groups/:groupId',

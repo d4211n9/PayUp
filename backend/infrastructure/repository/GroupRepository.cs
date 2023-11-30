@@ -55,7 +55,7 @@ public class GroupRepository
     public bool AddUserToGroup(UserInGroupDto userInGroupDto)
     {
         var sql =
-            $@"
+            @"
             insert into groups.group_members (user_id, group_id, owner) 
             values (@UserId, @GroupId, @IsOwner);
             ";
@@ -65,9 +65,9 @@ public class GroupRepository
             using var conn = _dataSource.OpenConnection();
             return conn.Execute(sql, new
             {
-                UserId = userInGroupDto.UserId,
-                GroupId = userInGroupDto.GroupId,
-                IsOwner = userInGroupDto.IsOwner
+                userInGroupDto.UserId,
+                userInGroupDto.GroupId,
+                userInGroupDto.IsOwner
             }) == 1;
         }
         catch (Exception e)
@@ -142,8 +142,6 @@ public class GroupRepository
 
     public IEnumerable<GroupInviteNotification> GetGroupInviteNotifications(int receiverId, DateTime lastUpdated)
     {
-
-
         string sql = $@"
 SELECT
     groups.group.id AS GroupId,
@@ -189,7 +187,7 @@ WHERE group_invitation.receiver_id = @receiverId
                 groupInvitation.ReceiverId,
                 groupInvitation.GroupId,
                 groupInvitation.SenderId,
-                TimeNow =  DateTime.Now
+                TimeNow = DateTime.Now
             }) == 1;
         }
         catch (Exception e)

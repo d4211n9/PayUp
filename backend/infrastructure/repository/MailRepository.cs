@@ -7,7 +7,7 @@ public class MailRepository
     public void SendInviteEmail(MimeMessage message, string reciever)
     {
 
-        message.From.Add(new MailboxAddress("payUp", "PayUpNotifications"));
+        message.From.Add(new MailboxAddress("PayUp", "PayUpNotifications"));
         message.To.Add(new MailboxAddress("Customer", reciever));
 
         using (var client = new MailKit.Net.Smtp.SmtpClient())

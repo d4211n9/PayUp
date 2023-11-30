@@ -58,8 +58,6 @@ public class GroupService
 
     public bool InviteUserToGroup(SessionData? sessionData, GroupInvitation groupInvitation)
     {
-        SendEmailInvite(groupInvitation.GroupId, sessionData.UserId);//TODO burde kunne lave et check for at se om man har noti til eller ej på appen. (Måske skal det ske fra facade)
-        
         var ownerId = _groupRepo.IsUserGroupOwner(groupInvitation.GroupId);
 
         if (sessionData.UserId != ownerId)
@@ -67,14 +65,17 @@ public class GroupService
 
         if (_groupRepo.IsUserInGroup(groupInvitation.ReceiverId, groupInvitation.GroupId))
             throw new ArgumentException("User is already in group");
-
+        
         var fullGroupInvitation = new FullGroupInvitation()
         {
             ReceiverId = groupInvitation.ReceiverId,
             GroupId = groupInvitation.GroupId,
             SenderId = ownerId
         };
-        
+        //TODO burde kunne lave et check for at se om man har noti til eller ej på appen. (Måske skal det ske fra facade)
+        var isEmailSent = SendEmailInvite(groupInvitation.GroupId, groupInvitation.ReceiverId);
+        if (!isEmailSent)
+            throw new SqlNullValueException("send invite per email");
         return _groupRepo.InviteUserToGroup(fullGroupInvitation);
     }
 
@@ -85,19 +86,20 @@ public class GroupService
         return _notificationFacade.SendInviteEmail(group, user.Email);
     }
 
-    public bool AcceptInvite(SessionData getSessionData, bool isAccepted, int groupId)
+    public bool AcceptInvite(SessionData sessionData, bool isAccepted, int groupId)
     {
-        var user = new UserInGroupDto();
-        user.UserId = getSessionData.UserId;
-        user.GroupId = groupId;
-        user.IsOwner = false;
+        var user = new UserInGroupDto()
+        {
+            GroupId = groupId,
+            IsOwner = false,
+            UserId = sessionData.UserId
+        };
         
         if (isAccepted)
         {
             bool isCreated = _groupRepo.AddUserToGroup(user);
-            if (isCreated) { _groupRepo.DeleteInvite(user); }
-            else { throw new SqlTypeException(); }
-            return isCreated;
+            if (!isCreated)
+                throw new SqlTypeException();
         }
         return _groupRepo.DeleteInvite(user);
     }
