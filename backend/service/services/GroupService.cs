@@ -58,10 +58,7 @@ public class GroupService
 
     public bool InviteUserToGroup(SessionData? sessionData, GroupInvitation groupInvitation)
     {
-        var group = _groupRepo.GetGroupById(groupInvitation.GroupId);
-        
-        var user = _userRepository.GetById(sessionData.UserId);//todo make better
-        _notificationFacade.SendInviteEmail(group, user.Email);
+        SendEmail(groupInvitation.GroupId, sessionData.UserId);
         
         var ownerId = _groupRepo.IsUserGroupOwner(groupInvitation.GroupId);
 
@@ -79,6 +76,13 @@ public class GroupService
         };
         
         return _groupRepo.InviteUserToGroup(fullGroupInvitation);
+    }
+
+    private void SendEmail(int groupId, int userId)
+    {
+        var group = _groupRepo.GetGroupById(groupId);
+        var user = _userRepository.GetById(userId);//todo pact into an if statement that chechs if user 
+        _notificationFacade.SendInviteEmail(group, user.Email);
     }
 
     public bool AcceptInvite(SessionData getSessionData, bool isAccepted, int groupId)
