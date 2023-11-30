@@ -14,8 +14,7 @@ public class NotificationService
         _groupRepository = groupRepository;
         _notificationFacade = notificationFacade;
     }
-    //todo metode til at chekke for ny invite noti hvis time er null skal alle sendes
-    //skal kunne lave alle noti om til et dto object inden det bliver sendt --kald facade 
+
     public IEnumerable<NotificationDto> GetNotifications(SessionData? sessionData, DateTime lastUpdated)
     {
         var notifications = new List<NotificationDto>();
@@ -26,7 +25,6 @@ public class NotificationService
             var result =NotificationFacade.CreateInviteNotification(notification);
             notifications.Add(result);
         }
-        
         return notifications;
     }
     
