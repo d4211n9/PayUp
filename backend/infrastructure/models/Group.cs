@@ -22,3 +22,14 @@ public class Group
     [Required(ErrorMessage = "Created date is required")]
     public DateTime CreatedDate { get; set; }
 }
+
+public class UpdateGroupModel
+{
+    [Required] public string Name { get; set; }
+    [Required] public string Description { get; set; }
+}
+
+public class CreateGroupModel : UpdateGroupModel
+{
+    [Required] public DateTime CreatedDate { get; set; }
+}

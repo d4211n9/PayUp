@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using service.services;
-using infrastructure;
-using Microsoft.OpenApi.Models;
 
 namespace api;
 

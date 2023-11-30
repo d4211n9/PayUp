@@ -1,47 +1,55 @@
 import {Component, OnInit} from '@angular/core';
+import {finalize, firstValueFrom} from "rxjs";
 import {FormBuilder, Validators} from "@angular/forms";
-import {finalize} from "rxjs";
-import {CreateGroup, GroupService} from "../group.service";
-import {ToastController} from "@ionic/angular";
+import {GroupService, GroupUpdate} from "../group.service";
+import {ActivatedRoute, Router} from "@angular/router";
 import {HttpEventType} from "@angular/common/http";
-import {refresh} from "ionicons/icons";
-
 
 @Component({
-  selector: 'app-create',
-  templateUrl: './create.component.html',
-  styleUrls: ['./create.component.scss'],
+  selector: 'group-update',
+  templateUrl: './update.component.html',
+  styleUrls: ['./update.component.scss'],
 })
-export class CreateComponent  implements OnInit {
-
+export class UpdateComponent  implements OnInit {
+  id: any;
+  loading: boolean = true;
   uploading: boolean = false;
   uploadProgress: number | null = null;
-  imageUrl: string | ArrayBuffer | null = null;
-  hasUploaded: boolean = false;
-
-  constructor(
-    private readonly fb: FormBuilder,
-    private readonly service: GroupService,
-    private readonly toast: ToastController,
-  ) { }
-
-  ngOnInit() {
-  }
-
-  protected readonly _now = new Date().toLocaleDateString("da-DK", {timeZone: 'UTC'});
 
   form = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
     image: [null as File | null],
   });
+  imageUrl: string | ArrayBuffer | null = null;
+
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly service: GroupService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+  }
+
+  async ngOnInit() {
+    await this.getId()
+    const group = await firstValueFrom(this.service.getGroup(this.id));
+    this.form.patchValue(group);
+    this.imageUrl = group.imageUrl ?? null;
+    this.loading = false;
+  }
+
+  async getId() {
+    const map = await firstValueFrom(this.route.paramMap)
+    this.id = map.get('groupId')
+  }
 
   get name() {
-    return this.form.controls.name;
+    return this.form.controls.name
   }
 
   get description() {
-    return this.form.controls.description;
+    return this.form.controls.description
   }
 
   onFileChanged($event: Event) {
@@ -54,16 +62,16 @@ export class CreateComponent  implements OnInit {
     reader.onload = () => {
       this.imageUrl = reader.result;
     }
-    this.hasUploaded = true;
   }
 
-  async submit() {
+  submit() {
     if (this.form.invalid) return;
     this.uploading = true;
-    this.service.create(this.form.value as CreateGroup)
+    this.service.update(this.form.value as GroupUpdate, this.id)
       .pipe(finalize(() => {
         this.uploading = false;
         this.uploadProgress = null;
+        this.router.navigate(['/groups/'+this.id])
       }))
       .subscribe(event => {
         if (event.type == HttpEventType.UploadProgress) {
@@ -72,11 +80,5 @@ export class CreateComponent  implements OnInit {
           this.form.patchValue(event.body);
         }
       });
-
-    await (await this.toast.create({
-      message: "Your group was created successfully",
-      color: "success",
-      duration: 5000
-    })).present();
   }
 }

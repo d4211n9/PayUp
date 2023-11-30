@@ -1,47 +1,37 @@
 <ion-content class="ion-align-items-center ion-justify-content-center ion-no-margin ion-text-center"
              style="display: grid"
              color="light">
-
   <div style="display: flex; justify-content: center; align-items: center;">
-    <ion-card id="register-card" class="ion-padding"
+    <ion-card class="ion-padding"
               style="overflow: hidden; border-radius: 15px; max-width: 500px; width: 90%;">
 
-      <ion-card-header class="ion-text-center ion-no-padding">
-        <h1>Create Group</h1>
-      </ion-card-header>
+      <ion-card-header><h1>Edit Group</h1></ion-card-header>
 
       <ion-card-content>
-        <ion-list>
-          <form [formGroup]="form">
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <ion-list class="field-list" *ngIf="loading; else loading">
             <div style="display: flex; justify-content: center; align-items: center;">
               <div class="container">
-                <ion-input type="file" accept="image/png, image/jpeg"
+                <ion-input class="btn" style="visibility: hidden" type="file" accept="image/png, image/jpeg"
                            formControlName="image" value={this.state.image}
                            (change)="onFileChanged($event)"></ion-input>
-                <ion-img *ngIf="imageUrl === null" src="https://micdrastorageaccount.blob.core.windows.net/payup/65721ca9-0517-47b2-91f1-05ad8b176132"></ion-img>
+                <ion-img *ngIf="imageUrl === null"
+                         src="https://micdrastorageaccount.blob.core.windows.net/payup/65721ca9-0517-47b2-91f1-05ad8b176132"></ion-img>
                 <ion-img *ngIf="imageUrl !== null" [src]="imageUrl"></ion-img>
-                <ion-button class="btn" fill="clear" color="dark">
-                  <ion-icon slot="icon-only" name="create" size="small"></ion-icon>
-                </ion-button>
+
+                <ion-input class="custom-file-input" type="file" accept="image/png, image/jpeg"
+                           formControlName="image"
+                           (change)="onFileChanged($event)"></ion-input>
                 <ion-progress-bar *ngIf="uploading" [value]="uploadProgress"></ion-progress-bar>
               </div>
             </div>
-
-            <ion-text>
-              Created: {{_now}}
-            </ion-text>
-
-
             <ion-item>
-              <ion-input label="Group Name" label-placement="stacked" formControlName="name">
-              </ion-input>
+              <ion-input label="Group Name" label-placement="stacked" formControlName="name"></ion-input>
             </ion-item>
             <div style="text-align: left; margin-left: 4%;" slot="label" *ngIf="name.touched && name.invalid">
               <ion-text color="danger">Name is required</ion-text>
             </div>
-
             <br>
-
             <ion-item>
               <ion-textarea label="Description" label-placement="stacked" formControlName="description"
                             [autoGrow]="true">
@@ -51,21 +41,20 @@
                  *ngIf="description.touched && description.invalid">
               <ion-text color="danger">Description is required</ion-text>
             </div>
-
-          </form>
-        </ion-list>
+          </ion-list>
+        </form>
 
         <div class="ion-text-center">
-          <ion-button color="warning" [disabled]="form.invalid" (click)="submit()">
-            Create
+          <ion-progress-bar *ngIf="uploading" [value]="uploadProgress"></ion-progress-bar>
+          <ion-button color="warning" [disabled]="form.invalid && !uploading"
+                      (click)="submit()">Update
           </ion-button>
         </div>
-
       </ion-card-content>
     </ion-card>
   </div>
-
-  <ng-template #loading>
-    <ion-spinner></ion-spinner>
-  </ng-template>
 </ion-content>
+
+<ng-template #loading>
+  <ion-spinner></ion-spinner>
+</ng-template>
