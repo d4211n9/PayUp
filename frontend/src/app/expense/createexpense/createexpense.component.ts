@@ -2,9 +2,10 @@ import {Component, Input, numberAttribute, OnInit} from '@angular/core';
 import {CreateExpense, CreateFullExpense, Group, GroupService, UserInGroup} from "../../group/group.service";
 import {HttpClient} from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, Validators} from "@angular/forms";
 import {ToastController} from "@ionic/angular";
+import {reload} from "ionicons/icons";
 
 
 @Component({
@@ -22,6 +23,7 @@ export class CreateexpenseComponent  implements OnInit {
     private readonly fb: FormBuilder,
     private readonly service: GroupService,
     private readonly toast: ToastController,
+    private router: Router
   ) {
   }
 
@@ -70,7 +72,6 @@ export class CreateexpenseComponent  implements OnInit {
 
   async createExpense() {
 
-
     var expenseInfo: CreateExpense = {
       groupId: this.id,
       description: this.form.controls.description.value!,
@@ -79,20 +80,25 @@ export class CreateexpenseComponent  implements OnInit {
 
     };
 
-
-
     var fullExpenseInfo: CreateFullExpense = {
       expense: expenseInfo,
       userIdsOnExpense: this.usersOnExpense
     }
 
-    const createdExpense = await firstValueFrom(this.service.createExpense(fullExpenseInfo));
+    const createdExpense = await firstValueFrom(this.service.createExpense(fullExpenseInfo))
+      .then((response) => {
+        this.router.navigate(['groups/' + response.expense.groupId])
+          .then(() => {
+            location.reload();
+          });
+      });
 
     await (await this.toast.create({
-      message: "Your expense '" + createdExpense.expense.description + "' was created successfully",
+      message: "Your expense '" + createdExpense + "' was created successfully",
       color: "success",
       duration: 5000
     })).present();
+
   }
 
 

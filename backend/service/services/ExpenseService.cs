@@ -23,8 +23,9 @@ public class ExpenseService
         var loggedInUser = sessionData.UserId;
         if (!_groupRepo.IsUserInGroup(loggedInUser, createFullExpense.Expense.GroupId))
             throw new AuthenticationException();
-        //Løb listen af brugere igennem og verificere at loggedInUser fremgår, ellers thtrow unauth
-        createFullExpense.UserIdsOnExpense
+        
+        if (!createFullExpense.UserIdsOnExpense.Contains(loggedInUser)) throw new AuthenticationException();
+        
         createFullExpense.Expense.UserId = loggedInUser;
         
         var responseExpense = _expenseRepo.CreateExpense(createFullExpense.Expense);
