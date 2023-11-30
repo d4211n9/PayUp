@@ -58,11 +58,33 @@
             <ion-icon slot="start" name="log-out"></ion-icon>
             Log out
           </ion-button>
+          <ion-button size="small" type="secondary" color="light" class="child ion-padding" id="open-modal" expand="block">
+            Settings
+          </ion-button>
+          <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+            <ng-template>
+              <ion-header>
+                <ion-title class="ion-text-center" style="padding: 5px">Settings</ion-title>
+              </ion-header>
+              <ion-content class="ion-padding">
+                <ion-item >
+                 <p >settings down here</p>
+                </ion-item>
+              </ion-content>
+              <ion-toolbar>
+                <ion-buttons slot="start">
+                  <ion-button (click)="cancel()">Cancel</ion-button>
+                </ion-buttons>
+                <ion-buttons slot="end">
+                  <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+                </ion-buttons>
+              </ion-toolbar>
+            </ng-template>
+          </ion-modal>
         </ion-card-content>
       </ion-card>
     </ng-template>
   </ion-popover>
-
   <!-- Notifications icon and button -->
   <ion-button
     id="btn_notifications" slot="end" fill="clear">

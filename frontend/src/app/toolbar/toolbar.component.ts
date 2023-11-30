@@ -54,4 +54,18 @@ export class ToolbarComponent implements OnInit {
     this.service.logout()
     this.popoverController.dismiss()
   }
+
+  message: any;
+
+  cancel() {
+
+  }
+
+  onWillDismiss($event: any) {
+
+  }
+
+  protected readonly confirm = confirm;
+  public name = name;
+
 }
