@@ -58,7 +58,7 @@ public class GroupService
 
     public bool InviteUserToGroup(SessionData? sessionData, GroupInvitation groupInvitation)
     {
-        SendEmailInvite(groupInvitation.GroupId, sessionData.UserId);
+        SendEmailInvite(groupInvitation.GroupId, sessionData.UserId);//TODO burde kunne lave et check for at se om man har noti til eller ej på appen. (Måske skal det ske fra facade)
         
         var ownerId = _groupRepo.IsUserGroupOwner(groupInvitation.GroupId);
 
@@ -78,11 +78,11 @@ public class GroupService
         return _groupRepo.InviteUserToGroup(fullGroupInvitation);
     }
 
-    private void SendEmailInvite(int groupId, int userId)
+    private bool SendEmailInvite(int groupId, int userId)
     {
         var group = _groupRepo.GetGroupById(groupId);
-        var user = _userRepository.GetById(userId);//todo pact into an if statement that chechs if user 
-        _notificationFacade.SendInviteEmail(group, user.Email);
+        var user = _userRepository.GetById(userId);
+        return _notificationFacade.SendInviteEmail(group, user.Email);
     }
 
     public bool AcceptInvite(SessionData getSessionData, bool isAccepted, int groupId)

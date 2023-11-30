@@ -27,13 +27,9 @@ public class NotificationFacade
 
     public bool SendInviteEmail(Group invitation, string email)
     {
-        var invitationMessage = "Yuu Have been invited to: \n" + 
-                                invitation.Name +
-                                "\n \n with this description:\n" +
-                                invitation.Description + 
-                                "\n http://localhost:4200/";
-
         var message = new MimeMessage();
+        message.Subject = "invitation to a new PayUp Group";
+
         message.Body = new TextPart("html")
         {
             Text = @"
@@ -47,9 +43,7 @@ public class NotificationFacade
         };//todo should replace local link with our baseurl before deploying
         
         string invite = "invite";
-        _mailRepository.SendInviteEmail(message,invite , email);
-        
-
+        _mailRepository.SendInviteEmail(message, email);
         return true;
 
     }
