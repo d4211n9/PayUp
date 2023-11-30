@@ -1,4 +1,5 @@
-﻿using System.Security.Authentication;
+﻿using System.Collections;
+using System.Security.Authentication;
 using api.models;
 using infrastructure.dataModels;
 using infrastructure.repository;
@@ -112,6 +113,34 @@ public class ExpenseService
         //Assert logged in user is authorized to access this group (api checked authentication)
         if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
 
-        return _expenseRepo.GetBalances(groupId);
+        var balances = _expenseRepo.GetBalances(groupId);
+        
+        var payers = new Dictionary<int, decimal>();
+        var payees = new Dictionary<int, decimal>();
+        
+        foreach (var b in balances)
+        {
+            if (b.Amount < 0) {
+                payers.Add(b.UserId, b.Amount);
+            } else if (b.Amount > 0) {
+                payees.Add(b.UserId, b.Amount);
+            } 
+        }
+
+        while (payees.Count < 0 && payers.Count < 0)
+        {
+            //Først find min i payer, og max i payee
+            //Så skal de modregnes og der skal laves et transaction dto
+            //Repeat loop
+
+            var lowest = payers.Values.Min();
+            foreach (var payer in payers)
+            {
+                
+            }
+        }
+
+        //TODO Husk at tjek både payee og payer er i nul
+        return balances;
     }
 }

@@ -55,3 +55,17 @@ public class BalanceDto
     public required string ImageUrl { get; set; }
     public required decimal Amount { get; set; }
 }
+
+public class TransactionMemberDto
+{
+    public required int UserId { get; set; }
+    public required string FullName { get; set; }
+    public required string ImageUrl { get; set; }
+}
+
+public class Transaction
+{
+    public TransactionMemberDto Payer { get; set; }
+    public decimal Amount { get; set; }
+    public TransactionMemberDto Payee { get; set; }
+}

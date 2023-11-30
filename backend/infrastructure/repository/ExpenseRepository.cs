@@ -82,7 +82,8 @@ public class ExpenseRepository
                 join users.user as u on uoe.user_id = u.id  
                 join groups.group as g on e.group_id = g.id
             where g.id = @groupId
-            group by uoe.user_id, u.full_name, u.profile_url;
+            group by uoe.user_id, u.full_name, u.profile_url
+            sort by amount desc;
             ";
 
         try
