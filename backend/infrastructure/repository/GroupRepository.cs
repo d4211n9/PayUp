@@ -55,7 +55,7 @@ public class GroupRepository
     public bool AddUserToGroup(UserInGroupDto userInGroupDto)
     {
         var sql =
-            $@"
+            @"
             insert into groups.group_members (user_id, group_id, owner) 
             values (@UserId, @GroupId, @IsOwner);
             ";
@@ -65,9 +65,9 @@ public class GroupRepository
             using var conn = _dataSource.OpenConnection();
             return conn.Execute(sql, new
             {
-                UserId = userInGroupDto.UserId,
-                GroupId = userInGroupDto.GroupId,
-                IsOwner = userInGroupDto.IsOwner
+                userInGroupDto.UserId,
+                userInGroupDto.GroupId,
+                userInGroupDto.IsOwner
             }) == 1;
         }
         catch (Exception e)
@@ -139,6 +139,38 @@ public class GroupRepository
             throw new SqlTypeException("Failed to retrieve owner ID of the group");
         }
     }
+
+    public IEnumerable<GroupInviteNotification> GetGroupInviteNotifications(int receiverId, DateTime lastUpdated)
+    {
+        string sql = $@"
+SELECT
+    groups.group.id AS GroupId,
+    groups.group.name AS GroupName,
+    groups.group.description AS GroupDescription,
+    users.user.id AS SenderId,
+    users.user.email AS SenderEmail,
+    users.user.full_name AS SenderFullName,
+    group_invitation.date_received AS InviteReceived
+FROM groups.group_invitation
+INNER JOIN groups.group
+    ON group_invitation.group_id = groups.group.id
+INNER JOIN users.user
+    ON group_invitation.sender_id = users.user.id
+WHERE group_invitation.receiver_id = @receiverId
+    AND group_invitation.date_received > @lastUpdated";
+
+        try
+        {
+            using (NpgsqlConnection conn = _dataSource.OpenConnection())
+            {
+                return conn.Query<GroupInviteNotification>(sql, new { receiverId, lastUpdated });
+            }
+        }
+        catch (Exception e)
+        {
+            throw new SqlTypeException("Failed to retrieve group invitations", e);
+        }
+    }
     
     public bool InviteUserToGroup(FullGroupInvitation groupInvitation)
     {
@@ -155,7 +187,29 @@ public class GroupRepository
                 groupInvitation.ReceiverId,
                 groupInvitation.GroupId,
                 groupInvitation.SenderId,
-                TimeNow =  DateTime.Now
+                TimeNow = DateTime.Now
+            }) == 1;
+        }
+        catch (Exception e)
+        {
+            throw new SqlTypeException("Failed to invite user to group", e);
+        }
+    }
+
+    public bool DeleteInvite(UserInGroupDto user)
+    {
+        string sql = $@"
+                DELETE FROM groups.group_invitation
+                WHERE group_invitation.receiver_id = @UserId
+                AND group_invitation.group_id = @GroupId;";
+        
+        try
+        {
+            using var conn = _dataSource.OpenConnection();
+            return conn.Execute(sql, new
+            {
+                user.UserId,
+                user.GroupId
             }) == 1;
         }
         catch (Exception e)

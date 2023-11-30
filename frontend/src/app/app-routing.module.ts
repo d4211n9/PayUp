@@ -7,6 +7,8 @@ import {CreateComponent} from "./group/create/create.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {ActivityComponent} from "./group/activity/activity.component";
 import {MyGroupsComponent} from "./group/my-groups/my-groups.component";
+import {HomePage} from "./home/home.page";
+import {NotificationComponent} from "./notification/notification.component";
 import {CreateexpenseComponent} from "./expense/createexpense/createexpense.component";
 import {AuthGuard} from "../services/AuthGuard";
 
@@ -31,8 +33,9 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'groups/invite/:groupid',
-    component: InviteComponent
+    path: 'groups/:groupid/invite',
+    component: InviteComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'groups/create',
@@ -42,6 +45,11 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'user/notifications',
+    component: NotificationComponent,
     canActivate: [AuthGuard]
   },
   {

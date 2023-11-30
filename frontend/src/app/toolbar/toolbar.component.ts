@@ -3,6 +3,7 @@ import {Router} from "@angular/router";
 import {AccountService, User} from "../auth/account.service";
 import {AuthGuard} from "../../services/AuthGuard";
 import {PopoverController} from "@ionic/angular";
+import {NotificationService} from "../notification/notification.service";
 
 @Component({
   selector: 'toolbar',
@@ -12,8 +13,10 @@ import {PopoverController} from "@ionic/angular";
 export class ToolbarComponent implements OnInit {
   loggedInUser: User | undefined
   isUserLoaded: boolean = false
-
+  lastUpdate: Date | undefined;
+  notificationAmount: number | undefined;
   constructor(
+    private readonly notificationService: NotificationService,
     private router: Router,
     private service: AccountService,
     private authGuard: AuthGuard,
@@ -22,6 +25,7 @@ export class ToolbarComponent implements OnInit {
 
   async ngOnInit() {
     this.getCurrentUser()
+
   }
 
   async getCurrentUser() {

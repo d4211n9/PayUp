@@ -18,4 +18,11 @@ public class Models
         public required string ImageUrl { get; set; }
         public required decimal Amount { get; set; }
     }
+    
+    public class GroupInviteDto
+    {
+        public bool Accepted  { get; set; }
+        public int GroupId{ get; set; }
+    
+    }
 }
