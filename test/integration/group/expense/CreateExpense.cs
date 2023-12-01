@@ -12,11 +12,12 @@ public class CreateExpense
     public void Setup()
     {
         _httpClient = new HttpClient();
-        Helper.TriggerRebuild();
+        //Helper.TriggerRebuild();
     }
 
-    [TestCase (1, 1, "ValidBajere", 150, "2023-11-24T15:58:41.045Z", TestName = "Valid")]
-    [TestCase (1, 1, "ValidBajere", 0, "2023-11-24T15:58:41.045Z", TestName = "InvalidAmount")] 
+    [TestCase (1, 1, "ValidBajkkere", 15, "2023-10-24T15:58:41.045Z", TestName = "ValidCreatedDate")]
+    [TestCase (1, 1, "ValidBajkkere", 15, "2023-10-24T15:58:41.045Z", TestName = "InvalidCreatedDate")]
+    [TestCase (1, 1, "ValidBajekre", -0, "2023-11-24T15:58:41.045Z", TestName = "InvalidAmount")] 
     
     public async Task Create(
         int userId,
@@ -27,6 +28,8 @@ public class CreateExpense
     )
     
     {
+        var token = await Helper.Authorize("user@example.com");
+        
         var expense = new
         {
             UserId = userId,
