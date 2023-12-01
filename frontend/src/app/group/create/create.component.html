@@ -15,7 +15,7 @@
           <form [formGroup]="form">
             <div style="display: flex; justify-content: center; align-items: center;">
               <div class="container">
-                <ion-input type="file" accept="image/png, image/jpeg"
+                <ion-input class="btn" type="file" accept="image/png, image/jpeg"
                            formControlName="image" value={this.state.image}
                            (change)="onFileChanged($event)"></ion-input>
                 <ion-img *ngIf="imageUrl === null" src="https://micdrastorageaccount.blob.core.windows.net/payup/65721ca9-0517-47b2-91f1-05ad8b176132"></ion-img>
