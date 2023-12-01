@@ -14,7 +14,6 @@ export class UpdateComponent  implements OnInit {
   id: any;
   loading: boolean = true;
   uploading: boolean = false;
-  uploadProgress: number | null = null;
 
   form = this.fb.group({
     name: ['', Validators.required],
@@ -55,6 +54,7 @@ export class UpdateComponent  implements OnInit {
   onFileChanged($event: Event) {
     const files = ($event.target as HTMLInputElement).files;
     if (!files) return;
+    this.uploading = true;
     this.form.patchValue({image: files[0]});
     this.form.controls.image.updateValueAndValidity();
     const reader = new FileReader();
@@ -62,21 +62,17 @@ export class UpdateComponent  implements OnInit {
     reader.onload = () => {
       this.imageUrl = reader.result;
     }
+    this.uploading = false;
   }
 
   submit() {
     if (this.form.invalid) return;
-    this.uploading = true;
-    this.service.update(this.form.value as GroupUpdate, this.id)
+    this.service.update(this.form.value as GroupUpdate, this.id).pipe()
       .pipe(finalize(() => {
-        this.uploading = false;
-        this.uploadProgress = null;
         this.router.navigate(['/groups/'+this.id])
       }))
       .subscribe(event => {
-        if (event.type == HttpEventType.UploadProgress) {
-          this.uploadProgress = Math.round(100 * (event.loaded / (event.total ?? 1)))
-        } else if (event.type == HttpEventType.Response && event.body) {
+        if (event.type == HttpEventType.Response && event.body) {
           this.form.patchValue(event.body);
         }
       });

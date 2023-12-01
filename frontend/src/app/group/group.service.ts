@@ -81,7 +81,7 @@ export class GroupService {
       formData.append(key, value)
     );
 
-    return this.http.post<CreateGroup>(environment.apiBaseUrl+'/group/create', formData, {
+    return this.http.post<Group>(environment.apiBaseUrl+'/group/create', formData, {
       reportProgress: true,
       observe: 'events'
     });

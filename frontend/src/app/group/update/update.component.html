@@ -8,7 +8,7 @@
       <ion-card-header><h1>Edit Group</h1></ion-card-header>
 
       <ion-card-content>
-        <form [formGroup]="form" (ngSubmit)="submit()">
+        <form [formGroup]="form">
           <ion-list class="field-list" *ngIf="loading; else loading">
             <div style="display: flex; justify-content: center; align-items: center;">
               <div class="container">
@@ -19,7 +19,6 @@
                 <ion-img *ngIf="imageUrl === null"
                          src="https://micdrastorageaccount.blob.core.windows.net/payup/65721ca9-0517-47b2-91f1-05ad8b176132"></ion-img>
                 <ion-img *ngIf="imageUrl !== null" [src]="imageUrl"></ion-img>
-                <ion-progress-bar *ngIf="uploading" [value]="uploadProgress"></ion-progress-bar>
                 <ion-button class="btn" fill="clear" color="dark">
                   <ion-icon slot="icon-only" name="create" size="small"></ion-icon>
                 </ion-button>
@@ -45,7 +44,6 @@
         </form>
 
         <div class="ion-text-center">
-          <ion-progress-bar *ngIf="uploading" [value]="uploadProgress"></ion-progress-bar>
           <ion-button color="warning" [disabled]="form.invalid && !uploading"
                       (click)="submit()">
             <ion-icon class="ion-padding-end" name="save"></ion-icon>

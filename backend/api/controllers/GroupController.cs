@@ -24,7 +24,7 @@ public class GroupController : ControllerBase
     [RequireAuthentication]
     [HttpPost]
     [Route("/api/group/create")]
-    public Group CreateGroup([FromForm] UpdateGroupModel group, IFormFile? image)
+    public Group CreateGroup([FromForm] CreateGroupModel group, IFormFile? image)
     {
         var sessionData = HttpContext.GetSessionData();
         var imageUrl = "https://micdrastorageaccount.blob.core.windows.net/payup/65721ca9-0517-47b2-91f1-05ad8b176132";

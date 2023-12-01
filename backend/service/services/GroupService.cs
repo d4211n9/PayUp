@@ -24,7 +24,7 @@ public class GroupService
 
     }
 
-    public Group CreateGroup(UpdateGroupModel group, SessionData sessionData, string? imageUrl)
+    public Group CreateGroup(CreateGroupModel group, SessionData sessionData, string? imageUrl)
     {
         //Create the group
         var createGroup = new CreateGroupModel

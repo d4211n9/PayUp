@@ -4,7 +4,7 @@ import {finalize} from "rxjs";
 import {CreateGroup, GroupService} from "../group.service";
 import {ToastController} from "@ionic/angular";
 import {HttpEventType} from "@angular/common/http";
-import {refresh} from "ionicons/icons";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -15,14 +15,13 @@ import {refresh} from "ionicons/icons";
 export class CreateComponent  implements OnInit {
 
   uploading: boolean = false;
-  uploadProgress: number | null = null;
   imageUrl: string | ArrayBuffer | null = null;
-  hasUploaded: boolean = false;
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly service: GroupService,
     private readonly toast: ToastController,
+    private readonly router: Router
   ) { }
 
   ngOnInit() {
@@ -47,6 +46,7 @@ export class CreateComponent  implements OnInit {
   onFileChanged($event: Event) {
     const files = ($event.target as HTMLInputElement).files;
     if (!files) return;
+    this.uploading = true;
     this.form.patchValue({image: files[0]});
     this.form.controls.image.updateValueAndValidity();
     const reader = new FileReader();
@@ -54,7 +54,7 @@ export class CreateComponent  implements OnInit {
     reader.onload = () => {
       this.imageUrl = reader.result;
     }
-    this.hasUploaded = true;
+    this.uploading = false;
   }
 
   async submit() {
@@ -62,13 +62,10 @@ export class CreateComponent  implements OnInit {
     this.uploading = true;
     this.service.create(this.form.value as CreateGroup)
       .pipe(finalize(() => {
-        this.uploading = false;
-        this.uploadProgress = null;
+        this.router.navigate(['/groups'])
       }))
       .subscribe(event => {
-        if (event.type == HttpEventType.UploadProgress) {
-          this.uploadProgress = Math.round(100 * (event.loaded / (event.total ?? 1)))
-        } else if (event.type == HttpEventType.Response && event.body) {
+        if (event.type == HttpEventType.Response && event.body) {
           this.form.patchValue(event.body);
         }
       });
