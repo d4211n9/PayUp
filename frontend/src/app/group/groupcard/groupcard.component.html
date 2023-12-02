@@ -1,12 +1,12 @@
 <ion-card class="group-card" (click)="openGroup()">
   <ion-item>
     <ion-thumbnail slot="start">
-      <ion-img src=".././assets/icon/elefant.png" alt="{{mygroups.imageUrl}}"></ion-img>
+      <ion-img [src]="group.imageUrl" alt="{{group.imageUrl}}"></ion-img>
     </ion-thumbnail>
 
     <!-- Group Name -->
     <div class="group-name">
-      <h1 class="small-text" id="groupcardtitle">{{mygroups.name}}</h1>
+      <h1 class="small-text" id="groupcardtitle">{{group.name}}</h1>
     </div>
 
     <!-- Owed Information -->

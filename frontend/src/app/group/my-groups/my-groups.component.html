@@ -8,7 +8,7 @@
   <!-- Section for group cards -->
   <section>
     <app-groupcard
-      *ngFor="let group of mygroups" [mygroups]="group">
+      *ngFor="let group of mygroups" [group]="group">
     </app-groupcard>
 
     <ion-card class="ion-padding" id="noGroups" *ngIf="noGroups">
