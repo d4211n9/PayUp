@@ -32,8 +32,4 @@ export class CreateexpenseComponent  implements OnInit {
   async getUsersInGroup(groupId: string) {
     this.userInGroup = await this.service.getUserInGroup(groupId)
   }
-
-
-
-
 }

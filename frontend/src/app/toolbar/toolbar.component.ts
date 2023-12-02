@@ -1,16 +1,41 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
+import {AccountService, User} from "../auth/account.service";
+import {AuthGuard} from "../../services/AuthGuard";
+import {PopoverController} from "@ionic/angular";
+import {NotificationService} from "../notification/notification.service";
 
 @Component({
   selector: 'toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss'],
 })
-export class ToolbarComponent  implements OnInit {
+export class ToolbarComponent implements OnInit {
+  loggedInUser: User | undefined
+  isUserLoaded: boolean = false
+  lastUpdate: Date | undefined;
+  notificationAmount: number | undefined;
+  constructor(
+    private readonly notificationService: NotificationService,
+    private router: Router,
+    private service: AccountService,
+    private authGuard: AuthGuard,
+    private popoverController: PopoverController
+  ) {}
 
-  constructor(private router: Router) { }
+  async ngOnInit() {
+    this.getCurrentUser()
 
-  ngOnInit() {}
+  }
+
+  async getCurrentUser() {
+    if(this.authGuard.isLoggedIn()) {
+      this.loggedInUser = await this.service.getCurrentUser()
+    } else {
+      this.loggedInUser = undefined
+    }
+    this.isUserLoaded = true
+  }
 
   toHome() {
     this.router.navigate(['/groups'])
@@ -18,5 +43,15 @@ export class ToolbarComponent  implements OnInit {
 
   toProfile() {
     this.router.navigate(['/profile'])
+    this.popoverController.dismiss()
+  }
+
+  toLogin() {
+    this.router.navigate(['/login'])
+  }
+
+  async logout() {
+    this.service.logout()
+    this.popoverController.dismiss()
   }
 }

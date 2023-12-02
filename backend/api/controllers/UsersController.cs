@@ -77,5 +77,4 @@ public class UsersController : ControllerBase
         
         return _service.GetInvitableUsers(data, invitableUserSearch);
     }
-    
 }
