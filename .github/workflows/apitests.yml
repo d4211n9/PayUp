@@ -11,7 +11,7 @@ jobs:
           pgconn: ${{secrets.pgconn}}
           fromemail: ${{secrets.fromemail}}
           frompass: ${{secrets.frompass}}
-          AvatarStorage: ${{secrets.avatarstorage}}
+          avatarstorage: ${{secrets.avatarstorage}}
     
     steps:
       - uses: actions/checkout@v3
