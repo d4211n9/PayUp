@@ -40,7 +40,7 @@
     <ng-template>
       <ion-card class="ion-padding parent">
         <ion-thumbnail class="child popover-thumbnail">
-          <img src="{{loggedInUser!.profileUrl}}}"/>
+          <img src="{{loggedInUser!.profileUrl}}"/>
         </ion-thumbnail>
         <ion-card-header>
           <ion-card-title class="inline-block child">
@@ -70,5 +70,11 @@
       id="icon_notifications" slot="icon-only" name="notifications">
     </ion-icon>
   </ion-button>
+
+  <ion-popover *ngIf="loggedInUser !== undefined" trigger="btn_notifications" triggerAction="click">
+    <ng-template>
+      <app-notification></app-notification>
+    </ng-template>
+  </ion-popover>
 
 </ion-toolbar>
