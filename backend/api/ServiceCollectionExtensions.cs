@@ -34,7 +34,7 @@ public static class ServiceCollectionExtensions
         {
             // Get connection string from configuration (appsettings.json)
             //var connectionString = provider.GetService<IConfiguration>()!.GetConnectionString("AvatarStorage");
-            var connectionString = Environment.GetEnvironmentVariable("AvatarStorage");
+            var connectionString = Environment.GetEnvironmentVariable("avatarstorage");
             
             // The client knows how to talk to the service on Azure.
             var client = new BlobServiceClient(connectionString);
