@@ -103,8 +103,8 @@ DROP SCHEMA IF EXISTS groups CASCADE;
 DROP TABLE IF EXISTS users.password_hash;
 -- Drop the 'users.user' table if it exists
 DROP TABLE IF EXISTS users.user_notification_settings;
-DROP TABLE IF EXISTS users.user;
-DROP SCHEMA IF EXISTS users;
+DROP TABLE IF EXISTS users.user CASCADE;
+DROP SCHEMA IF EXISTS users CASCADE;
 
 -- Create the 'users' schema
 CREATE SCHEMA users;
@@ -194,7 +194,6 @@ CREATE TABLE users.user_notification_settings (
     expense_notification BOOLEAN NOT NULL,
     expense_notification_email BOOLEAN NOT NULL
 );
-
 
  ";
 
