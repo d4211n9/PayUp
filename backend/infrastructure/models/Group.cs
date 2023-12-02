@@ -25,11 +25,17 @@ public class Group
 
 public class UpdateGroupModel
 {
-    [Required] public string Name { get; set; }
-    [Required] public string Description { get; set; }
+    [Required(ErrorMessage = "Group name is required")]
+    [StringLength(50, ErrorMessage = "Group name is too long (max 50 characters)")]
+    public required string Name { get; set; }
+
+    [Required(ErrorMessage = "Group description is required")]
+    [StringLength(200, ErrorMessage = "Group description is too long (max 200 characters)")]
+    public required string Description { get; set; }
 }
 
 public class CreateGroupModel : UpdateGroupModel
 {
-    [Required] public DateTime CreatedDate { get; set; }
+    [Required(ErrorMessage = "Created date is required")]
+    public DateTime CreatedDate { get; set; }
 }

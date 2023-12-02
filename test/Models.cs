@@ -11,6 +11,17 @@ public class Models
         public DateTime CreatedDate { get; set; }
     }
     
+    public class UpdateGroupModel
+    {
+        public required string Name { get; set; }
+        public required string Description { get; set; }
+    }
+
+    public class CreateGroupModel : UpdateGroupModel
+    {
+        public required DateTime CreatedDate { get; set; }
+    }
+    
     public class BalanceDto
     {
         public required int UserId { get; set; }
