@@ -100,7 +100,6 @@ public class GroupController : ControllerBase
             imageUrl = _blobService.Save("payup", imageStream, null);
         }
         
-        var group = _service.Update(groupId, model, imageUrl);
-        return group;
+        return _service.Update(groupId, model, imageUrl);
     }
 }

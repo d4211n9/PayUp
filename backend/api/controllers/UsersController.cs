@@ -13,9 +13,15 @@ public class UsersController : ControllerBase
 {
     
     private readonly UserService _service;
-    public UsersController(UserService service)
+    private readonly BlobService _blobService;
+
+    public UsersController(
+        UserService service, 
+        BlobService blobService
+    )
     {
         _service = service;
+        _blobService = blobService;
     }
     
     [RequireAuthentication]
@@ -36,6 +42,24 @@ public class UsersController : ControllerBase
         var data = HttpContext.GetSessionData();
         var user = _service.EditProfileInfo(data, model);
         return user;
+    }
+    
+    [RequireAuthentication]
+    [HttpPut]
+    [Route("/api/user/profileimage")]
+    public User EditProfileImage([FromForm] IFormFile? image)
+    {
+        var session = HttpContext.GetSessionData()!;
+
+        var imageUrl = _service.GetLoggedInUser(session).ProfileUrl;
+        if (image != null)
+        {
+            // We need a stream of bytes (image data)
+            using var imageStream = image.OpenReadStream();
+            imageUrl = _blobService.Save("payup", imageStream, null);
+        }
+        
+        return _service.EditProfileImage(session, imageUrl);
     }
     
     [RequireAuthentication]
