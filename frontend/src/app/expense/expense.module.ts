@@ -8,10 +8,12 @@ import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
-  declarations: [ExpensecardComponent, CreateexpenseComponent],
+  declarations: [
+    ExpensecardComponent,
+    CreateexpenseComponent
+  ],
   exports: [
     ExpensecardComponent,
-      CreateexpenseComponent
   ],
     imports: [
         CommonModule,

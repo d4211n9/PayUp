@@ -7,12 +7,12 @@ export interface Group {
   id: number,
   name: string,
   description: string,
-  imageUrl: string,
+  imageUrl: string | null,
   createdDate: Date
 }
 
 export interface UserInGroup {
-  id: number,
+  userId: number,
   fullName: string,
   imageUrl: string
 }
@@ -20,7 +20,7 @@ export interface UserInGroup {
 export interface CreateGroup {
   name: string,
   description: string,
-  imageUrl: string,
+  imageUrl: string | null,
   createdDate: Date
 }
 
@@ -34,6 +34,18 @@ export interface CreateExpense {
 export interface CreateFullExpense {
   expense: CreateExpense,
   userIdsOnExpense: number[]
+}
+
+export interface GroupUpdate {
+  name: string;
+  description: string;
+  imageUrl: File | null;
+}
+
+export interface UserInGroup {
+  userId: number,
+  fullName: string,
+  imageUrl: string
 }
 
 export interface FullExpense {
@@ -82,7 +94,15 @@ export class GroupService {
   }
 
   create(value: CreateGroup) {
-    return this.http.post<Group>(environment.apiBaseUrl+'/group/create', value)
+    const formData = new FormData();
+    Object.entries(value).forEach(([key, value]) =>
+      formData.append(key, value)
+    );
+
+    return this.http.post<Group>(environment.apiBaseUrl+'/group/create', formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
   }
 
     createExpense(value: CreateFullExpense) {
@@ -95,9 +115,9 @@ export class GroupService {
     return await firstValueFrom<FullExpense[]>(call);
   }
 
-  async getGroup(groupId: number) {
-      const call = this.http.get<Group>(environment.apiBaseUrl+'/group/'+groupId);
-      return await firstValueFrom<Group>(call);
+  getGroup(groupId: number) {
+      return this.http.get<Group>(environment.apiBaseUrl+'/group/'+groupId);
+
   }
 
   async getUserInGroup(groupId: string) {
@@ -112,5 +132,16 @@ export class GroupService {
   }
   invite(group_invite: GroupInvitation) {
     return this.http.post<boolean>('http://localhost:5100/api/group/invite', group_invite);
+  }
+
+  update(value: GroupUpdate, groupId: number) {
+    const formData = new FormData();
+    Object.entries(value).forEach(([key, value]) =>
+      formData.append(key, value)
+    );
+    return this.http.put<GroupUpdate>(environment.apiBaseUrl+'/group/'+groupId+'/update', formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
   }
 }

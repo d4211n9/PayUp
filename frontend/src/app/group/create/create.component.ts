@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
-import {firstValueFrom} from "rxjs";
-import {CreateGroup, Group, GroupService} from "../group.service";
+import {finalize} from "rxjs";
+import {CreateGroup, GroupService} from "../group.service";
 import {ToastController} from "@ionic/angular";
+import {HttpEventType} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -12,10 +14,14 @@ import {ToastController} from "@ionic/angular";
 })
 export class CreateComponent  implements OnInit {
 
+  uploading: boolean = false;
+  imageUrl: string | ArrayBuffer | null = null;
+
   constructor(
     private readonly fb: FormBuilder,
     private readonly service: GroupService,
     private readonly toast: ToastController,
+    private readonly router: Router
   ) { }
 
   ngOnInit() {}
@@ -25,6 +31,7 @@ export class CreateComponent  implements OnInit {
   form = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
+    image: [null as File | null],
   });
 
   get name() {
@@ -35,21 +42,35 @@ export class CreateComponent  implements OnInit {
     return this.form.controls.description;
   }
 
+  onFileChanged($event: Event) {
+    const files = ($event.target as HTMLInputElement).files;
+    if (!files) return;
+    this.uploading = true;
+    this.form.patchValue({image: files[0]});
+    this.form.controls.image.updateValueAndValidity();
+    const reader = new FileReader();
+    reader.readAsDataURL(files[0]);
+    reader.onload = () => {
+      this.imageUrl = reader.result;
+    }
+    this.uploading = false;
+  }
 
-  async create() {
-    if(this.form.invalid) return;
-
-    var groupInfo: CreateGroup = {
-      name: this.form.controls.name.value!,
-      description: this.form.controls.description.value!,
-      imageUrl: 'https://cdn-icons-png.flaticon.com/512/615/615075.png', //TODO fix hardcoding when image upload is done (also in html)
-      createdDate: new Date(Date.now())
-    };
-
-    const createdGroup = await firstValueFrom(this.service.create(groupInfo as CreateGroup));
+  async submit() {
+    if (this.form.invalid) return;
+    this.uploading = true;
+    this.service.create(this.form.value as CreateGroup)
+      .pipe(finalize(() => {
+        this.router.navigate(['/groups'])
+      }))
+      .subscribe(event => {
+        if (event.type == HttpEventType.Response && event.body) {
+          this.form.patchValue(event.body);
+        }
+      });
 
     await (await this.toast.create({
-      message: "Your group '" + createdGroup.name + "' was created successfully",
+      message: "Your group was created successfully",
       color: "success",
       duration: 5000
     })).present();

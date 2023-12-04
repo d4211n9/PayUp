@@ -26,7 +26,7 @@ export class ActivityComponent implements OnInit {
 
   async ngOnInit() {
     await this.getId()
-    await this.getGroup()
+    this.group = await firstValueFrom(this.service.getGroup(this.id))
     await this.getAllExpenses()
     this.loading = false
   }
@@ -43,10 +43,6 @@ export class ActivityComponent implements OnInit {
   async getId() {
     const map = await firstValueFrom(this.route.paramMap)
     this.id = map.get('groupId')
-  }
-
-  async getGroup() {
-    this.group = await this.service.getGroup(this.id)
   }
 
   async getAllExpenses() {

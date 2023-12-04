@@ -4,17 +4,6 @@
 
     <ion-card-title class="ion-padding ion-text-center" color="dark">{{group?.name}}</ion-card-title>
 
-    <!-- Another menu option ..
-    <ion-button class="parent" id="click-trigger">Menu</ion-button>
-    <ion-popover trigger="click-trigger" triggerAction="click">
-        <ng-template>
-            <ion-button class="parent">Activity</ion-button>
-            <ion-button class="parent">Balances</ion-button>
-            <ion-button class="parent">Totals</ion-button>
-        </ng-template>
-    </ion-popover>
-    -->
-
     <ion-toolbar>
       <ion-segment [(ngModel)]="subpage" scrollable="true" (ionChange)="segmentChanged($event)">
         <ion-segment-button value="activity">

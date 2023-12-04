@@ -1,6 +1,8 @@
 import {HttpClient} from "@angular/common/http";
 import {Injectable} from "@angular/core";
-import {Timestamp} from "rxjs";
+import {firstValueFrom, Timestamp} from "rxjs";
+import {environment} from "../../environments/environment";
+import {TokenService} from "../../services/TokenService";
 
 
 export interface User {
@@ -28,18 +30,26 @@ export interface Registration {
 
 @Injectable()
 export class AccountService {
-  constructor(private readonly http: HttpClient) {
+  constructor(
+    private readonly http: HttpClient,
+    private readonly token: TokenService
+  ) {
   }
 
   getCurrentUser() {
-    return this.http.get<User>('/api/account/whoami');
+    return firstValueFrom(this.http.get<User>(environment.apiBaseUrl+'/user/currentuser'));
   }
 
   login(value: Credentials) {
-    return this.http.post<{ token: string }>('http://localhost:5100/api/account/login', value);
+    return this.http.post<{ token: string }>(environment.apiBaseUrl+'/account/login', value);
   }
 
   register(value: Registration) {
-    return this.http.post<any>('http://localhost:5100/api/account/register', value);
+    return this.http.post<any>(environment.apiBaseUrl+'/account/register', value);
+  }
+
+  logout() {
+    this.token.clearToken()
+    location.reload()
   }
 }
