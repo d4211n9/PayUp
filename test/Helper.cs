@@ -302,6 +302,14 @@ insert into groups.group (id, name, description, image_url, created_date) VALUES
 insert into groups.group_members (user_id, group_id, owner) VALUES (1, 1, true);
 insert into groups.group_members (user_id, group_id, owner) VALUES (1, 2, true);
 insert into groups.group_members (user_id, group_id, owner) VALUES (2, 3, true);
+
+INSERT INTO expenses.expense (user_id, group_id, description, amount, created_date) VALUES (1, 1, 'Bajere 🍺', 20, '2023-11-24T15:58:41.045Z');
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (1, 1, 10);
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (2, 1, -10);
+
+INSERT INTO expenses.expense (user_id, group_id, description, amount, created_date) VALUES (1, 2, 'Bajere 🍺', 20, '2023-11-24T15:58:41.045Z');
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (1, 2, 10);
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (2, 2, -10);
     ";
 
     public static string BalanceScript = @"

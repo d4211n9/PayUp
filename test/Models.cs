@@ -11,6 +11,11 @@ public class Models
         public DateTime CreatedDate { get; set; }
     }
     
+    public class GroupCardModel : Group
+    {
+        public decimal Amount { get; set; }
+    }
+    
     public class UpdateGroupModel
     {
         public required string Name { get; set; }

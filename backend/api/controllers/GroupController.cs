@@ -50,7 +50,7 @@ public class GroupController : ControllerBase
     [RequireAuthentication]
     [HttpGet]
     [Route("/api/mygroups")]
-    public IEnumerable<Group> GetMyGroups()
+    public IEnumerable<GroupCardModel> GetMyGroups()
     {
         var sessionData = HttpContext.GetSessionData();
         var userId = sessionData.UserId;

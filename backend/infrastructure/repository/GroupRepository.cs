@@ -37,22 +37,29 @@ public class GroupRepository
         }
     }
 
-    public IEnumerable<Group> GetMyGroups(int userId)
+    public IEnumerable<GroupCardModel> GetMyGroups(int userId)
     {
         var sql =
             $@"
-            select id as {nameof(Group.Id)},
-                name as {nameof(Group.Name)},
-                description as {nameof(Group.Description)},
-                image_url as {nameof(Group.ImageUrl)},
-                created_date as {nameof(Group.CreatedDate)}
-            from groups.group_members
-            join groups.group on groups.group_members.group_id = id 
-            where groups.group_members.user_id = @userId;";
+            SELECT
+                g.id as {nameof(GroupCardModel.Id)},
+                g.name as {nameof(GroupCardModel.Name)},
+                g.description as {nameof(GroupCardModel.Description)},
+                g.image_url as {nameof(GroupCardModel.ImageUrl)},
+                g.created_date as {nameof(GroupCardModel.CreatedDate)},
+                SUM(ue.amount) AS {nameof(GroupCardModel.Amount)}
+            FROM groups.group g
+                JOIN groups.group_members gm ON g.id = gm.group_id
+                JOIN users.user u ON gm.user_id = u.id
+                LEFT JOIN expenses.expense e ON g.id = e.group_id
+                LEFT JOIN expenses.user_on_expense ue ON e.id = ue.expense_id AND u.id = ue.user_id
+            WHERE u.id = @userId
+            GROUP BY g.id;
+            ";
 
         using (var conn = _dataSource.OpenConnection())
         {
-            return conn.Query<Group>(sql, new { userId });
+            return conn.Query<GroupCardModel>(sql, new { userId });
         }
     }
 

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Group} from "../group.service";
+import {Group, GroupCard} from "../group.service";
 import {Router} from "@angular/router";
 import {firstValueFrom} from "rxjs";
 
@@ -15,7 +15,7 @@ export class GroupcardComponent  implements OnInit {
   }
 
   ngOnInit() {}
-  @Input() group!: Group;
+  @Input() group!: GroupCard;
 
   openGroup() {
     this.router.navigate(['groups/'+this.group.id])

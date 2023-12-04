@@ -11,6 +11,10 @@ export interface Group {
   createdDate: Date
 }
 
+export interface GroupCard extends Group {
+  amount: number
+}
+
 export interface CreateGroup {
   name: string,
   description: string,
@@ -71,8 +75,8 @@ export class GroupService {
   }
 
   async getMyGroups() {
-    const call = this.http.get<Group[]>(environment.apiBaseUrl + "/mygroups")
-    return await firstValueFrom<Group[]>(call);
+    const call = this.http.get<GroupCard[]>(environment.apiBaseUrl + "/mygroups")
+    return await firstValueFrom<GroupCard[]>(call);
   }
 
   create(value: CreateGroup) {
