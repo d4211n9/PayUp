@@ -1,4 +1,6 @@
-﻿namespace api.models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace api.models;
 
 public class Expense
 {
@@ -13,10 +15,16 @@ public class Expense
 
 public class CreateExpenseDto
 {
+    [Required]
     public int UserId { get; set; }
+    [Required]
     public int GroupId { get; set; }
+    [Required]
     public required string Description { get; set; }
+    [Required]
+    [Range(0.00, Double.MaxValue)]
     public decimal Amount { get; set; }
+    [Required]
     public DateTime CreatedDate { get; set; }
 }
 

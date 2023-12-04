@@ -99,7 +99,7 @@ export class GroupService {
     });
   }
 
-    createExpense(value: CreateFullExpense) {
+  createExpense(value: CreateFullExpense) {
     return this.http.post<FullExpense>(environment.apiBaseUrl+'/expense', value);
 }
 
