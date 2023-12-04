@@ -6,15 +6,25 @@
         <div style="display: flex; justify-content: center; align-items: center;">
           <form [formGroup]="formImg">
             <div class="container">
-              <ion-input class="file-input btn" type="file" id="opacity"
-                         accept="image/png, image/jpeg"
-                         formControlName="image" value={this.state.image}
-                         (change)="onFileChanged($event)"></ion-input>
               <ion-img *ngIf="imageUrl === null"
                        src="https://micdrastorageaccount.blob.core.windows.net/payup/65721ca9-0517-47b2-91f1-05ad8b176132"></ion-img>
               <ion-img *ngIf="imageUrl !== null" [src]="imageUrl"></ion-img>
 
-              <ion-button fill="clear" color="danger" (click)="submit()">
+              <ion-input class="file-input" type="file" id="opacity"
+                         accept="image/png, image/jpeg"
+                         formControlName="image" value={this.state.image}
+                         (change)="onFileChanged($event)" *ngIf="editModeImg">
+              </ion-input>
+              <ion-item lines="none">
+                <div style="display: flex; justify-content: center; align-items: center; height: 30px">
+                  <ion-button expand="full" *ngIf="editModeImg" (click)="submit()"
+                              [disabled]="formImg.invalid">Save
+                  </ion-button>
+                  <ion-button expand="full" *ngIf="editModeImg" (click)="exitImgEditMode()">Cancel</ion-button>
+                </div>
+              </ion-item>
+
+              <ion-button class="btn" fill="clear" color="warning" (click)="enterImgEditMode()">
                 <ion-icon slot="icon-only" name="create" size="medium"></ion-icon>
               </ion-button>
             </div>

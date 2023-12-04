@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {EditUserDto, EditUserImg, FullUser, ProfileService} from "./profile.service";
-import {finalize, firstValueFrom, Observable} from "rxjs";
+import {firstValueFrom, Observable} from "rxjs";
 import {FormBuilder, Validators} from "@angular/forms";
 import {ToastController} from "@ionic/angular";
-import {GroupUpdate} from "../group/group.service";
 import {HttpEventType} from "@angular/common/http";
 
 @Component({
@@ -14,6 +13,7 @@ import {HttpEventType} from "@angular/common/http";
 export class ProfileComponent  implements OnInit {
   fullUser$!: Observable<FullUser>;
   editMode = false;
+  editModeImg = false;
   editedUser!: EditUserDto;
   imageUrl: string | ArrayBuffer | null = null;
   uploading: boolean = false;
@@ -89,5 +89,13 @@ export class ProfileComponent  implements OnInit {
       this.imageUrl = reader.result;
     }
     this.uploading = false;
+  }
+
+  enterImgEditMode() {
+    this.editModeImg = true;
+  }
+
+  exitImgEditMode() {
+    this.editModeImg = false;
   }
 }
