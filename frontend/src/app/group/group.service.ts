@@ -12,7 +12,7 @@ export interface Group {
 }
 
 export interface UserInGroup {
-  userId: number,
+  id: number,
   fullName: string,
   imageUrl: string
 }
@@ -22,6 +22,12 @@ export interface CreateGroup {
   description: string,
   imageUrl: string | null,
   createdDate: Date
+}
+
+export interface GroupUpdate {
+  name: string;
+  description: string;
+  imageUrl: File | null;
 }
 
 export interface CreateExpense {
@@ -34,18 +40,6 @@ export interface CreateExpense {
 export interface CreateFullExpense {
   expense: CreateExpense,
   userIdsOnExpense: number[]
-}
-
-export interface GroupUpdate {
-  name: string;
-  description: string;
-  imageUrl: File | null;
-}
-
-export interface UserInGroup {
-  userId: number,
-  fullName: string,
-  imageUrl: string
 }
 
 export interface FullExpense {
