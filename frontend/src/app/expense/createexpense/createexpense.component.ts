@@ -1,5 +1,12 @@
 import {Component, Input, numberAttribute, OnInit} from '@angular/core';
-import {CreateExpense, CreateFullExpense, Group, GroupService, UserInGroup} from "../../group/group.service";
+import {
+  CreateExpense,
+  CreateFullExpense,
+  FullExpense,
+  Group,
+  GroupService,
+  UserInGroup
+} from "../../group/group.service";
 import {HttpClient} from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -13,9 +20,10 @@ import {reload} from "ionicons/icons";
   templateUrl: './createexpense.component.html',
   styleUrls: ['./createexpense.component.scss'],
 })
-export class CreateexpenseComponent  implements OnInit {
+export class CreateexpenseComponent implements OnInit {
   userInGroup: UserInGroup[] = [];
   id: any;
+  usersOnExpense: number[] = [];
 
 
   constructor(
@@ -31,7 +39,6 @@ export class CreateexpenseComponent  implements OnInit {
     await this.getId()
     this.getUsersInGroup(this.id);
   }
-
 
 
   get description() {
@@ -53,9 +60,9 @@ export class CreateexpenseComponent  implements OnInit {
 
   async getUsersInGroup(groupId: string) {
     this.userInGroup = await this.service.getUserInGroup(groupId)
+    this.userInGroup.forEach((u) => this.usersOnExpense.push(u.id))
   }
 
-  usersOnExpense: number[] = [];
 
   handleUserSelection(event: CustomEvent) {
     if (event.detail.value !== undefined) {
@@ -72,6 +79,8 @@ export class CreateexpenseComponent  implements OnInit {
 
   async createExpense() {
 
+    if (this.form.invalid) return
+
     var expenseInfo: CreateExpense = {
       groupId: this.id,
       description: this.form.controls.description.value!,
@@ -85,25 +94,21 @@ export class CreateexpenseComponent  implements OnInit {
       userIdsOnExpense: this.usersOnExpense
     }
 
-    const createdExpense = await firstValueFrom(this.service.createExpense(fullExpenseInfo))
-      .then((response) => {
-        this.router.navigate(['groups/' + response.expense.groupId])
+    const createdExpense = await firstValueFrom<FullExpense>(this.service.createExpense(fullExpenseInfo as CreateFullExpense))
+
+
+    await (await this.toast.create({
+      message: "Your expense " + createdExpense.expense.description + " was created successfully",
+      color: "success",
+      duration: 5000
+    })).present()
+      .then(() => {
+        this.router.navigate(['groups/' + this.id])
           .then(() => {
             location.reload();
           });
       });
-
-    await (await this.toast.create({
-      message: "Your expense '" + createdExpense + "' was created successfully",
-      color: "success",
-      duration: 5000
-    })).present();
-
   }
-
-
-
-
 
 
 }

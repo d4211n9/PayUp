@@ -29,6 +29,9 @@
         </ng-template>
       </ion-modal>
     </div>
+    <div *ngIf="!createdDate.touched">
+      <ion-text color="dark">* Please select a date</ion-text>
+    </div>
     <div *ngIf="createdDate.touched && createdDate.invalid">
       <ion-text color="danger">Valid date is required</ion-text>
     </div>
@@ -44,7 +47,7 @@
 
     <!-- Add users to expense -->
     <ion-item class="ion-padding" id="dropdow">
-      <ion-select (ionChange)="handleUserSelection($event)" multiple="true" aria-label="User" placeholder="Select user" cancelText="Cancel" okText="Select">
+      <ion-select [value]="usersOnExpense" (ionChange)="handleUserSelection($event)" multiple="true" aria-label="User" placeholder="Select user" cancelText="Cancel" okText="Select">
 
         <!-- Load group users -->
         <ion-select-option *ngFor="let useringroup of userInGroup" [value]="useringroup.id">{{useringroup.fullName}}</ion-select-option>
@@ -56,7 +59,7 @@
 
   <!-- Create Button Section -->
   <div class="parent ion-padding">
-    <ion-button class="child" color="warning" (click)="createExpense()">
+    <ion-button class="child" color="warning" [disabled]="form.invalid" (click)="createExpense()">
       Create
     </ion-button>
   </div>
