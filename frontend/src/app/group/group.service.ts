@@ -60,6 +60,14 @@ export interface Balance {
   amount: number
 }
 
+export interface Transaction {
+  payerId: number;
+  payerName: string,
+  amount: number;
+  payeeId: number;
+  payeeName: string;
+}
+
 export interface GroupInvitation {
   groupId: number
   receiverId: number
@@ -107,6 +115,13 @@ export class GroupService {
     const call = this.http.get<Balance[]>(environment.apiBaseUrl+'/group/'+groupId+'/balances')
     return await firstValueFrom<Balance[]>(call);
   }
+
+  //gets a list over all transactions to be made before the group is square
+  async getAllTransactions(groupId: number) {
+    const call = this.http.get<Transaction[]>(environment.apiBaseUrl+'/group/'+groupId+'/transactions');
+    return await firstValueFrom<Transaction[]>(call);
+  }
+
   invite(group_invite: GroupInvitation) {
     return this.http.post<boolean>('http://localhost:5100/api/group/invite', group_invite);
   }

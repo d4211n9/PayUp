@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Balance, FullExpense, Group, GroupService} from "../group.service";
+import {Balance, FullExpense, Group, GroupService, Transaction} from "../group.service";
 import {firstValueFrom} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 
@@ -13,6 +13,7 @@ export class ActivityComponent implements OnInit {
   group: Group | undefined;
   expenses: FullExpense[] = []
   balances: Balance[] = []
+  transactionList: Transaction[] = []
   subpage = 'activity';
   loading: boolean = true;
   balancesLoaded: boolean = false;
@@ -28,6 +29,7 @@ export class ActivityComponent implements OnInit {
     this.group = await firstValueFrom(this.service.getGroup(this.id))
     await this.getAllExpenses()
     this.loading = false
+    await this.getTransactions();//gets all the transactions needed for the group to square
   }
 
   async segmentChanged(ev: any) {
@@ -50,5 +52,9 @@ export class ActivityComponent implements OnInit {
 
   async getBalances() {
     this.balances = await this.service.getBalances(this.id)
+  }
+
+  async getTransactions() {
+    this.transactionList = await this.service.getAllTransactions(this.id);
   }
 }

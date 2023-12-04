@@ -141,7 +141,7 @@ public class ExpenseService
         {
             var lowestPayerKey = payers.OrderBy(pair => pair.Value).FirstOrDefault().Key;
             var highestPayeeKey = payees.OrderByDescending(pair => pair.Value).FirstOrDefault().Key;
-
+            
             if (lowestPayerKey == 0 || highestPayeeKey == 0)
             {
                 // Handle cases where a key is not found (e.g., dictionaries are empty).
@@ -159,13 +159,18 @@ public class ExpenseService
 
             // Update payee's amount
             payees[highestPayeeKey] -= settledAmount;
+            
+            string payerName = GetUserNameFromBalances(lowestPayerKey, balances);
+            string payeeName = GetUserNameFromBalances(highestPayeeKey, balances);
 
             //creates a transAction Object, to keep track of transactions
             var transAction = new Transaction
             {
                 PayeeId = highestPayeeKey,
                 PayerId = lowestPayerKey,
-                Amount = settledAmount
+                Amount = settledAmount,
+                PayerName = payerName,
+                PayeeName = payeeName
             };
             transactionList.Add(transAction);
 
@@ -181,6 +186,12 @@ public class ExpenseService
             }
         }
         return transactionList;
-        //todo how should we pack and send the list?? 
+    }
+    
+    private string GetUserNameFromBalances(int userId, IEnumerable<BalanceDto> balances)
+    {
+        var userBalance = balances.FirstOrDefault(b => b.UserId == userId);
+        // Return the user name if found, otherwise a default value or an empty string
+        return userBalance != null ? userBalance.FullName : string.Empty;
     }
 }
