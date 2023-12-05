@@ -41,6 +41,8 @@ public class ExpenseRepository
             throw new SqlNullValueException(" read expenses from group", e);
         }
     }
+
+    
     
     public IEnumerable<GetUserOnExpense> GetUsersOnExpenses(int groupId)
     {
@@ -171,4 +173,28 @@ public class ExpenseRepository
             throw new SqlTypeException("Could not add users to expense", e);
         }
     }
+    
+    public TotalBalanceDto GetTotalBalance(int userId)
+    {
+        var sql =
+            $@"
+            select u.id, SUM(uoe.amount) as total
+            from expenses.user_on_expense as uoe
+            join expenses.expense as e on uoe.expense_id = e.id
+            join users.user as u on uoe.user_id = u.id
+            where u.id = @userId
+            group by u.id;";
+        
+        try
+        {
+            using var conn = _dataSource.OpenConnection();
+            return conn.Query<TotalBalanceDto>(sql, new { userId });
+        }
+        catch (Exception e)
+        {
+            throw new SqlNullValueException(" read total balance", e);
+        }
+    }
+    
+    
 }

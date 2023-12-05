@@ -72,4 +72,9 @@ public class Transaction
     public int PayeeId { get; set; }
     public string PayeeName { get; set; }
 
+
+public class TotalBalanceDto
+{
+    public required int UserId { get; set; }
+
 }
