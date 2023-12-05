@@ -197,23 +197,8 @@ CREATE TABLE groups.group_invitation (
 	PRIMARY KEY (receiver_id, group_id)
 );
 
-CREATE TABLE users.user_notification_settings (
-    user_id INT PRIMARY KEY REFERENCES users.user(id),
-    invite_notification BOOLEAN NOT NULL,
-    invite_notification_email BOOLEAN NOT NULL,
-    expense_notification BOOLEAN NOT NULL,
-    expense_notification_email BOOLEAN NOT NULL
-);
 
-CREATE TABLE IF NOT EXISTS users.expense_notifications (
-    id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL,
-    member_on_expense_id INT NOT NULL,
-    is_read BOOLEAN NOT NULL DEFAULT FALSE,
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users.user(id),
-    FOREIGN KEY (member_on_expense_id) REFERENCES users.user(id)
-);
+
 
  ";
 
