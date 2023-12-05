@@ -64,13 +64,6 @@ public class BalanceDto
     public required decimal Amount { get; set; }
 }
 
-public class TransactionMemberDto
-{
-    public required int UserId { get; set; }
-    public required string FullName { get; set; }
-    public required string ImageUrl { get; set; }
-}
-
 public class Transaction
 {
     public int PayerId { get; set; }

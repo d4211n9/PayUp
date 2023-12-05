@@ -30,12 +30,12 @@ export class ActivityComponent implements OnInit {
     this.group = await firstValueFrom(this.service.getGroup(this.id))
     await this.getAllExpenses()
     this.loading = false
-    await this.getTransactions();//gets all the transactions needed for the group to square
   }
 
   async segmentChanged(ev: any) {
     if (ev.detail.value === 'balances' && !this.balancesLoaded) {
       this.loading = true
+      await this.getTransactions()
       await this.getBalances()
       this.balancesLoaded = true
       this.loading = false

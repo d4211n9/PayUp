@@ -18,10 +18,10 @@ public class TransactionCalculator
                 payees.Add(b.UserId, b.Amount);
             } 
         }
-        return MakeTransactions(payers, payees);
+        return MakeTransactions(payers, payees, balances);
     }
 
-    private IEnumerable<Transaction> MakeTransactions(Dictionary<int, Decimal> payers, Dictionary<int, Decimal> payees)
+    private IEnumerable<Transaction> MakeTransactions(Dictionary<int, Decimal> payers, Dictionary<int, Decimal> payees, IEnumerable<BalanceDto> balances)
     {
         var transactionList = new List<Transaction>(); 
         //loops through the payers and payees until all users are square
@@ -42,12 +42,17 @@ public class TransactionCalculator
             // Update payee's amount
             payees[highestPayeeKey] -= settledAmount;
 
+            string payerName = GetUserNameFromBalances(lowestPayerKey, balances);
+            string payeeName = GetUserNameFromBalances(highestPayeeKey, balances);
+            
             //creates a transAction Object, to keep track of transactions
             var transAction = new Transaction
             {
                 PayeeId = highestPayeeKey,
                 PayerId = lowestPayerKey,
-                Amount = settledAmount
+                Amount = settledAmount,
+                PayerName = payerName,
+                PayeeName = payeeName
             };
             transactionList.Add(transAction);
 
@@ -56,5 +61,12 @@ public class TransactionCalculator
             if (payees[highestPayeeKey] == 0) payees.Remove(highestPayeeKey);
         }
         return transactionList;
+    }
+    
+    private string GetUserNameFromBalances(int userId, IEnumerable<BalanceDto> balances)
+    {
+        var userBalance = balances.FirstOrDefault(b => b.UserId == userId);
+        // Return the user name if found, otherwise a default value or an empty string
+        return userBalance != null ? userBalance.FullName : string.Empty;
     }
 }
