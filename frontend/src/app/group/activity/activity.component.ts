@@ -62,4 +62,12 @@ export class ActivityComponent implements OnInit {
   toCreateExpense() {
     this.router.navigate(['groups/'+this.group?.id+'/create'])
   }
+
+  toCreatePayment() {
+
+  }
+
+  toInvite() {
+
+  }
 }
