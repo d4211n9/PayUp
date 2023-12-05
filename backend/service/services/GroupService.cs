@@ -13,14 +13,18 @@ public class GroupService
     private readonly ExpenseRepository _expenseRepo;
     private readonly UserRepository _userRepository;
     private readonly NotificationFacade _notificationFacade;
+    private readonly NotificationRepository _notificationRepository;
 
 
-    public GroupService(GroupRepository groupRepo, ExpenseRepository expenseRepo, UserRepository userRepository, NotificationFacade notificationFacade)
+
+    public GroupService(GroupRepository groupRepo, ExpenseRepository expenseRepo, UserRepository userRepository, NotificationFacade notificationFacade,
+        NotificationRepository notificationRepository)
     {
         _groupRepo = groupRepo;
         _expenseRepo = expenseRepo;
         _userRepository = userRepository;
         _notificationFacade = notificationFacade;
+        _notificationRepository = notificationRepository;
 
     }
 
@@ -78,20 +82,24 @@ public class GroupService
             GroupId = groupInvitation.GroupId,
             SenderId = ownerId
         };
-        //TODO burde kunne lave et check for at se om man har noti til eller ej på appen. (Måske skal det ske fra facade)
-        var isEmailSent = SendEmailInvite(groupInvitation.GroupId, groupInvitation.ReceiverId);
-        if (!isEmailSent)
-            throw new SqlNullValueException("send invite per email");
+
+        IsNotifyOn(groupInvitation);
         return _groupRepo.InviteUserToGroup(fullGroupInvitation);
     }
-
-    private bool SendEmailInvite(int groupId, int userId)
+    
+    private void IsNotifyOn( GroupInvitation groupInvitation)
     {
-        var group = _groupRepo.GetGroupById(groupId);
-        var user = _userRepository.GetById(userId);
-        return _notificationFacade.SendInviteEmail(group, user.Email);
+        var settings = _notificationRepository.GetUserNotificationSettings(groupInvitation.ReceiverId);
+        
+        if (!settings.InviteNotificationEmail) return;
+        
+        var group = _groupRepo.GetGroupById(groupInvitation.GroupId);
+        var user = _userRepository.GetById(groupInvitation.ReceiverId);
+        var isEmailSent = _notificationFacade.SendInviteEmail(group, user.Email);
+        if (!isEmailSent)
+            throw new SqlNullValueException("send invite per email");
     }
-
+    
     public bool AcceptInvite(SessionData sessionData, bool isAccepted, int groupId)
     {
         var user = new UserInGroupDto()
