@@ -11,6 +11,7 @@ import {HomePage} from "./home/home.page";
 import {NotificationComponent} from "./notification/notification.component";
 import {CreateexpenseComponent} from "./expense/createexpense/createexpense.component";
 import {AuthGuard} from "../services/AuthGuard";
+import {UpdateComponent} from "./group/update/update.component";
 
 
 const routes: Routes = [
@@ -35,6 +36,11 @@ const routes: Routes = [
   {
     path: 'groups/:groupid/invite',
     component: InviteComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'groups/:groupId/edit',
+    component: UpdateComponent,
     canActivate: [AuthGuard]
   },
   {

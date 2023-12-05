@@ -26,7 +26,7 @@ if (builder.Environment.IsProduction())
 {
     builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString);
 }
-
+builder.Services.AddAvatarBlobService();
 builder.Services.AddSingleton<NotificationFacade>();
 
 builder.Services.AddSingleton<UserRepository>();

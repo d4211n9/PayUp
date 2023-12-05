@@ -16,7 +16,7 @@ public class GroupRepository
         _dataSource = dataSource;
     }
 
-    public Group CreateGroup(Group group)
+    public Group CreateGroup(CreateGroupModel group, string imageUrl)
     {
         var sql =
             $@"
@@ -29,7 +29,7 @@ public class GroupRepository
         {
             using var conn = _dataSource.OpenConnection();
             return conn.QueryFirst<Group>(sql,
-                new { group.Name, group.Description, group.ImageUrl, group.CreatedDate });
+                new { group.Name, group.Description, imageUrl, group.CreatedDate });
         }
         catch (Exception e)
         {
@@ -41,7 +41,12 @@ public class GroupRepository
     {
         var sql =
             $@"
-            select * from groups.group_members
+            select id as {nameof(Group.Id)},
+                name as {nameof(Group.Name)},
+                description as {nameof(Group.Description)},
+                image_url as {nameof(Group.ImageUrl)},
+                created_date as {nameof(Group.CreatedDate)}
+            from groups.group_members
             join groups.group on groups.group_members.group_id = id 
             where groups.group_members.user_id = @userId;";
 
@@ -216,5 +221,25 @@ WHERE group_invitation.receiver_id = @receiverId
         {
             throw new SqlTypeException("Failed to invite user to group", e);
         }
+    }
+
+    public Group Update(int groupId, UpdateGroupModel model, string? imageUrl)
+    {
+        var sql = $@"
+                UPDATE groups.group
+        SET
+            name = @{nameof(model.Name)},
+            description = @{nameof(model.Description)},
+            image_url = @imageUrl 
+        WHERE id = @groupId
+        RETURNING id as {nameof(Group.Id)},
+                  name as {nameof(Group.Name)},
+                  description as {nameof(Group.Description)},
+                  image_url as {nameof(Group.ImageUrl)},
+                  created_date as {nameof(Group.CreatedDate)}
+        ";
+        
+        using var connection = _dataSource.OpenConnection();
+        return connection.QueryFirst<Group>(sql, new { groupId, model.Name, model.Description, imageUrl });
     }
 }

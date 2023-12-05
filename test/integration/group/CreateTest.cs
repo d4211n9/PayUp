@@ -1,4 +1,4 @@
-﻿using System.Net.Http.Json;
+﻿using System.Text;
 using FluentAssertions;
 using FluentAssertions.Execution;
 
@@ -15,29 +15,27 @@ public class CreateTest
         Helper.TriggerRebuild();
     }
 
-    [TestCase("test0@email.com", "Valid name", "Valid description",
-        "https://cdn-icons-png.flaticon.com/512/615/615075.png", TestName = "Valid")]
-    [TestCase("test1@email.com", "", "Valid description", "https://cdn-icons-png.flaticon.com/512/615/615075.png",
-        TestName = "InvalidName")]
-    [TestCase("test2@email.com", "Valid name", "", "https://cdn-icons-png.flaticon.com/512/615/615075.png",
-        TestName = "InvalidDescription")]
-    [TestCase("test3@email.com", "Valid name", "Valid description", "", TestName = "InvalidImage")]
+    [TestCase("test0@email.com", "Valid name", "Valid description", TestName = "Valid")]
+    [TestCase("test1@email.com", "", "Valid description", TestName = "InvalidName")]
+    [TestCase("test2@email.com", "Valid name", "", TestName = "InvalidDescription")]
+    //[TestCase("test3@email.com", "Valid name", "Valid description", TestName = "InvalidImage")]
     public async Task Create(
         string email,
         string name,
-        string description,
-        string imageUrl
+        string description
     )
     {
         var token = await Helper.Authorize(email);
 
-        var group = new
+
+        var formData = new MultipartFormDataContent()
         {
-            Name = name,
-            Description = description,
-            ImageUrl = imageUrl,
-            CreatedDate = DateTime.UtcNow,
+            { new StringContent(name), "Name" },
+            { new StringContent(description), "Description" },
+            { new StringContent("2023-11-21 10:48:24.584797"), "CreatedDate" },
         };
+
+        formData.Add(new ByteArrayContent(CreateTestFormFile("wat")), "image");
 
         string url = "http://localhost:5100/api/group/create";
         HttpResponseMessage response;
@@ -45,7 +43,8 @@ public class CreateTest
         try
         {
             _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-            response = await _httpClient.PostAsJsonAsync(url, group);
+
+            response = await _httpClient.PostAsync(url, formData);
             TestContext.WriteLine("The full body response: "
                                   + await response.Content.ReadAsStringAsync());
         }
@@ -68,5 +67,12 @@ public class CreateTest
                     break;
             }
         }
+    }
+
+    private byte[] CreateTestFormFile(string content)
+    {
+        byte[] bytes = Encoding.UTF8.GetBytes(content);
+
+        return bytes;
     }
 }

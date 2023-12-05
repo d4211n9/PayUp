@@ -28,11 +28,17 @@ public class GroupService
 
     }
 
-    public Group CreateGroup(Group group, SessionData sessionData)
+    public Group CreateGroup(CreateGroupModel group, SessionData sessionData, string? imageUrl)
     {
         //Create the group
-        group.CreatedDate = DateTime.UtcNow;
-        var responseGroup = _groupRepo.CreateGroup(group);
+        var createGroup = new CreateGroupModel
+        {
+            Name = group.Name,
+            Description = group.Description,
+            CreatedDate = DateTime.UtcNow
+        };
+
+        var responseGroup = _groupRepo.CreateGroup(createGroup, imageUrl);
         if (ReferenceEquals(responseGroup, null)) throw new SqlNullValueException(" create group");
 
         //Add the creator as member(owner) in the group
@@ -110,6 +116,11 @@ public class GroupService
                 throw new SqlTypeException();
         }
         return _groupRepo.DeleteInvite(user);
+    }
+    
+    public Group? Update(int groupId, UpdateGroupModel model, string? imageUrl)
+    {
+        return _groupRepo.Update(groupId, model, imageUrl);
     }
 
 }

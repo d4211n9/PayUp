@@ -13,6 +13,7 @@ import {ActivityComponent} from "./activity/activity.component";
 import {GroupcardComponent} from "./groupcard/groupcard.component";
 import {BalancecardComponent} from "./balancecard/balancecard.component";
 import {MyGroupsComponent} from "./my-groups/my-groups.component";
+import {UpdateComponent} from "./update/update.component";
 
 
 
@@ -24,7 +25,8 @@ import {MyGroupsComponent} from "./my-groups/my-groups.component";
     GroupcardComponent,
     InviteComponent,
     BalancecardComponent,
-    MyGroupsComponent
+    MyGroupsComponent,
+    UpdateComponent
   ],
   imports: [
     CommonModule,

@@ -104,8 +104,9 @@ DROP SCHEMA IF EXISTS groups CASCADE;
 DROP TABLE IF EXISTS users.password_hash;
 DROP TABLE IF EXISTS users.user_notification_settings;
 -- Drop the 'users.user' table if it exists
-DROP TABLE IF EXISTS users.user;
-DROP SCHEMA IF EXISTS users;
+DROP TABLE IF EXISTS users.user_notification_settings;
+DROP TABLE IF EXISTS users.user CASCADE;
+DROP SCHEMA IF EXISTS users CASCADE;
 
 -- Create the 'users' schema
 CREATE SCHEMA users;
@@ -193,7 +194,15 @@ CREATE TABLE groups.group_invitation (
 	FOREIGN KEY (receiver_id) REFERENCES users.user(id),
 	FOREIGN KEY (group_id) REFERENCES groups.group(id),
 	FOREIGN KEY (sender_id) REFERENCES users.user(id),
-	PRIMARY KEY (receiver_id, group_id)	
+	PRIMARY KEY (receiver_id, group_id)
+);
+
+CREATE TABLE users.user_notification_settings (
+    user_id INT PRIMARY KEY REFERENCES users.user(id),
+    invite_notification BOOLEAN NOT NULL,
+    invite_notification_email BOOLEAN NOT NULL,
+    expense_notification BOOLEAN NOT NULL,
+    expense_notification_email BOOLEAN NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS users.expense_notifications (
