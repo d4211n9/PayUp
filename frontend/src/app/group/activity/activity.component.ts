@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Balance, FullExpense, Group, GroupService} from "../group.service";
+import {Balance, FullExpense, Group, GroupService, Transaction} from "../group.service";
 import {firstValueFrom} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 
@@ -13,6 +13,7 @@ export class ActivityComponent implements OnInit {
   group: Group | undefined;
   expenses: FullExpense[] = []
   balances: Balance[] = []
+  transactionList: Transaction[] = []
   subpage = 'activity';
   loading: boolean = true;
   balancesLoaded: boolean = false;
@@ -34,6 +35,7 @@ export class ActivityComponent implements OnInit {
   async segmentChanged(ev: any) {
     if (ev.detail.value === 'balances' && !this.balancesLoaded) {
       this.loading = true
+      await this.getTransactions()
       await this.getBalances()
       this.balancesLoaded = true
       this.loading = false
@@ -53,6 +55,10 @@ export class ActivityComponent implements OnInit {
     this.balances = await this.service.getBalances(this.id)
   }
 
+
+  async getTransactions() {
+    this.transactionList = await this.service.getAllTransactions(this.id);
+  }
   toCreateExpense() {
     this.router.navigate(['groups/'+this.group?.id+'/create'])
   }

@@ -31,7 +31,7 @@
           <ion-spinner name="crescent" *ngIf="loading" class="child"></ion-spinner>
         </div>
         <ion-accordion-group [multiple]="true" class="subpage">
-          <balancecard *ngFor="let balance of balances" [balance]="balance"></balancecard>
+          <balancecard *ngFor="let balance of balances" [balance]="balance" [transactionList]="transactionList"></balancecard>
         </ion-accordion-group>
       </ion-content>
 

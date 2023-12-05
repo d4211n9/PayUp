@@ -12,14 +12,9 @@
   </ion-item>
   <div slot="content">
     <ion-list [inset]="true">
-      <ion-item>
-        <ion-label>{{user1.fullName} {{owes/lent} {{user2.fullName}</ion-label>
-        <ion-label color="success" slot="end">{{amount}</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label>{{user1.fullName} {{owes/lent} {{user3.fullName}</ion-label>
-        <ion-label color="danger" slot="end">{{amount}</ion-label>
-      </ion-item>
+      <app-payer-transfor-card *ngFor="let transaction of payerTransactions" [transaction]="transaction"></app-payer-transfor-card>
+      <app-payee-transfor-card *ngFor="let transaction of payeeTransactions" [transaction]="transaction"></app-payee-transfor-card>
+
     </ion-list>
   </div>
 </ion-accordion>

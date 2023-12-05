@@ -1,4 +1,5 @@
-﻿using System.Security.Authentication;
+﻿using System.Collections;
+using System.Security.Authentication;
 using api.models;
 using infrastructure.dataModels;
 using infrastructure.repository;
@@ -10,12 +11,14 @@ public class ExpenseService
     private readonly GroupRepository _groupRepo;
     private readonly ExpenseRepository _expenseRepo;
     private readonly UserRepository _userRepository;
+    private readonly TransactionCalculator _calculator;
 
-    public ExpenseService(GroupRepository groupRepo, ExpenseRepository expenseRepo, UserRepository userRepo)
+    public ExpenseService(GroupRepository groupRepo, ExpenseRepository expenseRepo, UserRepository userRepo, TransactionCalculator calculator)
     {
         _groupRepo = groupRepo;
         _expenseRepo = expenseRepo;
         _userRepository = userRepo;
+        _calculator = calculator;
     }
 
     public FullExpense CreateExpense(CreateFullExpense createFullExpense, SessionData sessionData)
@@ -117,7 +120,18 @@ public class ExpenseService
     {
         //Assert logged in user is authorized to access this group (api checked authentication)
         if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
-
         return _expenseRepo.GetBalances(groupId);
     }
+
+    public IEnumerable<Transaction> GetTotalTransactions(int groupId, SessionData sessionData)
+    {
+        //Assert logged in user is authorized to access this group (api checked authentication)
+        if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
+
+        var balances = _expenseRepo.GetBalances(groupId);
+
+        return _calculator.CalculateTransActions(balances);
+    }
+    
+    
 }
