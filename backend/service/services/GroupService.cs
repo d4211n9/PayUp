@@ -51,7 +51,7 @@ public class GroupService
         return _groupRepo.GetGroupById(groupId);
     }
 
-    public IEnumerable<Group> GetMyGroups(int userId)
+    public IEnumerable<GroupCardModel> GetMyGroups(int userId)
     {
         return _groupRepo.GetMyGroups(userId);
     }
