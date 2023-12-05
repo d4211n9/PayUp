@@ -1,18 +1,25 @@
 <ion-card class="group-card" (click)="openGroup()">
   <ion-item>
     <ion-thumbnail slot="start">
-      <ion-img src=".././assets/icon/elefant.png" alt="{{mygroups.imageUrl}}"></ion-img>
+      <ion-img [src]="group.imageUrl" alt="{{group.imageUrl}}"></ion-img>
     </ion-thumbnail>
 
     <!-- Group Name -->
     <div class="group-name">
-      <h1 class="small-text" id="groupcardtitle">{{mygroups.name}}</h1>
+      <h1 class="small-text" id="groupcardtitle">{{group.name}}</h1>
+      <ion-card-content class="small-text">{{group.description}}</ion-card-content>
     </div>
 
     <!-- Owed Information -->
     <ion-list slot="end">
-      <ion-card-subtitle class="small-text">Owed</ion-card-subtitle>
-      <ion-card-subtitle class="small-text">50 dkk</ion-card-subtitle>
+      <ion-card-subtitle class="small-text ion-text-center" *ngIf="group.amount < 0" color="danger">You owe</ion-card-subtitle>
+      <ion-card-title class="small-text ion-text-center" *ngIf="group.amount < 0" color="danger">{{-1 * group.amount}}</ion-card-title>
+
+      <ion-card-subtitle class="small-text ion-text-center" *ngIf="group.amount > 0" color="success">You lent</ion-card-subtitle>
+      <ion-card-title class="small-text ion-text-center" *ngIf="group.amount > 0" color="success">{{group.amount}}</ion-card-title>
+
+      <ion-card-subtitle class="small-text ion-text-center" *ngIf="group.amount === 0">You</ion-card-subtitle>
+      <ion-card-title class="small-text ion-text-center" *ngIf="group.amount === 0">paid up</ion-card-title>
     </ion-list>
   </ion-item>
 </ion-card>

@@ -7,12 +7,16 @@ export interface Group {
   id: number,
   name: string,
   description: string,
-  imageUrl: string,
+  imageUrl: string | null,
   createdDate: Date
 }
 
+export interface GroupCard extends Group {
+  amount: number
+}
+
 export interface UserInGroup {
-  userId: number,
+  id: number,
   fullName: string,
   imageUrl: string
 }
@@ -20,8 +24,26 @@ export interface UserInGroup {
 export interface CreateGroup {
   name: string,
   description: string,
-  imageUrl: string,
+  imageUrl: string | null,
   createdDate: Date
+}
+
+export interface GroupUpdate {
+  name: string;
+  description: string;
+  imageUrl: File | null;
+}
+
+export interface CreateExpense {
+  groupId: number,
+  description: string,
+  amount: number,
+  createdDate: Date
+}
+
+export interface CreateFullExpense {
+  expense: CreateExpense,
+  userIdsOnExpense: number[]
 }
 
 export interface FullExpense {
@@ -54,6 +76,14 @@ export interface Balance {
   amount: number
 }
 
+export interface Transaction {
+  payerId: number;
+  payerName: string,
+  amount: number;
+  payeeId: number;
+  payeeName: string;
+}
+
 export interface GroupInvitation {
   groupId: number
   receiverId: number
@@ -65,22 +95,35 @@ export class GroupService {
   }
 
   async getMyGroups() {
-    const call = this.http.get<Group[]>(environment.apiBaseUrl + "/mygroups")
-    return await firstValueFrom<Group[]>(call);
+    const call = this.http.get<GroupCard[]>(environment.apiBaseUrl + "/mygroups")
+    return await firstValueFrom<GroupCard[]>(call);
   }
 
   create(value: CreateGroup) {
-    return this.http.post<Group>(environment.apiBaseUrl+'/group/create', value)
+    const formData = new FormData();
+    Object.entries(value).forEach(([key, value]) =>
+      formData.append(key, value)
+    );
+
+    return this.http.post<Group>(environment.apiBaseUrl+'/group/create', formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
   }
+
+  createExpense(value: CreateFullExpense) {
+    return this.http.post<FullExpense>(environment.apiBaseUrl+'/expense', value);
+}
+
 
   async getAllExpenses(groupId: number) {
     const call = this.http.get<FullExpense[]>(environment.apiBaseUrl+'/group/'+groupId+'/expenses');
     return await firstValueFrom<FullExpense[]>(call);
   }
 
-  async getGroup(groupId: number) {
-      const call = this.http.get<Group>(environment.apiBaseUrl+'/group/'+groupId);
-      return await firstValueFrom<Group>(call);
+  getGroup(groupId: number) {
+      return this.http.get<Group>(environment.apiBaseUrl+'/group/'+groupId);
+
   }
 
   async getUserInGroup(groupId: string) {
@@ -93,7 +136,25 @@ export class GroupService {
     const call = this.http.get<Balance[]>(environment.apiBaseUrl+'/group/'+groupId+'/balances')
     return await firstValueFrom<Balance[]>(call);
   }
+
+  //gets a list over all transactions to be made before the group is square
+  async getAllTransactions(groupId: number) {
+    const call = this.http.get<Transaction[]>(environment.apiBaseUrl+'/group/'+groupId+'/transactions');
+    return await firstValueFrom<Transaction[]>(call);
+  }
+
   invite(group_invite: GroupInvitation) {
     return this.http.post<boolean>('http://localhost:5100/api/group/invite', group_invite);
+  }
+
+  update(value: GroupUpdate, groupId: number) {
+    const formData = new FormData();
+    Object.entries(value).forEach(([key, value]) =>
+      formData.append(key, value)
+    );
+    return this.http.put<GroupUpdate>(environment.apiBaseUrl+'/group/'+groupId+'/update', formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
   }
 }

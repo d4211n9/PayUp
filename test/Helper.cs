@@ -89,6 +89,8 @@ Best regards, Alex.
     }
 
     public static string RebuildScript = @"
+DROP TABLE IF EXISTS users.expense_notifications;
+
 DROP TABLE IF EXISTS expenses.user_on_expense CASCADE;
 DROP TABLE IF EXISTS expenses.expense CASCADE;
 DROP SCHEMA IF EXISTS expenses CASCADE;
@@ -100,9 +102,11 @@ DROP SCHEMA IF EXISTS groups CASCADE;
 
 -- Drop the 'users.password_hash' table if it exists
 DROP TABLE IF EXISTS users.password_hash;
+DROP TABLE IF EXISTS users.user_notification_settings;
 -- Drop the 'users.user' table if it exists
-DROP TABLE IF EXISTS users.user;
-DROP SCHEMA IF EXISTS users;
+DROP TABLE IF EXISTS users.user_notification_settings;
+DROP TABLE IF EXISTS users.user CASCADE;
+DROP SCHEMA IF EXISTS users CASCADE;
 
 -- Create the 'users' schema
 CREATE SCHEMA users;
@@ -124,6 +128,14 @@ CREATE TABLE users.password_hash (
     salt VARCHAR(180) NOT NULL,
     algorithm VARCHAR(12) NOT NULL,
     FOREIGN KEY(user_id) REFERENCES users.user(id)
+);
+
+CREATE TABLE users.user_notification_settings (
+    user_id INT PRIMARY KEY REFERENCES users.user(id),
+    invite_notification BOOLEAN NOT NULL,
+    invite_notification_email BOOLEAN NOT NULL,
+    expense_notification BOOLEAN NOT NULL,
+    expense_notification_email BOOLEAN NOT NULL
 );
 
 -- Create the groups schema
@@ -182,8 +194,11 @@ CREATE TABLE groups.group_invitation (
 	FOREIGN KEY (receiver_id) REFERENCES users.user(id),
 	FOREIGN KEY (group_id) REFERENCES groups.group(id),
 	FOREIGN KEY (sender_id) REFERENCES users.user(id),
-	PRIMARY KEY (receiver_id, group_id)	
+	PRIMARY KEY (receiver_id, group_id)
 );
+
+
+
 
  ";
 
@@ -292,6 +307,14 @@ insert into groups.group (id, name, description, image_url, created_date) VALUES
 insert into groups.group_members (user_id, group_id, owner) VALUES (1, 1, true);
 insert into groups.group_members (user_id, group_id, owner) VALUES (1, 2, true);
 insert into groups.group_members (user_id, group_id, owner) VALUES (2, 3, true);
+
+INSERT INTO expenses.expense (user_id, group_id, description, amount, created_date) VALUES (1, 1, 'Bajere 🍺', 20, '2023-11-24T15:58:41.045Z');
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (1, 1, 10);
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (2, 1, -10);
+
+INSERT INTO expenses.expense (user_id, group_id, description, amount, created_date) VALUES (1, 2, 'Bajere 🍺', 20, '2023-11-24T15:58:41.045Z');
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (1, 2, 10);
+INSERT INTO expenses.user_on_expense (user_id, expense_id, amount) VALUES (2, 2, -10);
     ";
 
     public static string BalanceScript = @"

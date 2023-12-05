@@ -31,6 +31,14 @@ public class UserService
         return responseUser; 
     }
 
+    public User EditProfileImage(SessionData? data, string? imageUrl)
+    {
+        var responseUser = _userRepository.EditUserImage(imageUrl, data.UserId);
+        //var responseUser = _userRepository.EditUserInfo(user, data.UserId);
+        if (ReferenceEquals(responseUser, null)) throw new SqlNullValueException("Edit User");//checks if response user is null before returning it.
+        return responseUser; 
+    }
+
     public IEnumerable<InvitableUser> GetInvitableUsers(SessionData? data, InvitableUserSearch invitableUserSearch)
     {
         int groupOwnerId = _groupRepository.IsUserGroupOwner(invitableUserSearch.GroupId);

@@ -12,12 +12,26 @@ import {ExpenseModule} from "../expense/expense.module";
 import {ActivityComponent} from "./activity/activity.component";
 import {GroupcardComponent} from "./groupcard/groupcard.component";
 import {BalancecardComponent} from "./balancecard/balancecard.component";
+import {MyGroupsComponent} from "./my-groups/my-groups.component";
+import {UpdateComponent} from "./update/update.component";
+import {PayerTransforCardComponent} from "./balancecard/payer-transfor-card/payer-transfor-card.component";
+import {PayeeTransforCardComponent} from "./balancecard/payee-transfor-card/payee-transfor-card.component";
 
 
 
 
 @NgModule({
-  declarations: [CreateComponent, ActivityComponent, GroupcardComponent, InviteComponent, BalancecardComponent],
+  declarations: [
+    CreateComponent,
+    ActivityComponent,
+    GroupcardComponent,
+    InviteComponent,
+    BalancecardComponent,
+    MyGroupsComponent,
+    UpdateComponent,
+    PayerTransforCardComponent,
+    PayeeTransforCardComponent
+  ],
   imports: [
     CommonModule,
     IonicModule,
@@ -25,9 +39,7 @@ import {BalancecardComponent} from "./balancecard/balancecard.component";
     ExpenseModule,
     FormsModule
   ],
-  exports: [
-    GroupcardComponent
-  ],
+  exports: [],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true},
     GroupService
