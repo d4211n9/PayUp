@@ -11,6 +11,12 @@ export interface Group {
   createdDate: Date
 }
 
+export interface UserInGroup {
+  id: number,
+  fullName: string,
+  imageUrl: string
+}
+
 export interface CreateGroup {
   name: string,
   description: string,
@@ -24,10 +30,16 @@ export interface GroupUpdate {
   imageUrl: File | null;
 }
 
-export interface UserInGroup {
-  userId: number,
-  fullName: string,
-  imageUrl: string
+export interface CreateExpense {
+  groupId: number,
+  description: string,
+  amount: number,
+  createdDate: Date
+}
+
+export interface CreateFullExpense {
+  expense: CreateExpense,
+  userIdsOnExpense: number[]
 }
 
 export interface FullExpense {
@@ -86,6 +98,11 @@ export class GroupService {
       observe: 'events'
     });
   }
+
+  createExpense(value: CreateFullExpense) {
+    return this.http.post<FullExpense>(environment.apiBaseUrl+'/expense', value);
+}
+
 
   async getAllExpenses(groupId: number) {
     const call = this.http.get<FullExpense[]>(environment.apiBaseUrl+'/group/'+groupId+'/expenses');

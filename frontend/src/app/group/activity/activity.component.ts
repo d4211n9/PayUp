@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Balance, FullExpense, Group, GroupService} from "../group.service";
 import {firstValueFrom} from "rxjs";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-activity',
@@ -20,6 +20,7 @@ export class ActivityComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private readonly service: GroupService,
+    private router: Router
   ) {
   }
 
@@ -50,5 +51,9 @@ export class ActivityComponent implements OnInit {
 
   async getBalances() {
     this.balances = await this.service.getBalances(this.id)
+  }
+
+  toCreateExpense() {
+    this.router.navigate(['groups/'+this.group?.id+'/create'])
   }
 }
