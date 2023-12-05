@@ -39,4 +39,11 @@ public class ExpenseController : ControllerBase
     {
         return _service.GetBalances(groupId, HttpContext.GetSessionData()!);
     }
+    
+    [HttpGet]
+    [Route("/api/expense/currency")]
+    public string GetAvailableCurrencies()
+    {
+        return _service.GetAvailableCurrencies();
+    }
 }

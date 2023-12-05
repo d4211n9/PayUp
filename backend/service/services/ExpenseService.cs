@@ -10,12 +10,14 @@ public class ExpenseService
     private readonly GroupRepository _groupRepo;
     private readonly ExpenseRepository _expenseRepo;
     private readonly UserRepository _userRepository;
+    private readonly CurrencyApiRepository _currencyApiRepository;
 
-    public ExpenseService(GroupRepository groupRepo, ExpenseRepository expenseRepo, UserRepository userRepo)
+    public ExpenseService(GroupRepository groupRepo, ExpenseRepository expenseRepo, UserRepository userRepo, CurrencyApiRepository currencyApiRepository)
     {
         _groupRepo = groupRepo;
         _expenseRepo = expenseRepo;
         _userRepository = userRepo;
+        _currencyApiRepository = currencyApiRepository;
     }
 
     public FullExpense CreateExpense(CreateFullExpense createFullExpense, SessionData sessionData)
@@ -113,5 +115,10 @@ public class ExpenseService
         if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
 
         return _expenseRepo.GetBalances(groupId);
+    }
+    
+    public string GetAvailableCurrencies()
+    {
+        return _currencyApiRepository.GetCurrencyList();
     }
 }

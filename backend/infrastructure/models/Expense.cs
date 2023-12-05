@@ -55,3 +55,10 @@ public class BalanceDto
     public required string ImageUrl { get; set; }
     public required decimal Amount { get; set; }
 }
+
+
+
+public class CurrencyListDto
+{
+    public Dictionary<string, object> Currencies { get; set; } //api responds with array of these
+}
