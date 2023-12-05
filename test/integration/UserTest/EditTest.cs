@@ -16,14 +16,13 @@ public class EditTest
         Helper.TriggerRebuild();
     }
 
-    [TestCase("teste@email.com", "Valid name", "1234567890", "https://cdn-icons-png.flaticon.com/512/615/615075.png","testeteste@email.com", TestName = "Valid")]
-    [TestCase("teste@email.com", "Valid name", "1234567890", "https://example.com","testeemailom", TestName = "InvalidEmail")]
-    [TestCase("teste@email.com", "Valid name", "1234567890", "https://example.com","" ,TestName = "EmptyEmail" )]
+    [TestCase("teste@email.com", "Valid name", "1234567890","testeteste@email.com", TestName = "Valid")]
+    [TestCase("teste@email.com", "Valid name", "1234567890","testeemailom", TestName = "InvalidEmail")]
+    [TestCase("teste@email.com", "Valid name", "1234567890","" ,TestName = "EmptyEmail" )]
     public async Task Edit(
         string email,
         string name,
         string phone,
-        string profileUrl,
         string newEmail
     )
     {
@@ -32,7 +31,6 @@ public class EditTest
             Email = email,
             FullName = name,
             phoneNumber = phone,
-            ProfileUrl = profileUrl,
         };
         
         var token = await Helper.Authorize(email);
@@ -43,7 +41,6 @@ public class EditTest
             Email = newEmail,
             FullName = name,
             phoneNumber = phone,
-            ProfileUrl = profileUrl,
         };
         
         string url = "http://localhost:5100/api/user/profileinfo";

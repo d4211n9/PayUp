@@ -7,10 +7,12 @@ namespace service.services;
 public class NotificationService
 {
     private GroupRepository _groupRepository;
+    private NotificationRepository _notificationRepository;
     
-    public NotificationService(GroupRepository groupRepository)
+    public NotificationService(GroupRepository groupRepository, NotificationRepository notificationRepository)
     {
         _groupRepository = groupRepository;
+        _notificationRepository = notificationRepository;
     }
 
     public IEnumerable<NotificationDto> GetNotifications(SessionData? sessionData, DateTime lastUpdated)
@@ -25,5 +27,14 @@ public class NotificationService
         }
         return notifications;
     }
+
+    public NotificationSettingsDto GetNotificationsSettings(int userId)
+    {
+        return _notificationRepository.GetUserNotificationSettings(userId);
+    }
     
+    public void EditUserNotificationSettings(NotificationSettingsDto settingsDto)
+    {
+        _notificationRepository.EditUserNotificationSettings(settingsDto);
+    }
 }
