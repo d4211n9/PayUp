@@ -24,8 +24,7 @@ export class CreateComponent  implements OnInit {
     private readonly router: Router
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   protected readonly _now = new Date().toLocaleDateString("da-DK", {timeZone: 'UTC'});
 
