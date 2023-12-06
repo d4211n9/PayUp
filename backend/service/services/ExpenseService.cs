@@ -123,6 +123,11 @@ public class ExpenseService
         return _expenseRepo.GetBalances(groupId);
     }
 
+    public TotalBalanceDto GetTotalBalance(SessionData sessionData)
+    {
+        return _expenseRepo.GetTotalBalance(sessionData.UserId);
+    }
+
     public IEnumerable<Transaction> GetTotalTransactions(int groupId, SessionData sessionData)
     {
         //Assert logged in user is authorized to access this group (api checked authentication)

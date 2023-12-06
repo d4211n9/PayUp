@@ -1,6 +1,7 @@
 ﻿using System.Data.SqlTypes;
 using api.models;
 using Dapper;
+using infrastructure.dataModels;
 using Npgsql;
 
 namespace infrastructure.repository;
@@ -178,23 +179,20 @@ public class ExpenseRepository
     {
         var sql =
             $@"
-            select u.id, SUM(uoe.amount) as total
-            from expenses.user_on_expense as uoe
-            join expenses.expense as e on uoe.expense_id = e.id
-            join users.user as u on uoe.user_id = u.id
-            where u.id = @userId
-            group by u.id;";
+            select SUM(expenses.user_on_expense.amount) as {nameof(TotalBalanceDto.Amount)}
+            from expenses.user_on_expense
+            where user_id = {userId}
+            group by user_id;";
         
         try
         {
             using var conn = _dataSource.OpenConnection();
-            return conn.Query<TotalBalanceDto>(sql, new { userId });
+            return conn.QueryFirst<TotalBalanceDto>(sql);
         }
         catch (Exception e)
         {
             throw new SqlNullValueException(" read total balance", e);
         }
     }
-    
     
 }
