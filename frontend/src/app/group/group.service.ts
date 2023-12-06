@@ -89,6 +89,11 @@ export interface GroupInvitation {
   receiverId: number
 }
 
+export interface CurrencyList{
+  scores: Record<string, number>
+}
+
+
 @Injectable()
 export class GroupService {
   constructor(private readonly http: HttpClient) {
@@ -157,4 +162,10 @@ export class GroupService {
       observe: 'events'
     });
   }
+
+
+  getCurrencies(){
+
+  }
+
 }

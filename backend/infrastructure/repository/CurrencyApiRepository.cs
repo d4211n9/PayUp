@@ -28,7 +28,7 @@ public class CurrencyApiRepository
         var key = ("fxa_live_yGJVJpOaY1JvlTcRhTz2w7FTcGOOPifYpRS4a4R7");
         //  countryBody[0].currencies.Keys.First() 
         var currencyLookupUrl = "https://api.fxapi.com/v1/latest?" +
-                                "base_currency=DKK" +
+                                 "base_currency=DKK" +
                                 "&apikey=" + key;
         var currencyResponse = await _httpClient.GetAsync(currencyLookupUrl);
         var asObject = JsonSerializer.Deserialize<ResponseObject>(await currencyResponse.Content.ReadAsStringAsync()) ?? throw new InvalidOperationException();
