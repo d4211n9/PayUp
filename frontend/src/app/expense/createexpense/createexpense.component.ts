@@ -1,7 +1,7 @@
 import {Component, Input, numberAttribute, OnInit} from '@angular/core';
 import {
   CreateExpense,
-  CreateFullExpense,
+  CreateFullExpense, CurrencyList,
   FullExpense,
   Group,
   GroupService,
@@ -24,6 +24,8 @@ export class CreateexpenseComponent implements OnInit {
   userInGroup: UserInGroup[] = [];
   id: any;
   usersOnExpense: number[] = [];
+  currencyList?: CurrencyList ;
+  selectedCurrencyKey: string = 'DKK';
 
 
   constructor(
@@ -38,6 +40,7 @@ export class CreateexpenseComponent implements OnInit {
   async ngOnInit() {
     await this.getId()
     this.getUsersInGroup(this.id);
+    this.currencyList = await this.service.getCurrencies();
   }
 
 

@@ -197,9 +197,6 @@ CREATE TABLE groups.group_invitation (
 	PRIMARY KEY (receiver_id, group_id)
 );
 
-
-
-
  ";
 
     public static string NoResponseMessage = $@"

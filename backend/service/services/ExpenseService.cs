@@ -16,13 +16,14 @@ public class ExpenseService
 
     private readonly TransactionCalculator _calculator;
 
-    public ExpenseService(GroupRepository groupRepo, ExpenseRepository expenseRepo, UserRepository userRepo, TransactionCalculator calculator)
+    public ExpenseService(GroupRepository groupRepo, ExpenseRepository expenseRepo, UserRepository userRepo, TransactionCalculator calculator, CurrencyApiRepository currencyApiRepository)
 
     {
         _groupRepo = groupRepo;
         _expenseRepo = expenseRepo;
         _userRepository = userRepo;
         _calculator = calculator;
+        _currencyApiRepository = currencyApiRepository;
 
     }
 

@@ -39,6 +39,10 @@
     <!-- Amount Input Section -->
     <ion-item class="ion-padding" id="paidinput">
       <ion-input formControlName="amount" label="You paid" placeholder="Enter amount" labelPlacement="floating"></ion-input>
+      <ion-select style="width: 60px" value="DKK">
+        <ion-select-option *ngFor="let currency of currencyList?.data | keyvalue" [value]="currency.key" > {{currency.key}}</ion-select-option>
+      </ion-select>
+      <ion-label *ngIf="selectedCurrency !== 'DKK'">You selected a currency other than DKK.</ion-label>
     </ion-item>
     <div *ngIf="amount.touched && amount.invalid">
       <ion-text color="danger">Valid amount is required</ion-text>

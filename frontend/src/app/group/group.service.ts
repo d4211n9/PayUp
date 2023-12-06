@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {firstValueFrom} from "rxjs";
+import {KeyValue} from "@angular/common";
 
 export interface Group {
   id: number,
@@ -90,7 +91,12 @@ export interface GroupInvitation {
 }
 
 export interface CurrencyList{
-  scores: Record<string, number>
+  data: KeyValue<string, currencyValue>[]
+}
+
+export interface currencyValue{
+  code: string,
+  value: number,
 }
 
 
@@ -110,41 +116,41 @@ export class GroupService {
       formData.append(key, value)
     );
 
-    return this.http.post<Group>(environment.apiBaseUrl+'/group/create', formData, {
+    return this.http.post<Group>(environment.apiBaseUrl + '/group/create', formData, {
       reportProgress: true,
       observe: 'events'
     });
   }
 
   createExpense(value: CreateFullExpense) {
-    return this.http.post<FullExpense>(environment.apiBaseUrl+'/expense', value);
-}
+    return this.http.post<FullExpense>(environment.apiBaseUrl + '/expense', value);
+  }
 
 
   async getAllExpenses(groupId: number) {
-    const call = this.http.get<FullExpense[]>(environment.apiBaseUrl+'/group/'+groupId+'/expenses');
+    const call = this.http.get<FullExpense[]>(environment.apiBaseUrl + '/group/' + groupId + '/expenses');
     return await firstValueFrom<FullExpense[]>(call);
   }
 
   getGroup(groupId: number) {
-      return this.http.get<Group>(environment.apiBaseUrl+'/group/'+groupId);
+    return this.http.get<Group>(environment.apiBaseUrl + '/group/' + groupId);
 
   }
 
   async getUserInGroup(groupId: string) {
-    const call = this.http.get<UserInGroup[]>(environment.apiBaseUrl +"/group/"+groupId+"/users");
+    const call = this.http.get<UserInGroup[]>(environment.apiBaseUrl + "/group/" + groupId + "/users");
     return await firstValueFrom<UserInGroup[]>(call);
   }
 
 
   async getBalances(groupId: number) {
-    const call = this.http.get<Balance[]>(environment.apiBaseUrl+'/group/'+groupId+'/balances')
+    const call = this.http.get<Balance[]>(environment.apiBaseUrl + '/group/' + groupId + '/balances')
     return await firstValueFrom<Balance[]>(call);
   }
 
   //gets a list over all transactions to be made before the group is square
   async getAllTransactions(groupId: number) {
-    const call = this.http.get<Transaction[]>(environment.apiBaseUrl+'/group/'+groupId+'/transactions');
+    const call = this.http.get<Transaction[]>(environment.apiBaseUrl + '/group/' + groupId + '/transactions');
     return await firstValueFrom<Transaction[]>(call);
   }
 
@@ -157,15 +163,18 @@ export class GroupService {
     Object.entries(value).forEach(([key, value]) =>
       formData.append(key, value)
     );
-    return this.http.put<GroupUpdate>(environment.apiBaseUrl+'/group/'+groupId+'/update', formData, {
+    return this.http.put<GroupUpdate>(environment.apiBaseUrl + '/group/' + groupId + '/update', formData, {
       reportProgress: true,
       observe: 'events'
     });
   }
 
 
-  getCurrencies(){
-
+  async getCurrencies() {
+    const call = this.http.get<CurrencyList>(environment.apiBaseUrl + "/expense/currency");
+    return await firstValueFrom<CurrencyList>(call);
   }
+
+
 
 }
