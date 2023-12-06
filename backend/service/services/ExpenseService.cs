@@ -117,8 +117,10 @@ public class ExpenseService
         return _expenseRepo.GetBalances(groupId);
     }
     
-    public string GetAvailableCurrencies()
+    public async Task<ResponseObject> GetAvailableCurrencies()
     {
-        return _currencyApiRepository.GetCurrencyList();
+
+
+        return await _currencyApiRepository.GetCurrencyList();
     }
 }

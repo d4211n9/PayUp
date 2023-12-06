@@ -42,8 +42,8 @@ public class ExpenseController : ControllerBase
     
     [HttpGet]
     [Route("/api/expense/currency")]
-    public string GetAvailableCurrencies()
+    public async Task<ResponseObject> GetAvailableCurrencies()
     {
-        return _service.GetAvailableCurrencies();
+        return await _service.GetAvailableCurrencies();
     }
 }

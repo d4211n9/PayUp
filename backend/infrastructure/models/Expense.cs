@@ -1,4 +1,6 @@
-﻿namespace api.models;
+﻿using Newtonsoft.Json;
+
+namespace api.models;
 
 public class Expense
 {
@@ -57,8 +59,14 @@ public class BalanceDto
 }
 
 
-
-public class CurrencyListDto
+public class ResponseObject
 {
-    public Dictionary<string, object> Currencies { get; set; } //api responds with array of these
+    public Dictionary<string, DictionaryValue> data { get; set; }
 }
+
+public class DictionaryValue
+{
+    public string code { get; set; }
+    public double value { get; set;}
+}
+
