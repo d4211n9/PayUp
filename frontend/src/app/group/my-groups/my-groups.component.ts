@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Group, GroupService} from "../group.service";
+import {Group, GroupCard, GroupService} from "../group.service";
 import {Router} from "@angular/router";
 
 @Component({
@@ -8,7 +8,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./my-groups.component.scss'],
 })
 export class MyGroupsComponent  implements OnInit {
-  mygroups: Group[] = [];
+  mygroups: GroupCard[] = [];
   noGroups: boolean = false;
 
   constructor(

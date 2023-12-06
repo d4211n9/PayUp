@@ -39,3 +39,8 @@ public class CreateGroupModel : UpdateGroupModel
     [Required(ErrorMessage = "Created date is required")]
     public DateTime CreatedDate { get; set; }
 }
+
+public class GroupCardModel : Group
+{
+    public decimal Amount { get; set; }
+}

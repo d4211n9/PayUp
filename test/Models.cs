@@ -11,6 +11,11 @@ public class Models
         public DateTime CreatedDate { get; set; }
     }
     
+    public class GroupCardModel : Group
+    {
+        public decimal Amount { get; set; }
+    }
+    
     public class UpdateGroupModel
     {
         public required string Name { get; set; }
@@ -35,5 +40,14 @@ public class Models
         public bool Accepted  { get; set; }
         public int GroupId{ get; set; }
     
+    }
+    
+    public class NotificationSettingsDto
+    {
+        public int UserId { get; set; }
+        public bool InviteNotification { get; set; }
+        public bool InviteNotificationEmail { get; set; }
+        public bool ExpenseNotification { get; set; }
+        public bool ExpenseNotificationEmail { get; set; }
     }
 }

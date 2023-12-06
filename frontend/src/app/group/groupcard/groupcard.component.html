@@ -11,8 +11,14 @@
 
     <!-- Owed Information -->
     <ion-list slot="end">
-      <ion-card-subtitle class="small-text">Owed</ion-card-subtitle>
-      <ion-card-subtitle class="small-text">50 dkk</ion-card-subtitle>
+      <ion-card-subtitle class="small-text ion-text-center" *ngIf="group.amount < 0" color="danger">You owe</ion-card-subtitle>
+      <ion-card-title class="small-text ion-text-center" *ngIf="group.amount < 0" color="danger">{{-1 * group.amount}}</ion-card-title>
+
+      <ion-card-subtitle class="small-text ion-text-center" *ngIf="group.amount > 0" color="success">You lent</ion-card-subtitle>
+      <ion-card-title class="small-text ion-text-center" *ngIf="group.amount > 0" color="success">{{group.amount}}</ion-card-title>
+
+      <ion-card-subtitle class="small-text ion-text-center" *ngIf="group.amount === 0">You</ion-card-subtitle>
+      <ion-card-title class="small-text ion-text-center" *ngIf="group.amount === 0">paid up</ion-card-title>
     </ion-list>
   </ion-item>
 </ion-card>

@@ -27,6 +27,7 @@ if (builder.Environment.IsProduction())
     builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString);
 }
 builder.Services.AddAvatarBlobService();
+builder.Services.AddSingleton<TransactionCalculator>();
 builder.Services.AddSingleton<NotificationFacade>();
 builder.Services.AddSingleton<HttpClient>();
 
@@ -36,6 +37,7 @@ builder.Services.AddSingleton<GroupRepository>();
 builder.Services.AddSingleton<ExpenseRepository>();
 builder.Services.AddSingleton<MailRepository>();
 builder.Services.AddSingleton<CurrencyApiRepository>();
+builder.Services.AddSingleton<NotificationRepository>();
 
 
 builder.Services.AddSingleton<NotificationService>();

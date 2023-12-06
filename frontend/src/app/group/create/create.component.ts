@@ -24,8 +24,7 @@ export class CreateComponent  implements OnInit {
     private readonly router: Router
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   protected readonly _now = new Date().toLocaleDateString("da-DK", {timeZone: 'UTC'});
 
@@ -62,7 +61,7 @@ export class CreateComponent  implements OnInit {
     this.uploading = true;
     this.service.create(this.form.value as CreateGroup)
       .pipe(finalize(() => {
-        this.router.navigate(['/groups'])
+        this.router.navigate(['/groups']).then(() => location.reload())
       }))
       .subscribe(event => {
         if (event.type == HttpEventType.Response && event.body) {
@@ -74,6 +73,7 @@ export class CreateComponent  implements OnInit {
       message: "Your group was created successfully",
       color: "success",
       duration: 5000
-    })).present();
+    })).present()
+      .then(() => location.reload);
   }
 }

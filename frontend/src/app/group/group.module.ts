@@ -14,6 +14,8 @@ import {GroupcardComponent} from "./groupcard/groupcard.component";
 import {BalancecardComponent} from "./balancecard/balancecard.component";
 import {MyGroupsComponent} from "./my-groups/my-groups.component";
 import {UpdateComponent} from "./update/update.component";
+import {PayerTransforCardComponent} from "./balancecard/payer-transfor-card/payer-transfor-card.component";
+import {PayeeTransforCardComponent} from "./balancecard/payee-transfor-card/payee-transfor-card.component";
 
 
 
@@ -26,7 +28,9 @@ import {UpdateComponent} from "./update/update.component";
     InviteComponent,
     BalancecardComponent,
     MyGroupsComponent,
-    UpdateComponent
+    UpdateComponent,
+    PayerTransforCardComponent,
+    PayeeTransforCardComponent
   ],
   imports: [
     CommonModule,

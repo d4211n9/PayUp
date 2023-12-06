@@ -50,7 +50,7 @@ public class GroupController : ControllerBase
     [RequireAuthentication]
     [HttpGet]
     [Route("/api/mygroups")]
-    public IEnumerable<Group> GetMyGroups()
+    public IEnumerable<GroupCardModel> GetMyGroups()
     {
         var sessionData = HttpContext.GetSessionData();
         var userId = sessionData.UserId;
@@ -100,7 +100,6 @@ public class GroupController : ControllerBase
             imageUrl = _blobService.Save("payup", imageStream, null);
         }
         
-        var group = _service.Update(groupId, model, imageUrl);
-        return group;
+        return _service.Update(groupId, model, imageUrl);
     }
 }

@@ -54,4 +54,14 @@ ion-badge {
   align-self: center;
   margin: auto;
 
+
+  /* Add this style in your global styles.css or component styles */
+  .custom-modal {
+    max-width: 90%;
+    width: auto;
+  }
+
+  .custom-modal ion-content {
+    max-height: 80vh; /* Adjust as needed */
+  }
 }

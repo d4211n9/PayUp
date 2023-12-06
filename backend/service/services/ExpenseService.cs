@@ -1,4 +1,5 @@
-﻿using System.Security.Authentication;
+﻿using System.Collections;
+using System.Security.Authentication;
 using api.models;
 using infrastructure.dataModels;
 using infrastructure.repository;
@@ -12,18 +13,29 @@ public class ExpenseService
     private readonly UserRepository _userRepository;
     private readonly CurrencyApiRepository _currencyApiRepository;
 
-    public ExpenseService(GroupRepository groupRepo, ExpenseRepository expenseRepo, UserRepository userRepo, CurrencyApiRepository currencyApiRepository)
+
+    private readonly TransactionCalculator _calculator;
+
+    public ExpenseService(GroupRepository groupRepo, ExpenseRepository expenseRepo, UserRepository userRepo, TransactionCalculator calculator)
+
     {
         _groupRepo = groupRepo;
         _expenseRepo = expenseRepo;
         _userRepository = userRepo;
-        _currencyApiRepository = currencyApiRepository;
+        _calculator = calculator;
+
     }
 
     public FullExpense CreateExpense(CreateFullExpense createFullExpense, SessionData sessionData)
     {
-        if (!_groupRepo.IsUserInGroup(createFullExpense.Expense.UserId, createFullExpense.Expense.GroupId))
+        var loggedInUser = sessionData.UserId;
+        if (!_groupRepo.IsUserInGroup(loggedInUser, createFullExpense.Expense.GroupId))
             throw new AuthenticationException();
+        
+        if (!createFullExpense.UserIdsOnExpense.Contains(loggedInUser)) throw new AuthenticationException();
+        
+        createFullExpense.Expense.UserId = loggedInUser;
+        
         var responseExpense = _expenseRepo.CreateExpense(createFullExpense.Expense);
 
         // Fordeling af expense amount ud på antal brugere
@@ -113,14 +125,24 @@ public class ExpenseService
     {
         //Assert logged in user is authorized to access this group (api checked authentication)
         if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
-
         return _expenseRepo.GetBalances(groupId);
     }
+
     
     public async Task<ResponseObject> GetAvailableCurrencies()
     {
-
-
         return await _currencyApiRepository.GetCurrencyList();
     }
+
+
+    public IEnumerable<Transaction> GetTotalTransactions(int groupId, SessionData sessionData)
+    {
+        //Assert logged in user is authorized to access this group (api checked authentication)
+        if (!_groupRepo.IsUserInGroup(sessionData.UserId, groupId)) throw new AuthenticationException();
+
+        var balances = _expenseRepo.GetBalances(groupId);
+
+        return _calculator.CalculateTransActions(balances);
+    }
+
 }
