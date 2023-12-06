@@ -16,22 +16,24 @@ import {MyGroupsComponent} from "./my-groups/my-groups.component";
 import {UpdateComponent} from "./update/update.component";
 import {PayerTransforCardComponent} from "./balancecard/payer-transfor-card/payer-transfor-card.component";
 import {PayeeTransforCardComponent} from "./balancecard/payee-transfor-card/payee-transfor-card.component";
+import {MembercardComponent} from "./membercard/membercard.component";
 
 
 
 
 @NgModule({
-  declarations: [
-    CreateComponent,
-    ActivityComponent,
-    GroupcardComponent,
-    InviteComponent,
-    BalancecardComponent,
-    MyGroupsComponent,
-    UpdateComponent,
-    PayerTransforCardComponent,
-    PayeeTransforCardComponent
-  ],
+    declarations: [
+        CreateComponent,
+        ActivityComponent,
+        GroupcardComponent,
+        InviteComponent,
+        BalancecardComponent,
+        MyGroupsComponent,
+        UpdateComponent,
+        PayerTransforCardComponent,
+        PayeeTransforCardComponent,
+        MembercardComponent
+    ],
   imports: [
     CommonModule,
     IonicModule,
