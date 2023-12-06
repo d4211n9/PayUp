@@ -91,7 +91,7 @@ export interface GroupInvitation {
 }
 
 export interface CurrencyList{
-  data: KeyValue<string, currencyValue>[]
+  data: KeyValue<string, currencyValue>
 }
 
 export interface currencyValue{
