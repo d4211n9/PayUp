@@ -1,0 +1,32 @@
+<ion-content class="parent ion-padding">
+
+  <ion-card class="child ion-padding"
+            style="overflow: hidden; border-radius: 15px; max-width: 700px; width: 90%; min-height: 300px; height: 100%;">
+
+    <div class="parent ion-padding">
+      <ion-icon class="child" name="receipt" color="dark" style="font-size: 48px"></ion-icon>
+    </div>
+
+    <!-- Add users to expense -->
+    <ion-item class="ion-padding" id="dropdow">
+      <ion-select (ionChange)="handleUserSelection($event)" multiple="false" placeholder="Choose a debt to settle"
+                  cancelText="Cancel" okText="Select">
+        <!-- Load group users -->
+        <ion-select-option *ngFor="let t of transactionList" [value]="t">{{t.payerName}}
+          owes {{t.payeeName}} {{t.amount}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-input *ngIf="transaction !== undefined" disabled="true" value="Pay {{transaction?.amount}} to {{transaction?.payeeName}}"></ion-input>
+
+    <!-- Create Button Section -->
+    <div class="parent ion-padding">
+      <ion-button class="child" color="warning" [disabled]="transaction === undefined" (click)="createSettle()">
+        Create
+      </ion-button>
+    </div>
+
+
+  </ion-card>
+
+</ion-content>

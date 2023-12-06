@@ -25,6 +25,14 @@ public class ExpenseController : ControllerBase
     }
     
     [RequireAuthentication]
+    [HttpPost]
+    [Route("/api/group/{groupId}/settle/")]
+    public FullExpense CreateSettle([FromRoute] int groupId, Transaction transaction)
+    {
+        return _service.CreateSettle(groupId, transaction, HttpContext.GetSessionData()!);
+    }
+    
+    [RequireAuthentication]
     [HttpGet]
     [Route("/api/group/{groupId}/expenses")]
     public IEnumerable<FullExpense> GetAllExpenses([FromRoute] int groupId)

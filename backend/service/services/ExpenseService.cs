@@ -26,13 +26,28 @@ public class ExpenseService
         var loggedInUser = sessionData.UserId;
         if (!_groupRepo.IsUserInGroup(loggedInUser, createFullExpense.Expense.GroupId))
             throw new AuthenticationException();
-        
+
         if (!createFullExpense.UserIdsOnExpense.Contains(loggedInUser)) throw new AuthenticationException();
-        
+
         createFullExpense.Expense.UserId = loggedInUser;
-        
+
         var responseExpense = _expenseRepo.CreateExpense(createFullExpense.Expense);
 
+        var userList = AddUsersOnExpense(responseExpense.Id, createFullExpense);
+
+        var usersOnExpense = _expenseRepo.AddUsersToExpense(userList);
+
+        var fullExpense = new FullExpense()
+        {
+            Expense = responseExpense,
+            UsersOnExpense = usersOnExpense!,
+            LoggedInUser = sessionData.UserId
+        };
+        return fullExpense;
+    }
+
+    private List<CreateUserOnExpense> AddUsersOnExpense(int expenseId, CreateFullExpense createFullExpense)
+    {
         // Fordeling af expense amount ud på antal brugere
         var numberOfUsers = createFullExpense.UserIdsOnExpense.Count();
         var share = createFullExpense.Expense.Amount / numberOfUsers;
@@ -45,8 +60,8 @@ public class ExpenseService
                 var user = new CreateUserOnExpense()
                 {
                     Amount = (share * numberOfUsers) - share,
-                    ExpenseId = responseExpense.Id,
-                    UserId = u
+                    ExpenseId = expenseId,
+                    UserId = u,
                 };
                 userList.Add(user);
             }
@@ -55,15 +70,42 @@ public class ExpenseService
                 var user = new CreateUserOnExpense()
                 {
                     Amount = share * -1,
-                    ExpenseId = responseExpense.Id,
-                    UserId = u
+                    ExpenseId = expenseId,
+                    UserId = u,
                 };
                 userList.Add(user);
             }
         }
 
-        var usersOnExpense = _expenseRepo.AddUsersToExpense(userList);
+        return userList;
+    }
 
+    public FullExpense CreateSettle(int groupId, Transaction transaction, SessionData sessionData)
+    {
+        var createExpense = new CreateExpenseDto()
+        {
+            UserId = sessionData.UserId,
+            Amount = transaction.Amount * 2,
+            CreatedDate = DateTime.Now,
+            Description = transaction.PayerName + " paid " + transaction.PayeeName + " " + transaction.Amount,
+            GroupId = groupId,
+            IsSettle = true
+        };
+        
+        var usersOnTransaction = new List<int>(){sessionData.UserId, transaction.PayeeId};
+        
+        var createFullExpense = new CreateFullExpense()
+        {
+            Expense = createExpense,
+            UserIdsOnExpense = usersOnTransaction
+        };
+        
+        var responseExpense = _expenseRepo.CreateExpense(createExpense);
+
+        var userList = AddUsersOnExpense(responseExpense.Id, createFullExpense);
+
+        var usersOnExpense = _expenseRepo.AddUsersToExpense(userList);
+        
         var fullExpense = new FullExpense()
         {
             Expense = responseExpense,

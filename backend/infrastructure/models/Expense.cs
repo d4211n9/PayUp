@@ -11,6 +11,7 @@ public class Expense
     public decimal Amount { get; set; }
     public DateTime CreatedDate { get; set; }
     public string? FullName { get; set; }
+    public required bool IsSettle { get; set; }
 }
 
 public class CreateExpenseDto
@@ -26,6 +27,7 @@ public class CreateExpenseDto
     public decimal Amount { get; set; }
     [Required]
     public DateTime CreatedDate { get; set; }
+    public required bool IsSettle { get; set; }
 }
 
 public class CreateUserOnExpense

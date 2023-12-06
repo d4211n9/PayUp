@@ -85,8 +85,8 @@ export class CreateexpenseComponent implements OnInit {
       groupId: this.id,
       description: this.form.controls.description.value!,
       amount: this.form.controls.amount.value!,
-      createdDate: this.form.controls.createdDate.value!
-
+      createdDate: this.form.controls.createdDate.value!,
+      isSettle: false
     };
 
     var fullExpenseInfo: CreateFullExpense = {

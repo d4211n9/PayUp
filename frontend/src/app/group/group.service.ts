@@ -38,7 +38,8 @@ export interface CreateExpense {
   groupId: number,
   description: string,
   amount: number,
-  createdDate: Date
+  createdDate: Date,
+  isSettle: boolean
 }
 
 export interface CreateFullExpense {
@@ -60,6 +61,7 @@ export interface Expense {
   amount: number
   createdDate: string
   fullName: string
+  isSettle: boolean
 }
 
 export interface UserOnExpense {
@@ -105,41 +107,45 @@ export class GroupService {
       formData.append(key, value)
     );
 
-    return this.http.post<Group>(environment.apiBaseUrl+'/group/create', formData, {
+    return this.http.post<Group>(environment.apiBaseUrl + '/group/create', formData, {
       reportProgress: true,
       observe: 'events'
     });
   }
 
   createExpense(value: CreateFullExpense) {
-    return this.http.post<FullExpense>(environment.apiBaseUrl+'/expense', value);
-}
+    return this.http.post<FullExpense>(environment.apiBaseUrl + '/expense', value);
+  }
+
+  createSettle(value: Transaction, groupId: number) {
+    return this.http.post<FullExpense>(environment.apiBaseUrl + '/group/' + groupId + '/settle', value)
+  }
 
 
   async getAllExpenses(groupId: number) {
-    const call = this.http.get<FullExpense[]>(environment.apiBaseUrl+'/group/'+groupId+'/expenses');
+    const call = this.http.get<FullExpense[]>(environment.apiBaseUrl + '/group/' + groupId + '/expenses');
     return await firstValueFrom<FullExpense[]>(call);
   }
 
   getGroup(groupId: number) {
-      return this.http.get<Group>(environment.apiBaseUrl+'/group/'+groupId);
+    return this.http.get<Group>(environment.apiBaseUrl + '/group/' + groupId);
 
   }
 
   async getUserInGroup(groupId: string) {
-    const call = this.http.get<UserInGroup[]>(environment.apiBaseUrl +"/group/"+groupId+"/users");
+    const call = this.http.get<UserInGroup[]>(environment.apiBaseUrl + "/group/" + groupId + "/users");
     return await firstValueFrom<UserInGroup[]>(call);
   }
 
 
   async getBalances(groupId: number) {
-    const call = this.http.get<Balance[]>(environment.apiBaseUrl+'/group/'+groupId+'/balances')
+    const call = this.http.get<Balance[]>(environment.apiBaseUrl + '/group/' + groupId + '/balances')
     return await firstValueFrom<Balance[]>(call);
   }
 
   //gets a list over all transactions to be made before the group is square
   async getAllTransactions(groupId: number) {
-    const call = this.http.get<Transaction[]>(environment.apiBaseUrl+'/group/'+groupId+'/transactions');
+    const call = this.http.get<Transaction[]>(environment.apiBaseUrl + '/group/' + groupId + '/transactions');
     return await firstValueFrom<Transaction[]>(call);
   }
 
@@ -152,7 +158,7 @@ export class GroupService {
     Object.entries(value).forEach(([key, value]) =>
       formData.append(key, value)
     );
-    return this.http.put<GroupUpdate>(environment.apiBaseUrl+'/group/'+groupId+'/update', formData, {
+    return this.http.put<GroupUpdate>(environment.apiBaseUrl + '/group/' + groupId + '/update', formData, {
       reportProgress: true,
       observe: 'events'
     });
