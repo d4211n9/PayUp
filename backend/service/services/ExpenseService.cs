@@ -82,17 +82,23 @@ public class ExpenseService
 
     public FullExpense CreateSettle(int groupId, Transaction transaction, SessionData sessionData)
     {
+        var loggedInUser = sessionData.UserId;
+        if (!_groupRepo.IsUserInGroup(loggedInUser, groupId))
+            throw new AuthenticationException();
+        
+        if (!transaction.PayerId.Equals(loggedInUser)) throw new AuthenticationException();
+
         var createExpense = new CreateExpenseDto()
         {
-            UserId = sessionData.UserId,
+            UserId = loggedInUser,
             Amount = transaction.Amount * 2,
             CreatedDate = DateTime.Now,
-            Description = transaction.PayerName + " paid " + transaction.PayeeName + " " + transaction.Amount,
+            Description = transaction.PayerName + " paid " + transaction.Amount + " to " + transaction.PayeeName,
             GroupId = groupId,
             IsSettle = true
         };
         
-        var usersOnTransaction = new List<int>(){sessionData.UserId, transaction.PayeeId};
+        var usersOnTransaction = new List<int> {transaction.PayerId, transaction.PayeeId};
         
         var createFullExpense = new CreateFullExpense()
         {

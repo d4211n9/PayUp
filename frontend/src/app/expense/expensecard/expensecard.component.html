@@ -6,7 +6,7 @@
       <ion-card-title class="medium-text">{{expense.expense.createdDate | date: 'd'}}</ion-card-title>
     </ion-list>
     <ion-icon *ngIf="!isSettle" name="receipt" color="dark" style="width: 10%"></ion-icon>
-    <ion-icon *ngIf="isSettle" name="cash" color="dark" style="width: 10%"></ion-icon>
+    <ion-icon *ngIf="isSettle" name="cash" color="success" style="width: 10%"></ion-icon>
     <ion-list class="ion-padding" style="width: 55%">
       <ion-card-subtitle class="small-text">
 

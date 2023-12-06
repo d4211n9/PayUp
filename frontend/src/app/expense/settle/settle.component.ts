@@ -1,14 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  CreateExpense,
-  CreateFullExpense,
-  FullExpense,
-  GroupService,
-  Transaction,
-  UserInGroup
-} from "../../group/group.service";
+import {Component, OnInit} from '@angular/core';
+import {FullExpense, GroupService, Transaction} from "../../group/group.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, Validators} from "@angular/forms";
 import {ToastController} from "@ionic/angular";
 import {firstValueFrom} from "rxjs";
 import {AccountService} from "../../auth/account.service";
@@ -20,16 +12,14 @@ import {AccountService} from "../../auth/account.service";
 })
 export class SettleComponent  implements OnInit {
   groupId: any
-  userId: any
-  usersOnExpense: number[] = []
-  transaction?: Transaction
+  user: any
+  transaction: any
   transactionList: Transaction[] = []
   myPayerTransactions: Transaction[] = []
 
   constructor(
     private route: ActivatedRoute,
     private accountService: AccountService,
-    private readonly fb: FormBuilder,
     private readonly groupService: GroupService,
     private readonly toast: ToastController,
     private router: Router
@@ -48,16 +38,15 @@ export class SettleComponent  implements OnInit {
   }
 
   async getCurrentUser() {
-    this.userId = await this.accountService.getCurrentUser()
+    this.user = await this.accountService.getCurrentUser()
   }
 
   //TODO get the users that logged in user owes money
   async getTransactions() {
     this.transactionList = await this.groupService.getAllTransactions(this.groupId);
-
-    this.transactionList.forEach(transaction => {
-      if (transaction.payerId === this.userId) {
-        this.myPayerTransactions.push(transaction);
+    this.transactionList.forEach(t => {
+      if (this.user.id === t.payerId) {
+        this.myPayerTransactions.push(t);
       }
     })
   }
@@ -81,10 +70,14 @@ export class SettleComponent  implements OnInit {
       duration: 5000
     })).present()
       .then(() => {
-        this.router.navigate(['groups/' + this.groupId])
-          .then(() => {
-            location.reload();
-          });
+        this.goBack()
       });
+  }
+
+  goBack() {
+    this.router.navigate(['groups/' + this.groupId])
+      .then(() => {
+        location.reload()
+      })
   }
 }

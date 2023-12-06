@@ -12,19 +12,23 @@
       <ion-select (ionChange)="handleUserSelection($event)" multiple="false" placeholder="Choose a debt to settle"
                   cancelText="Cancel" okText="Select">
         <!-- Load group users -->
-        <ion-select-option *ngFor="let t of transactionList" [value]="t">{{t.payerName}}
-          owes {{t.payeeName}} {{t.amount}}</ion-select-option>
+        <ion-select-option *ngFor="let t of myPayerTransactions" [value]="t">You owe {{t.amount}} to {{t.payeeName}}</ion-select-option>
+        <ion-select-option disabled="true" *ngIf="myPayerTransactions.length === 0">You are all paid up!</ion-select-option>
       </ion-select>
     </ion-item>
-
-    <ion-input *ngIf="transaction !== undefined" disabled="true" value="Pay {{transaction?.amount}} to {{transaction?.payeeName}}"></ion-input>
-
-    <!-- Create Button Section -->
-    <div class="parent ion-padding">
-      <ion-button class="child" color="warning" [disabled]="transaction === undefined" (click)="createSettle()">
-        Create
-      </ion-button>
+    <div class="parent">
+      <ion-card-title class="ion-padding child" *ngIf="transaction !== undefined">Are you sure you want to pay {{transaction.amount}} to {{transaction.payeeName}}?</ion-card-title>
     </div>
+    <!-- Create Button Section -->
+    <ion-item class="parent ion-padding">
+      <ion-button class="child ion-padding" color="warning" (click)="goBack()">
+        Cancel
+      </ion-button>
+
+      <ion-button class="child ion-padding" color="warning" [disabled]="transaction === undefined" (click)="createSettle()">
+        Confirm
+      </ion-button>
+    </ion-item>
 
 
   </ion-card>
