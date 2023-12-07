@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {ExpensecardComponent} from "./expensecard/expensecard.component";
 import {IonicModule} from "@ionic/angular";
 import {CreateexpenseComponent} from "./createexpense/createexpense.component";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 
@@ -15,10 +15,11 @@ import {ReactiveFormsModule} from "@angular/forms";
   exports: [
     ExpensecardComponent,
   ],
-    imports: [
-        CommonModule,
-        IonicModule,
-        ReactiveFormsModule
-    ]
+  imports: [
+    CommonModule,
+    IonicModule,
+    ReactiveFormsModule,
+    FormsModule
+  ]
 })
 export class ExpenseModule { }

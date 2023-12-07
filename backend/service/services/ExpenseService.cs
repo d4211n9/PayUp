@@ -11,14 +11,20 @@ public class ExpenseService
     private readonly GroupRepository _groupRepo;
     private readonly ExpenseRepository _expenseRepo;
     private readonly UserRepository _userRepository;
+    private readonly CurrencyApiRepository _currencyApiRepository;
+
+
     private readonly TransactionCalculator _calculator;
 
-    public ExpenseService(GroupRepository groupRepo, ExpenseRepository expenseRepo, UserRepository userRepo, TransactionCalculator calculator)
+    public ExpenseService(GroupRepository groupRepo, ExpenseRepository expenseRepo, UserRepository userRepo, TransactionCalculator calculator, CurrencyApiRepository currencyApiRepository)
+
     {
         _groupRepo = groupRepo;
         _expenseRepo = expenseRepo;
         _userRepository = userRepo;
         _calculator = calculator;
+        _currencyApiRepository = currencyApiRepository;
+
     }
 
     public FullExpense CreateExpense(CreateFullExpense createFullExpense, SessionData sessionData)
@@ -128,6 +134,12 @@ public class ExpenseService
         return _expenseRepo.GetTotalBalance(sessionData.UserId);
     }
 
+    public async Task<ResponseObject> GetAvailableCurrencies()
+    {
+        return await _currencyApiRepository.GetCurrencyList();
+    }
+
+
     public IEnumerable<Transaction> GetTotalTransactions(int groupId, SessionData sessionData)
     {
         //Assert logged in user is authorized to access this group (api checked authentication)
@@ -137,6 +149,5 @@ public class ExpenseService
 
         return _calculator.CalculateTransActions(balances);
     }
-    
-    
+
 }
