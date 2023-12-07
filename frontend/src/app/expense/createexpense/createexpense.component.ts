@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, numberAttribute, OnInit} from '@angular/core';
 import {
   CreateExpense,
   CreateFullExpense, CurrencyList, currencyValue,
@@ -43,7 +43,6 @@ export class CreateexpenseComponent implements OnInit {
     this.currencyList = await this.service.getCurrencies();
     await this.getId()
     this.getUsersInGroup(this.id);
-
   }
 
 
@@ -83,7 +82,6 @@ export class CreateexpenseComponent implements OnInit {
     createdDate: [undefined, Validators.required]
   });
 
-
   async createExpense() {
 
     if (this.form.invalid) return
@@ -93,8 +91,10 @@ export class CreateexpenseComponent implements OnInit {
     var expenseInfo: CreateExpense = {
       groupId: this.id,
       description: this.form.controls.description.value!,
+      createdDate: this.form.controls.createdDate.value!,
+      isSettle: false,
       amount: currency,
-      createdDate: this.form.controls.createdDate.value!
+
 
     };
 

@@ -26,7 +26,8 @@ public class ExpenseRepository
                 e.description as {nameof(Expense.Description)},
                 e.amount as {nameof(Expense.Amount)},
                 e.created_date as {nameof(Expense.CreatedDate)},
-                u.full_name as {nameof(Expense.FullName)}                
+                u.full_name as {nameof(Expense.FullName)}, 
+                e.is_settle as {nameof(Expense.IsSettle)}
             from expenses.expense as e 
                 join users.user as u on e.user_id = u.id 
             where group_id = @groupId;
@@ -75,18 +76,18 @@ public class ExpenseRepository
     {
         var sql = 
             $@"
-    SELECT 
-        uoe.user_id as {nameof(BalanceDto.UserId)}, 
-        u.full_name as {nameof(BalanceDto.FullName)}, 
-        u.profile_url as {nameof(BalanceDto.ImageUrl)},
-        SUM(uoe.amount) as {nameof(BalanceDto.Amount)}
-    FROM expenses.user_on_expense as uoe
-        JOIN expenses.expense as e ON uoe.expense_id = e.id 
-        JOIN users.user as u ON uoe.user_id = u.id  
-        JOIN groups.group as g ON e.group_id = g.id
-    WHERE g.id = @groupId
-    GROUP BY uoe.user_id, u.full_name, u.profile_url
-    ORDER BY {nameof(BalanceDto.Amount)} DESC;
+        SELECT 
+            uoe.user_id as {nameof(BalanceDto.UserId)}, 
+            u.full_name as {nameof(BalanceDto.FullName)}, 
+            u.profile_url as {nameof(BalanceDto.ImageUrl)},
+            SUM(uoe.amount) as {nameof(BalanceDto.Amount)}
+        FROM expenses.user_on_expense as uoe
+            JOIN expenses.expense as e ON uoe.expense_id = e.id 
+            JOIN users.user as u ON uoe.user_id = u.id  
+            JOIN groups.group as g ON e.group_id = g.id
+        WHERE g.id = @groupId
+        GROUP BY uoe.user_id, u.full_name, u.profile_url
+        ORDER BY {nameof(BalanceDto.Amount)} DESC;
     ";
 
         try
@@ -102,15 +103,16 @@ public class ExpenseRepository
     public Expense CreateExpense(CreateExpenseDto expenseDto)
     {
         var sql = $@"
-        INSERT INTO expenses.expense (user_id, group_id, description, amount, created_date)
-        VALUES (@UserId, @GroupId, @Description, @Amount, @CreatedDate)
+        INSERT INTO expenses.expense (user_id, group_id, description, amount, created_date, is_settle)
+        VALUES (@UserId, @GroupId, @Description, @Amount, @CreatedDate, @IsSettle)
         RETURNING
             id AS {nameof(Expense.Id)},
             user_id AS {nameof(Expense.UserId)},
             group_id AS {nameof(Expense.GroupId)},
             description AS {nameof(Expense.Description)},
             amount AS {nameof(Expense.Amount)},
-            created_date AS {nameof(Expense.CreatedDate)};
+            created_date AS {nameof(Expense.CreatedDate)},
+            is_settle AS {nameof(Expense.IsSettle)};
             ";
 
         try
@@ -123,6 +125,7 @@ public class ExpenseRepository
                 Description = expenseDto.Description,
                 Amount = expenseDto.Amount,
                 CreatedDate = expenseDto.CreatedDate,
+                IsSettle = expenseDto.IsSettle
             });
 
             return expense;
@@ -155,7 +158,7 @@ public class ExpenseRepository
             select 
                 uoe.user_id as {nameof(GetUserOnExpense.UserId)}, 
                 expense_id as {nameof(GetUserOnExpense.ExpenseId)}, 
-                uoe.amount as {nameof(GetUserOnExpense.Amount)}, 
+                uoe.amount as {nameof(GetUserOnExpense.Amount)},
                 u.profile_url as {nameof(GetUserOnExpense.ImageUrl)}
             from expenses.expense 
                 join expenses.user_on_expense as uoe on expense.id = uoe.expense_id 

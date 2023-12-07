@@ -26,6 +26,14 @@ public class ExpenseController : ControllerBase
     }
     
     [RequireAuthentication]
+    [HttpPost]
+    [Route("/api/group/{groupId}/settle/")]
+    public FullExpense CreateSettle([FromRoute] int groupId, Transaction transaction)
+    {
+        return _service.CreateSettle(groupId, transaction, HttpContext.GetSessionData()!);
+    }
+    
+    [RequireAuthentication]
     [HttpGet]
     [Route("/api/group/{groupId}/expenses")]
     public IEnumerable<FullExpense> GetAllExpenses([FromRoute] int groupId)
@@ -57,6 +65,15 @@ public class ExpenseController : ControllerBase
         return _service.GetTotalTransactions(groupId, HttpContext.GetSessionData()!);
     }
 
+    
+    [RequireAuthentication]
+    [HttpGet]
+    [Route("/api/group/{groupId}/debt")]
+    public IEnumerable<Transaction> GetMyDebt([FromRoute] int groupId)
+    {
+        return _service.GetMyDebt(groupId, HttpContext.GetSessionData()!);
+    }
+
     [RequireAuthentication]
     [HttpGet]
     [Route("/api/user/totalbalance")]
@@ -64,5 +81,5 @@ public class ExpenseController : ControllerBase
     {
         return _service.GetTotalBalance(HttpContext.GetSessionData()!);
     }
-    
+   
 }

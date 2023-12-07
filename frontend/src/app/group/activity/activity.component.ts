@@ -64,7 +64,7 @@ export class ActivityComponent implements OnInit {
   }
 
   toCreatePayment() {
-
+    this.router.navigate(['groups/'+this.group?.id+'/settle'])
   }
 
   toInvite() {

@@ -39,7 +39,8 @@ export interface CreateExpense {
   groupId: number,
   description: string,
   amount: number,
-  createdDate: Date
+  createdDate: Date,
+  isSettle: boolean
 }
 
 export interface CreateFullExpense {
@@ -61,6 +62,7 @@ export interface Expense {
   amount: number
   createdDate: string
   fullName: string
+  isSettle: boolean
 }
 
 export interface UserOnExpense {
@@ -126,6 +128,10 @@ export class GroupService {
     return this.http.post<FullExpense>(environment.apiBaseUrl + '/expense', value);
   }
 
+  createSettle(value: Transaction, groupId: number) {
+    return this.http.post<FullExpense>(environment.apiBaseUrl + '/group/' + groupId + '/settle', value)
+  }
+
 
   async getAllExpenses(groupId: number) {
     const call = this.http.get<FullExpense[]>(environment.apiBaseUrl + '/group/' + groupId + '/expenses');
@@ -151,6 +157,11 @@ export class GroupService {
   //gets a list over all transactions to be made before the group is square
   async getAllTransactions(groupId: number) {
     const call = this.http.get<Transaction[]>(environment.apiBaseUrl + '/group/' + groupId + '/transactions');
+    return await firstValueFrom<Transaction[]>(call);
+  }
+
+  async getMyDebt(groupId: number) {
+    const call = this.http.get<Transaction[]>(environment.apiBaseUrl + '/group/' + groupId + '/debt');
     return await firstValueFrom<Transaction[]>(call);
   }
 
