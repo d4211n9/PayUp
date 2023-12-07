@@ -45,7 +45,7 @@
       </ion-select>
     </ion-item>
     <ion-label *ngIf="selectedCurrency.key != 'DKK'">You selected a currency other than 'DKK'.
-      Calculated amount: {{ selectedCurrency.value.value * Number(amount.value)}} DKK</ion-label>
+      Calculated amount: {{Number(amount.value) / selectedCurrency.value.value }} DKK</ion-label>
     <div *ngIf="amount.touched && amount.invalid">
       <ion-text color="danger">Valid amount is required</ion-text>
     </div>

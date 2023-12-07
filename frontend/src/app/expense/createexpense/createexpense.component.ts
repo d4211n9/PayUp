@@ -88,7 +88,7 @@ export class CreateexpenseComponent implements OnInit {
 
     if (this.form.invalid) return
 
-    let currency = Number(this.form.controls.amount.value!) * this.selectedCurrency.value.value;
+    let currency = Number(this.form.controls.amount.value!) / this.selectedCurrency.value.value;
 
     var expenseInfo: CreateExpense = {
       groupId: this.id,
