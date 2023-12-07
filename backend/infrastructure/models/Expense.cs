@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using System.ComponentModel.DataAnnotations;
+
 
 namespace api.models;
 
@@ -64,6 +66,19 @@ public class BalanceDto
     public required decimal Amount { get; set; }
 }
 
+
+public class ResponseObject
+{
+    public Dictionary<string, DictionaryValue> data { get; set; }
+}
+
+public class DictionaryValue
+{
+    public string code { get; set; }
+    public double value { get; set;}
+}
+
+
 public class Transaction
 {
     public int PayerId { get; set; }
@@ -73,3 +88,4 @@ public class Transaction
     public string PayeeName { get; set; }
 
 }
+

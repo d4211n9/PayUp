@@ -39,7 +39,15 @@ public class ExpenseController : ControllerBase
     {
         return _service.GetBalances(groupId, HttpContext.GetSessionData()!);
     }
-    
+
+    [HttpGet]
+    [Route("/api/expense/currency")]
+    public async Task<ResponseObject> GetAvailableCurrencies()
+    {
+        return await _service.GetAvailableCurrencies();
+    }
+
+
     [RequireAuthentication]
     [HttpGet]
     [Route("/api/group/{groupId}/transactions")]
