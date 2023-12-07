@@ -6,6 +6,7 @@ import {CreateexpenseComponent} from "./createexpense/createexpense.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {SettleComponent} from "./settle/settle.component";
 import {GroupModule} from "../group/group.module";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 
@@ -22,6 +23,7 @@ import {GroupModule} from "../group/group.module";
     CommonModule,
     IonicModule,
     ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class ExpenseModule { }

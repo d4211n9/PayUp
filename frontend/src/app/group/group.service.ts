@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {firstValueFrom} from "rxjs";
+import {KeyValue} from "@angular/common";
 
 export interface Group {
   id: number,
@@ -91,6 +92,16 @@ export interface GroupInvitation {
   receiverId: number
 }
 
+export interface CurrencyList{
+  data: KeyValue<string, currencyValue>
+}
+
+export interface currencyValue{
+  code: string,
+  value: number,
+}
+
+
 @Injectable()
 export class GroupService {
   constructor(private readonly http: HttpClient) {
@@ -168,4 +179,13 @@ export class GroupService {
       observe: 'events'
     });
   }
+
+
+  async getCurrencies() {
+    const call = this.http.get<CurrencyList>(environment.apiBaseUrl + "/expense/currency");
+    return await firstValueFrom<CurrencyList>(call);
+  }
+
+
+
 }
