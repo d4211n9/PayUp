@@ -1,16 +1,11 @@
-﻿using System.Net;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json;
 using api.models;
-using freecurrencyapi;
-using freecurrencyapi.Helpers;
 
 namespace infrastructure.repository;
 
 public class CurrencyApiRepository
 {
     private HttpClient _httpClient;
-    private Freecurrencyapi _fx;
     private string _key = "fxa_live_yGJVJpOaY1JvlTcRhTz2w7FTcGOOPifYpRS4a4R7";
     public const string BaseUrl = "https://api.freecurrencyapi.com/v1/";
 
