@@ -89,12 +89,10 @@ public class Transaction
 }
 
 
-
 public class TotalBalanceDto
 {
     public required decimal Amount { get; set; }
 }
 
-}
 
 
