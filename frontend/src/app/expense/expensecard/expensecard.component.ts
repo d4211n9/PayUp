@@ -27,10 +27,6 @@ export class ExpensecardComponent  implements OnInit {
 
   @Input() expense!: FullExpense;
 
-  openExpense() {
-    //TODO?
-  }
-
   getOwnShare(id: number) {
     var userOnExpense = this.expense.usersOnExpense.find((u) => u.userId === id)
     if(userOnExpense == undefined) {

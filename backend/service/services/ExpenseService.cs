@@ -92,9 +92,9 @@ public class ExpenseService
             UserId = loggedInUser,
             Amount = transaction.Amount * 2,
             CreatedDate = DateTime.Now,
-            Description = transaction.PayerName + " paid " + transaction.Amount + " to " + transaction.PayeeName,
+            Description = $"{transaction.PayerName} paid {transaction.Amount} to {transaction.PayeeName}",
             GroupId = groupId,
-            IsSettle = true
+            IsSettle = true,
         };
         
         var usersOnTransaction = new List<int> {transaction.PayerId, transaction.PayeeId};
@@ -183,6 +183,7 @@ public class ExpenseService
     public IEnumerable<Transaction> GetMyDebt(int groupId, SessionData sessionData)
     {
         var transactions = GetTotalTransactions(groupId, sessionData);
+        
         var myDebt = new List<Transaction>();
 
         foreach (var t in transactions)
@@ -192,7 +193,6 @@ public class ExpenseService
                 myDebt.Add(t);
             }
         }
-
         return myDebt;
     }
     
