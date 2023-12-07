@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {UserInGroup} from "../group.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-membercard',
@@ -7,8 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MembercardComponent  implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {}
+  @Input() member!: UserInGroup;
+
 
 }
