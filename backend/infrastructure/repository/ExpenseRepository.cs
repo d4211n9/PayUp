@@ -1,6 +1,7 @@
 ﻿using System.Data.SqlTypes;
 using api.models;
 using Dapper;
+using infrastructure.dataModels;
 using Npgsql;
 
 namespace infrastructure.repository;
@@ -42,6 +43,8 @@ public class ExpenseRepository
             throw new SqlNullValueException(" read expenses from group", e);
         }
     }
+
+    
     
     public IEnumerable<GetUserOnExpense> GetUsersOnExpenses(int groupId)
     {
@@ -174,4 +177,25 @@ public class ExpenseRepository
             throw new SqlTypeException("Could not add users to expense", e);
         }
     }
+    
+    public TotalBalanceDto GetTotalBalance(int userId)
+    {
+        var sql =
+            $@"
+            select SUM(expenses.user_on_expense.amount) as {nameof(TotalBalanceDto.Amount)}
+            from expenses.user_on_expense
+            where user_id = {userId}
+            group by user_id;";
+        
+        try
+        {
+            using var conn = _dataSource.OpenConnection();
+            return conn.QueryFirst<TotalBalanceDto>(sql);
+        }
+        catch (Exception e)
+        {
+            throw new SqlNullValueException(" read total balance", e);
+        }
+    }
+    
 }

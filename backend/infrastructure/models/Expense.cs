@@ -86,3 +86,9 @@ public class Transaction
     public int PayeeId { get; set; }
     public string PayeeName { get; set; }
 }
+
+
+public class TotalBalanceDto
+{
+    public required decimal Amount { get; set; }
+}
