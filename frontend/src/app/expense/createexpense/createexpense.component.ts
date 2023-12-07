@@ -26,7 +26,7 @@ export class CreateexpenseComponent implements OnInit {
   userInGroup: UserInGroup[] = [];
   id: any;
   usersOnExpense: number[] = [];
-  currencyList!: CurrencyList;
+  currencyList!: any
   selectedCurrency: KeyValue<string, currencyValue> = {key: 'DKK', value: {code: 'DKK', value: 1}};
 
 

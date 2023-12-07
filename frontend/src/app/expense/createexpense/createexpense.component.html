@@ -30,7 +30,7 @@
       </ion-modal>
     </div>
     <div *ngIf="!createdDate.touched">
-      <ion-text color="dark">* Please select a date</ion-text>
+      <ion-text class="ion-margin-start ion-padding" color="dark">* Please select a date</ion-text>
     </div>
     <div *ngIf="createdDate.touched && createdDate.invalid">
       <ion-text color="danger">Valid date is required</ion-text>
@@ -44,8 +44,9 @@
         <ion-select-option [value]="selectedCurrency">DKK</ion-select-option>
       </ion-select>
     </ion-item>
-    <ion-label *ngIf="selectedCurrency.key != 'DKK'">You selected a currency other than 'DKK'.
-      Calculated amount: {{Number(amount.value) / selectedCurrency.value.value }} DKK</ion-label>
+    <ion-label class="ion-padding ion-margin-start" *ngIf="selectedCurrency.key != 'DKK'">You selected a currency other than 'DKK'.</ion-label>
+    <br>
+    <ion-label class="ion-padding ion-margin-start" *ngIf="selectedCurrency.key != 'DKK'">Calculated amount: {{(Number(amount.value) / selectedCurrency.value.value).toFixed(2) }} DKK</ion-label>
     <div *ngIf="amount.touched && amount.invalid">
       <ion-text color="danger">Valid amount is required</ion-text>
     </div>

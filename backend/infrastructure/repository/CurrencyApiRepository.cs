@@ -24,16 +24,11 @@ public class CurrencyApiRepository
 
     public async Task<ResponseObject> GetCurrencyList()
     {
-        //todo should be a list of currencies instead of a string 
         var key = Environment.GetEnvironmentVariable("currencyapikey");
-        //  countryBody[0].currencies.Keys.First() 
         var currencyLookupUrl = "https://api.fxapi.com/v1/latest?" +
                                  "base_currency=DKK" +
                                 "&apikey=" + key;
         var currencyResponse = await _httpClient.GetAsync(currencyLookupUrl);
-        var asObject = JsonSerializer.Deserialize<ResponseObject>(await currencyResponse.Content.ReadAsStringAsync()) ?? throw new InvalidOperationException();
-
-        Console.WriteLine(JsonSerializer.Serialize(asObject));
-        return asObject;
+        return JsonSerializer.Deserialize<ResponseObject>(await currencyResponse.Content.ReadAsStringAsync()) ?? throw new InvalidOperationException();
     }
 }
