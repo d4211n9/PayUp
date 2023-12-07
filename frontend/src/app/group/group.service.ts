@@ -149,6 +149,11 @@ export class GroupService {
     return await firstValueFrom<Transaction[]>(call);
   }
 
+  async getMyDebt(groupId: number) {
+    const call = this.http.get<Transaction[]>(environment.apiBaseUrl + '/group/' + groupId + '/debt');
+    return await firstValueFrom<Transaction[]>(call);
+  }
+
   invite(group_invite: GroupInvitation) {
     return this.http.post<boolean>('http://localhost:5100/api/group/invite', group_invite);
   }

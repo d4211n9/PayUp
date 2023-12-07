@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Security.Authentication;
+﻿using System.Security.Authentication;
 using api.models;
 using infrastructure.dataModels;
 using infrastructure.repository;
@@ -181,5 +180,20 @@ public class ExpenseService
         return _calculator.CalculateTransActions(balances);
     }
     
+    public IEnumerable<Transaction> GetMyDebt(int groupId, SessionData sessionData)
+    {
+        var transactions = GetTotalTransactions(groupId, sessionData);
+        var myDebt = new List<Transaction>();
+
+        foreach (var t in transactions)
+        {
+            if (t.PayerId == sessionData.UserId)
+            {
+                myDebt.Add(t);
+            }
+        }
+
+        return myDebt;
+    }
     
 }

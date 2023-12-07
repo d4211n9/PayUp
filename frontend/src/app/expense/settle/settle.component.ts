@@ -28,8 +28,7 @@ export class SettleComponent  implements OnInit {
 
   async ngOnInit() {
     await this.getId()
-    await this.getCurrentUser()
-    await this.getTransactions()
+    await this.getMyDebt()
   }
 
   async getId() {
@@ -37,18 +36,8 @@ export class SettleComponent  implements OnInit {
     this.groupId = map.get('groupId')
   }
 
-  async getCurrentUser() {
-    this.user = await this.accountService.getCurrentUser()
-  }
-
-  //TODO get the users that logged in user owes money
-  async getTransactions() {
-    this.transactionList = await this.groupService.getAllTransactions(this.groupId);
-    this.transactionList.forEach(t => {
-      if (this.user.id === t.payerId) {
-        this.myPayerTransactions.push(t);
-      }
-    })
+  async getMyDebt() {
+    this.myPayerTransactions = await this.groupService.getMyDebt(this.groupId)
   }
 
   handleUserSelection(event: CustomEvent) {

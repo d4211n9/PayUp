@@ -55,4 +55,12 @@ public class ExpenseController : ControllerBase
     {
         return _service.GetTotalTransactions(groupId, HttpContext.GetSessionData()!);
     }
+    
+    [RequireAuthentication]
+    [HttpGet]
+    [Route("/api/group/{groupId}/debt")]
+    public IEnumerable<Transaction> GetMyDebt([FromRoute] int groupId)
+    {
+        return _service.GetMyDebt(groupId, HttpContext.GetSessionData()!);
+    }
 }

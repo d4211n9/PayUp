@@ -73,5 +73,4 @@ public class Transaction
     public decimal Amount { get; set; }
     public int PayeeId { get; set; }
     public string PayeeName { get; set; }
-
 }
