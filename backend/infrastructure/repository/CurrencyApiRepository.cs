@@ -6,8 +6,6 @@ namespace infrastructure.repository;
 public class CurrencyApiRepository
 {
     private HttpClient _httpClient;
-    private string _key = "fxa_live_yGJVJpOaY1JvlTcRhTz2w7FTcGOOPifYpRS4a4R7";
-    public const string BaseUrl = "https://api.freecurrencyapi.com/v1/";
 
     public CurrencyApiRepository(HttpClient httpClient)
     {
