@@ -3,18 +3,23 @@ import { CommonModule } from '@angular/common';
 import {ExpensecardComponent} from "./expensecard/expensecard.component";
 import {IonicModule} from "@ionic/angular";
 import {CreateexpenseComponent} from "./createexpense/createexpense.component";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 
 @NgModule({
-  declarations: [ExpensecardComponent, CreateexpenseComponent],
+  declarations: [
+    ExpensecardComponent,
+    CreateexpenseComponent
+  ],
   exports: [
     ExpensecardComponent,
-      CreateexpenseComponent
   ],
   imports: [
     CommonModule,
-    IonicModule
+    IonicModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class ExpenseModule { }

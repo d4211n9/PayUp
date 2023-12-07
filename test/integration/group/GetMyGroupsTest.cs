@@ -66,12 +66,16 @@ public class GetMyGroupsTest
             {
                 case "Two Groups":
                     response.IsSuccessStatusCode.Should().BeTrue();
-                    IEnumerable<Models.Group> groups = await response.Content.ReadFromJsonAsync<IEnumerable<Models.Group>>();
+                    IEnumerable<Models.GroupCardModel> groups = await response.Content.ReadFromJsonAsync<IEnumerable<Models.GroupCardModel>>();
                     groups.Count().Should().Be(2);
+                    foreach (var g in groups)
+                    {
+                        g.Amount.Should().Be(10);
+                    }
                     break;
                 case "One Group":
                     response.IsSuccessStatusCode.Should().BeTrue();
-                    IEnumerable<Models.Group> group = await response.Content.ReadFromJsonAsync<IEnumerable<Models.Group>>();
+                    IEnumerable<Models.GroupCardModel> group = await response.Content.ReadFromJsonAsync<IEnumerable<Models.GroupCardModel>>();
                     group.Count().Should().Be(1);
                     break;
             }

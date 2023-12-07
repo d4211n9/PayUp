@@ -3,6 +3,7 @@ using api.middelware;
 using api.Middleware;
 using infrastructure;
 using infrastructure.repository;
+using service;
 using service.services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,17 +26,25 @@ if (builder.Environment.IsProduction())
 {
     builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString);
 }
-
+builder.Services.AddAvatarBlobService();
+builder.Services.AddSingleton<TransactionCalculator>();
+builder.Services.AddSingleton<NotificationFacade>();
+builder.Services.AddSingleton<HttpClient>();
 
 builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddSingleton<PasswordHashRepository>();
 builder.Services.AddSingleton<GroupRepository>();
 builder.Services.AddSingleton<ExpenseRepository>();
+builder.Services.AddSingleton<MailRepository>();
+builder.Services.AddSingleton<CurrencyApiRepository>();
+builder.Services.AddSingleton<NotificationRepository>();
 
+
+builder.Services.AddSingleton<NotificationService>();
 builder.Services.AddSingleton<AccountService>();
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<GroupService>();
-builder.Services.AddSingleton<ExpenseService>();
+builder.Services.AddSingleton<ExpenseService>();    
 
 builder.Services.AddJwtService();
 builder.Services.AddSwaggerGenWithBearerJWT();

@@ -93,8 +93,7 @@ SELECT
         SET
             full_name = @{nameof(user.FullName)},
             email = @{nameof(user.Email)},
-            phone_number = @{nameof(user.PhoneNumber)},
-            profile_url = @{nameof(user.ProfileUrl)}
+            phone_number = @{nameof(user.PhoneNumber)} 
         WHERE id = @Id
         RETURNING id as {nameof(User.Id)},
                   email as {nameof(User.Email)},
@@ -106,6 +105,30 @@ SELECT
         {
             using var conn = _dataSource.OpenConnection();
             return conn.QueryFirstOrDefault<User>(updateSql, user);
+        }
+        catch(Exception e)
+        {
+            throw new SqlTypeException("Could not update user", e);
+        }
+    }
+    
+    public User? EditUserImage(string imageUrl, int id)
+    {
+        var sql = @$"
+        UPDATE users.user
+        SET
+            profile_url = @imageUrl
+        WHERE id = @id
+        RETURNING id as {nameof(User.Id)},
+                  email as {nameof(User.Email)},
+                  full_name as {nameof(User.FullName)},
+                  phone_number as {nameof(User.PhoneNumber)},
+                  created as {nameof(User.Created)},
+                  profile_url as {nameof(User.ProfileUrl)};";
+        try
+        {
+            using var conn = _dataSource.OpenConnection();
+            return conn.QueryFirst<User>(sql, new {imageUrl, id});
         }
         catch(Exception e)
         {
