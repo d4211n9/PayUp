@@ -129,7 +129,11 @@ public class ExpenseService
         return _expenseRepo.GetBalances(groupId);
     }
 
-    
+    public TotalBalanceDto GetTotalBalance(SessionData sessionData)
+    {
+        return _expenseRepo.GetTotalBalance(sessionData.UserId);
+    }
+
     public async Task<ResponseObject> GetAvailableCurrencies()
     {
         return await _currencyApiRepository.GetCurrencyList();

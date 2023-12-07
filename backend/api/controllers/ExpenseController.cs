@@ -1,5 +1,6 @@
 ﻿using api.filters;
 using api.models;
+using infrastructure.dataModels;
 using Microsoft.AspNetCore.Mvc;
 using service.services;
 
@@ -55,4 +56,13 @@ public class ExpenseController : ControllerBase
     {
         return _service.GetTotalTransactions(groupId, HttpContext.GetSessionData()!);
     }
+
+    [RequireAuthentication]
+    [HttpGet]
+    [Route("/api/user/totalbalance")]
+    public TotalBalanceDto GetTotalBalance()
+    {
+        return _service.GetTotalBalance(HttpContext.GetSessionData()!);
+    }
+    
 }
