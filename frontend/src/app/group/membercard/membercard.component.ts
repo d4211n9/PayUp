@@ -9,7 +9,7 @@ import {Router} from "@angular/router";
 })
 export class MembercardComponent  implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor() { }
 
   ngOnInit() {}
   @Input() member!: UserInGroup;

@@ -1,16 +1,13 @@
 <ion-card>
+  <ion-item>
+    <ion-thumbnail class="ion-padding">
 
-      <ion-item><ion-checkbox></ion-checkbox>
-      <ion-thumbnail class="ion-padding">
-        <ion-img> {{member.imageUrl}} </ion-img>
-      </ion-thumbnail>
+      <!-- Displaying the member's profile image -->
+      <ion-img src="{{member.profileUrl}}"></ion-img>
+    </ion-thumbnail>
 
-      <ion-label> {{member.fullName}}</ion-label>
-      </ion-item>
-
-
-
+    <!-- Displaying the member's full name -->
+    <ion-label>{{member.fullName}}</ion-label>
+  </ion-item>
 </ion-card>
-
-
 

@@ -26,7 +26,7 @@ export interface MembersInGroup extends Group {
 export interface UserInGroup {
   id: number,
   fullName: string,
-  imageUrl: string
+  profileUrl: string
 }
 
 export interface CreateGroup {

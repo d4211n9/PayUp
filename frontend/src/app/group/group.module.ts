@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {CreateComponent} from "./create/create.component";
 import {IonicModule} from "@ionic/angular";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -34,13 +34,14 @@ import {MembercardComponent} from "./membercard/membercard.component";
         PayeeTransforCardComponent,
         MembercardComponent
     ],
-  imports: [
-    CommonModule,
-    IonicModule,
-    ReactiveFormsModule,
-    ExpenseModule,
-    FormsModule
-  ],
+    imports: [
+        CommonModule,
+        IonicModule,
+        ReactiveFormsModule,
+        ExpenseModule,
+        FormsModule,
+        NgOptimizedImage
+    ],
   exports: [],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorHttpInterceptor, multi: true},
