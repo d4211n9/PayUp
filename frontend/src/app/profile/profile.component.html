@@ -2,10 +2,35 @@
   <div id="content" class="item" *ngIf="fullUser$ | async as fullUser; else loading">
     <div class="container">
       <ion-card id="imgCard">
-        <ion-img id="image" [src]="fullUser.profileUrl"></ion-img>
-        <ion-button class="btn" fill="clear" color="warning" (click)="enterEditPictureMode()">
-          <ion-icon slot="icon-only" name="create" size="medium"></ion-icon>
-        </ion-button>
+
+        <div style="display: flex; justify-content: center; align-items: center;">
+          <form [formGroup]="formImg">
+            <div class="container">
+              <ion-img *ngIf="imageUrl === null"
+                       src="https://micdrastorageaccount.blob.core.windows.net/payup/65721ca9-0517-47b2-91f1-05ad8b176132"></ion-img>
+              <ion-img *ngIf="imageUrl !== null" [src]="imageUrl"></ion-img>
+
+              <ion-input class="file-input" type="file" id="opacity"
+                         accept="image/png, image/jpeg"
+                         formControlName="image" value={this.state.image}
+                         (change)="onFileChanged($event)" *ngIf="editModeImg">
+              </ion-input>
+              <ion-item lines="none">
+                <div style="display: flex; justify-content: center; align-items: center; height: 30px">
+                  <ion-button expand="full" *ngIf="editModeImg" (click)="submit()"
+                              [disabled]="formImg.invalid">Save
+                  </ion-button>
+                  <ion-button expand="full" *ngIf="editModeImg" (click)="exitImgEditMode()">Cancel</ion-button>
+                </div>
+              </ion-item>
+
+              <ion-button class="btn" fill="clear" color="warning" (click)="enterImgEditMode()">
+                <ion-icon slot="icon-only" name="create" size="medium"></ion-icon>
+              </ion-button>
+            </div>
+          </form>
+        </div>
+
       </ion-card>
     </div>
 
@@ -13,45 +38,50 @@
       <ion-card id="infoCard" class="container">
         <ion-list id="infoList">
           <form [formGroup]="form">
-          <ion-item *ngIf="!editMode">
-            <ion-label id="Name">{{ fullUser.fullName }}</ion-label>
-          </ion-item>
-          <ion-item *ngIf="!editMode">
-            <ion-label>{{ fullUser.email }}</ion-label>
-          </ion-item>
-          <ion-item *ngIf="!editMode">
-            <ion-label id="editNumber">{{ fullUser.phoneNumber }}</ion-label>
-          </ion-item>
+            <ion-item *ngIf="!editMode">
+              <ion-label id="Name">{{ fullUser.fullName }}</ion-label>
+            </ion-item>
+            <ion-item *ngIf="!editMode">
+              <ion-label>{{ fullUser.email }}</ion-label>
+            </ion-item>
+            <ion-item *ngIf="!editMode">
+              <ion-label id="editNumber">{{ fullUser.phoneNumber }}</ion-label>
+            </ion-item>
 
-          <!-- Input boxes for edit mode -->
-          <ion-item *ngIf="editMode">
-            <ion-label>
-              <ion-input [(ngModel)]="editedUser.fullName" placeholder="Full Name" formControlName="fullName"></ion-input>
-            </ion-label>
-          </ion-item>
-          <ion-item *ngIf="editMode">
-            <ion-label>
-              <ion-input [(ngModel)]="editedUser.email" placeholder="Email" formControlName="email"></ion-input>
-            </ion-label>
-          </ion-item>
-          <ion-item *ngIf="editMode">
-            <ion-label>
-              <ion-input [(ngModel)]="editedUser.phoneNumber" placeholder="Phone Number" formControlName="phone"></ion-input>
-            </ion-label>
-          </ion-item>
-          <ion-item lines="none">
-            <div id="editInfoBtnGroup" style="display: flex; justify-content: center; align-items: center; height: 30px">
-              <ion-button id="saveBtn" expand="full" *ngIf="editMode" (click)="saveChanges()" [disabled]="form.invalid">Save</ion-button>
-              <ion-button id="cancelBtn" expand="full" *ngIf="editMode" (click)="exitEditMode()">Cancel</ion-button>
-            </div>
-          </ion-item>
-          <ion-note color="medium" class="ion-margin-horizontal">Created:
-            {{fullUser.created | date: 'short'}}</ion-note
-          >
+            <!-- Input boxes for edit mode -->
+            <ion-item *ngIf="editMode">
+              <ion-label>
+                <ion-input [(ngModel)]="editedUser.fullName" placeholder="Full Name"
+                           formControlName="fullName"></ion-input>
+              </ion-label>
+            </ion-item>
+            <ion-item *ngIf="editMode">
+              <ion-label>
+                <ion-input [(ngModel)]="editedUser.email" placeholder="Email" formControlName="email"></ion-input>
+              </ion-label>
+            </ion-item>
+            <ion-item *ngIf="editMode">
+              <ion-label>
+                <ion-input [(ngModel)]="editedUser.phoneNumber" placeholder="Phone Number"
+                           formControlName="phone"></ion-input>
+              </ion-label>
+            </ion-item>
+            <ion-item lines="none">
+              <div id="editInfoBtnGroup"
+                   style="display: flex; justify-content: center; align-items: center; height: 30px">
+                <ion-button id="saveBtn" expand="full" *ngIf="editMode" (click)="saveChanges()"
+                            [disabled]="form.invalid">Save
+                </ion-button>
+                <ion-button id="cancelBtn" expand="full" *ngIf="editMode" (click)="exitEditMode()">Cancel</ion-button>
+              </div>
+            </ion-item>
+            <ion-note color="medium" class="ion-margin-horizontal">Created:
+              {{fullUser.created | date: 'short'}}</ion-note
+            >
           </form>
         </ion-list>
 
-        <ion-button id="editUserInfo" class="btn" fill="clear" color="warning" (click)="enterEditMode()" >
+        <ion-button id="editUserInfo" class="btn" fill="clear" color="warning" (click)="enterEditMode()">
           <ion-icon slot="icon-only" name="create" size="medium"></ion-icon>
         </ion-button>
 
@@ -71,14 +101,20 @@
     </div>
 
     <div id="stats" class="item, container">
-      <ion-card id="statsCard">
+      <ion-card id="statsCard" >
         <p>
-          money stats baby
+          <ion-card-title class="medium-text" *ngIf="totalBalance.amount < 0" color="danger"> Total balance: {{-1 * totalBalance.amount}}  </ion-card-title>
+          <ion-card-title class="medium-text" *ngIf="totalBalance.amount > 0" color="success"> Total balance: {{totalBalance.amount}}  </ion-card-title>
         </p>
+
+        <ion-button class="btn" fill="clear" color="warning" *ngIf="!editMode"></ion-button>
+
+
         <ion-button class="btn" fill="clear" color="warning"  *ngIf="!editMode">
           <ion-icon slot="icon-only" name="create" size="medium"></ion-icon>
         </ion-button>
       </ion-card>
+
     </div>
   </div>
   <ng-template #loading>

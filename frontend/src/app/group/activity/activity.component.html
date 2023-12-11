@@ -4,17 +4,6 @@
 
     <ion-card-title class="ion-padding ion-text-center" color="dark">{{group?.name}}</ion-card-title>
 
-    <!-- Another menu option ..
-    <ion-button class="parent" id="click-trigger">Menu</ion-button>
-    <ion-popover trigger="click-trigger" triggerAction="click">
-        <ng-template>
-            <ion-button class="parent">Activity</ion-button>
-            <ion-button class="parent">Balances</ion-button>
-            <ion-button class="parent">Totals</ion-button>
-        </ng-template>
-    </ion-popover>
-    -->
-
     <ion-toolbar>
       <ion-segment [(ngModel)]="subpage" scrollable="true" (ionChange)="segmentChanged($event)">
         <ion-segment-button value="activity">
@@ -23,8 +12,8 @@
         <ion-segment-button value="balances">
           <ion-label>Balances</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="totals">
-          <ion-label>Totals</ion-label>
+        <ion-segment-button value="members">
+          <ion-label>Members</ion-label>
         </ion-segment-button>
       </ion-segment>
     </ion-toolbar>
@@ -42,20 +31,28 @@
           <ion-spinner name="crescent" *ngIf="loading" class="child"></ion-spinner>
         </div>
         <ion-accordion-group [multiple]="true" class="subpage">
-          <balancecard *ngFor="let balance of balances" [balance]="balance"></balancecard>
+          <balancecard *ngFor="let balance of balances" [balance]="balance" [transactionList]="transactionList"></balancecard>
         </ion-accordion-group>
       </ion-content>
 
-      <div *ngSwitchCase="'totals'" class="child subpage">
+      <div *ngSwitchCase="'members'" class="child subpage">
         <!-- TODO: ADD TOTALS HTML HERE -->
-        <p>Totals works!</p>
+        <ion-accordion-group>
+          <app-membercard *ngFor="let member of members" [member]="member"> </app-membercard>
+        </ion-accordion-group>
       </div>
     </ng-container>
 
   </ion-card>
 
-  <ion-fab slot="fixed" vertical="bottom" horizontal="center">
-    <ion-fab-button color="warning">
+  <ion-fab [ngSwitch]="subpage" slot="fixed" vertical="bottom" horizontal="center">
+    <ion-fab-button *ngSwitchCase="'activity'" color="warning" (click)="toCreateExpense()">
+      <ion-icon name="add" color="dark"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button *ngSwitchCase="'balances'" color="warning" (click)="toCreatePayment()">
+      <ion-icon name="cash" color="dark"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button *ngSwitchCase="'members'" color="warning" (click)="toInvite()">
       <ion-icon name="add" color="dark"></ion-icon>
     </ion-fab-button>
   </ion-fab>

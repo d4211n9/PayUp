@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Group, GroupService} from "../group.service";
+import {GroupCard, GroupService} from "../group.service";
 import {Router} from "@angular/router";
 
 @Component({
@@ -8,19 +8,22 @@ import {Router} from "@angular/router";
   styleUrls: ['./my-groups.component.scss'],
 })
 export class MyGroupsComponent  implements OnInit {
-  mygroups: Group[] = [];
+  mygroups: GroupCard[] = [];
+  noGroups: boolean = false;
 
   constructor(
     private readonly service: GroupService,
     private router: Router
   ) {}
 
-  ngOnInit() {
-    this.getMyGroups();
+  async ngOnInit() {
+    await this.getMyGroups();
   }
 
   async getMyGroups() {
     this.mygroups = await this.service.getMyGroups()
+    if(this.mygroups.length === 0)
+      this.noGroups = true
   }
 
   toCreate() {
