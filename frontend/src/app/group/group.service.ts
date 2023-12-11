@@ -16,13 +16,6 @@ export interface GroupCard extends Group {
   amount: number
 }
 
-/*
-export interface MembersInGroup extends Group {
-  name: string,
-  imageUrl: string | null
-}
-*/
-
 export interface UserInGroup {
   id: number,
   fullName: string,
@@ -160,13 +153,6 @@ export class GroupService {
     const call = this.http.get<Balance[]>(environment.apiBaseUrl + '/group/' + groupId + '/balances')
     return await firstValueFrom<Balance[]>(call);
   }
-
-  /*
-  async getMembersInGroup(groupId: number) {
-    const call = this.http.get<MembersInGroup>(environment.apiBaseUrl+'/group/'+groupId+'/users')
-    return await firstValueFrom<MembersInGroup>(call);
-  }
-   */
 
   //gets a list over all transactions to be made before the group is square
   async getAllTransactions(groupId: number) {
